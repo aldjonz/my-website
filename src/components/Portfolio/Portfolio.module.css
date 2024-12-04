@@ -22,6 +22,7 @@
   top: 0;
   right: 0;
   width: 45vw;
+  overflow: visible;
   height: 100vh;
   flex: 1;
   z-index: 1000;

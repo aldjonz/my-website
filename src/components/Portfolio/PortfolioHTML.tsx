@@ -7,6 +7,7 @@ import Image from 'next/image'
 import ModelWithImageTexture from './ModelWithImageTexture'
 import ThreeCanvas from '../ui/ThreeCanvas'
 import MobilePhoneModel from './MobilePhoneModel'
+import PointerTrackerGroup from '../ui/PointerTrackerGroup'
 
 const container = {
   hidden: { opacity: 0, height: 0, transition: { staggerChildren: 0.05 } },
@@ -48,15 +49,19 @@ const PortfolioHTML = (props: Props) => {
           <div className={styles.innerContainer}> 
             <ThreeCanvas>
               {currentItem.mediaType === 'mobile' ? (
-                <group>
-                  {currentItem.media.map((image:string, index) => (
-                    <MobilePhoneModel 
-                      key={index}
-                      image={image} 
-                      position={[(index - (currentItem.media.length - 1) / 2) * 3, 0, 0]} 
+                <PointerTrackerGroup>
+                  <MobilePhoneModel 
+                      image={currentItem.media[0]} 
+                      position={[3, 4, 0]}
+                      rotation={[-0.5, -0.5, -0.4]}
                     />
-                  ))}
-                </group>
+                  <MobilePhoneModel 
+                    isSlideshow={true}
+                    images={currentItem.media.slice(1)}
+                    position={[1.4, 2, -0.5]}
+                    rotation={[-0.3, 0.5, 0.4]}
+                  />
+                </PointerTrackerGroup>
               )  : (
                 <ModelWithImageTexture
                   modelType={currentItem.title === 'XRD Domains' ? 'circle' : 'plane'}

@@ -77,7 +77,7 @@ const contentArray: ProjectContent[] = [
 ]
 
 export const useProjectDisplay = () => {
-  const [currentIndex, setCurrentIndex] = useState<number | null>(2);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(6);
 
   const selectIndex = (index: number) => {
     setCurrentIndex(index)
