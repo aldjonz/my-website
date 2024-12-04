@@ -51,7 +51,7 @@ const PortfolioHTML = (props: Props) => {
               {currentItem.mediaType === 'mobile' ? (
                 <PointerTrackerGroup>
                   <MobilePhoneModel 
-                      image={currentItem.media[0]} 
+                      images={[currentItem.media[0]]} 
                       position={[3, 4, 0]}
                       rotation={[-0.5, -0.5, -0.4]}
                     />

@@ -10,20 +10,17 @@ import { Group } from 'three'
 type Props = {}
 
 const MobilePhoneModel = ({ 
-  image, 
   position = [0, 0, 0], 
   rotation = [0, 0, 0],
   isSlideshow = false,
   images = []
 }: { 
-  image: string, 
   position?: [number, number, number],
   rotation?: [number, number, number],
   isSlideshow?: boolean,
   images?: string[]
 }) => {
-    console.log('phone')
-    const [currentImageIndex, setCurrentImageIndex] = useState(1)
+    const [currentImageIndex, setCurrentImageIndex] = useState(0)
     
     const motionVal = useMotionValue(0)
     const { scene, animations } = useGLTF('/portfolio/phone.glb')
@@ -35,7 +32,7 @@ const MobilePhoneModel = ({
     const screen = phoneMesh.children.filter((child) => child.name === 'Screen_+back_14')[0].children[1] as Mesh
 
     const textureLoader = new TextureLoader()
-    const texture = textureLoader.load(`/portfolio/projects/${isSlideshow ? images[currentImageIndex] : image}`)
+    const texture = textureLoader.load(`/portfolio/projects/${isSlideshow ? images[currentImageIndex] : images[0]}`)
     texture.repeat.set(1.2, 1)
     texture.offset.set(-0.11, 0)
 
@@ -64,7 +61,7 @@ const MobilePhoneModel = ({
 
         const interval = setInterval(() => {
             setCurrentImageIndex((prev) => (prev + 1) % images.length)
-        }, 3000) // Change image every 3 seconds
+        }, 6000) 
 
         return () => clearInterval(interval)
     }, [isSlideshow, images])
