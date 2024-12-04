@@ -1,3 +1,4 @@
+import { useProjectDisplay } from '@/hooks/useProjectDisplay'
 import { Html } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import React, { useRef } from 'react'
@@ -7,7 +8,7 @@ const Projects = ({ isExploded }: { isExploded: boolean }) => {
     const group = useRef<Group>(null)
     const scene = new Group()
 
-
+    const { selectIndex } = useProjectDisplay()
     const orbitRadiusCubes = 4
     const cubes = Array.from({ length: 7 }, (_, index) => {
         const cube = new Mesh(new OctahedronGeometry(0.5), new MeshStandardMaterial({ 
@@ -50,8 +51,26 @@ const Projects = ({ isExploded }: { isExploded: boolean }) => {
     })
 
   return (
-    <group ref={group}>
+    <group ref={group} onClick={(e) => {
+        e.stopPropagation()
+        selectIndex(0)
+    }}>
         <primitive object={scene} />
+        {/* <Html
+          position={[2, 0, 0]}  // [x, y, z] coordinates
+          center               // centers the content
+          distanceFactor={10}  // controls size based on camera distance
+          transform           // makes HTML follow the 3D transform
+        >
+            <div style={{ 
+                backgroundColor: 'red',
+                padding: '10px',
+                borderRadius: '5px',
+                transform: 'translateX(-50%)', // fine-tune centering if needed
+            }}>
+                <h1>Projects</h1>
+            </div>
+        </Html> */}
     </group>
   )
 }

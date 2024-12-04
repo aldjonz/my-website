@@ -1,0 +1,126 @@
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.projectDisplay {
+  background-color: rgba(255,255,255,0.7);
+  width: 90%;
+  height: 90vh;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.innerContainer {
+  /* position: absolute; */
+  top: 0;
+  right: 0;
+  width: 45vw;
+  height: 100vh;
+  flex: 1;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.imageContainer {
+    width: 45vw;
+    height: 100vh;
+    flex: 1;
+    background-color: red;
+    position: relative;
+}
+
+/* .image {
+  position: absolute;
+} */
+
+.blurBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.info {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 70%;
+    transform: translate3d(-50%, -50%, 0);
+    border-left: 1px solid black;
+    padding-left: 30px;
+    user-select: none;
+}
+
+.info p {
+    font-size: 16px;
+    line-height: 1.25em;
+    margin-bottom: 0.2em;
+}
+.info h1 {
+    font-family: 'Major Mono Display', monospace;
+    font-size: 2em;
+    margin-bottom: 0.5em;
+}
+  
+.info h3 {
+    font-weight: 800;
+    font-size: 4em;
+    letter-spacing: -4px;
+    line-height: 1em;
+    margin: 0;
+}
+
+.info h4 {
+    font-weight: 300;
+    font-size: 1.15em;
+    letter-spacing: -1px;
+    margin: 10px 0;
+}
+  
+
+.techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.techStack p {
+    margin: 0px;
+    font-weight: 600;
+}
+
+.title {
+    cursor: pointer;
+    background: linear-gradient(#631814 30%, #000000) left no-repeat, #000000;
+    background-size: 0% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: 1s ease-in-out;
+  }
+  
+  .title:hover {
+    background-size: 100% 100%;
+  }
+
+  .link {
+    display: inline-block;
+    font-family: 'Major Mono Display', monospace;
+    background: black;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-top: auto;
+    margin-left: auto;
+}
