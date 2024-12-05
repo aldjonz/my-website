@@ -85,31 +85,31 @@
   gap: 14px;
 }
 .techStack p {
-    margin: 0px;
-    font-weight: 600;
+  margin: 0px;
+  font-weight: 600;
 }
 
 .title {
-    cursor: pointer;
-    background: linear-gradient(#631814 30%, #000000) left no-repeat, #000000;
-    background-size: 0% 100%;
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    transition: 1s ease-in-out;
-  }
-  
-  .title:hover {
-    background-size: 100% 100%;
-  }
+  cursor: pointer;
+  background: linear-gradient(#631814 30%, #000000) left no-repeat, #000000;
+  background-size: 0% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: 1s ease-in-out;
+}
 
-  .link {
-    display: inline-block;
-    font-family: 'Major Mono Display', monospace;
-    background: black;
-    color: white;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-top: auto;
-    margin-left: auto;
+.title:hover {
+  background-size: 100% 100%;
+}
+
+.link {
+  display: inline-block;
+  font-family: 'Major Mono Display', monospace;
+  background: black;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-top: auto;
+  margin-left: auto;
 }

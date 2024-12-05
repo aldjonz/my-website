@@ -12,7 +12,7 @@ const Projects = dynamic(() => import('./Projects'), { ssr: false })
 
 export default function Portfolio() {
     const [isExploded, setIsExploded] = useState(false)
-    const [selectedProject, setSelectedProject] = useState<null | string>(null)
+    const [selectedProjectIndex, setSelectedProjectIndex] = useState<null | number>(null)
 
     return (
         <>
@@ -37,13 +37,16 @@ export default function Portfolio() {
                             <CentralSphere />
                             <Projects 
                                 isExploded={isExploded}
-                                // setSelectedProject={setSelectedProject}
+                                setSelectedProjectIndex={setSelectedProjectIndex}
                             />
                         </Center>
                     </Suspense>
                 </Canvas>
             </div>
-            <PortfolioHTML />
+            <PortfolioHTML 
+                selectedProjectIndex={selectedProjectIndex}
+                setSelectedProjectIndex={setSelectedProjectIndex}
+            />
         </>
     )
 }

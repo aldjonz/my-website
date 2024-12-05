@@ -4,7 +4,7 @@ import { useFrame } from '@react-three/fiber'
 import React, { useRef } from 'react'
 import { Group, Mesh, MeshStandardMaterial, Object3DEventMap, OctahedronGeometry, Vector3 } from 'three'
 
-const Projects = ({ isExploded }: { isExploded: boolean }) => {
+const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean, setSelectedProjectIndex: (index: number | null) => void }) => {
     const group = useRef<Group>(null)
     const scene = new Group()
 
@@ -17,6 +17,7 @@ const Projects = ({ isExploded }: { isExploded: boolean }) => {
             opacity: 0.8
         }))
         cube.visible = false
+        cube.userData.index = index
         scene.add(cube)
 
         const phi = Math.acos(-1 + (2 * index) / 7)
@@ -31,7 +32,6 @@ const Projects = ({ isExploded }: { isExploded: boolean }) => {
 
 
     useFrame((state) => {
-
         cubes.forEach((cube) => {
             if (isExploded) {
                 cube.visible = true
@@ -51,26 +51,13 @@ const Projects = ({ isExploded }: { isExploded: boolean }) => {
     })
 
   return (
-    <group ref={group} onClick={(e) => {
-        e.stopPropagation()
-        selectIndex(0)
+    <group 
+        ref={group} 
+        onClick={(e) => {
+            e.stopPropagation()
+            setSelectedProjectIndex(e.object.userData.index)
     }}>
         <primitive object={scene} />
-        {/* <Html
-          position={[2, 0, 0]}  // [x, y, z] coordinates
-          center               // centers the content
-          distanceFactor={10}  // controls size based on camera distance
-          transform           // makes HTML follow the 3D transform
-        >
-            <div style={{ 
-                backgroundColor: 'red',
-                padding: '10px',
-                borderRadius: '5px',
-                transform: 'translateX(-50%)', // fine-tune centering if needed
-            }}>
-                <h1>Projects</h1>
-            </div>
-        </Html> */}
     </group>
   )
 }
