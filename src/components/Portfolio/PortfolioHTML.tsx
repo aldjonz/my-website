@@ -64,9 +64,8 @@ const PortfolioHTML = (props: Props) => {
                 </PointerTrackerGroup>
               )  : (
                 <ModelWithImageTexture
-                  modelType={currentItem.title === 'XRD Domains' ? 'circle' : 'plane'}
                   texturePath={`/portfolio/projects/${currentItem.media[0]}`} 
-                  transparent={currentItem.title === 'XRD Domains' ? false : true}
+                  transparent={currentItem.title === 'XRD Domains' ? true : true}
                 />
               )}
             </ThreeCanvas>

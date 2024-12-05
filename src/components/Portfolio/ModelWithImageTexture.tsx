@@ -2,7 +2,7 @@ import { useRef, useEffect } from 'react'
 import { FrontSide, Mesh, TextureLoader, Vector3, Vector2 } from 'three'
 import { useLoader, useFrame, useThree } from '@react-three/fiber'
 
-const ModelWithImageTexture = ({ texturePath, modelType, transparent }: { texturePath: string, modelType: string, transparent?: boolean }) => {
+const ModelWithImageTexture = ({ texturePath, transparent }: { texturePath: string, transparent?: boolean }) => {
     const meshRef = useRef<Mesh>(null)
     const texture = useLoader(TextureLoader, texturePath)
     const { viewport } = useThree()
@@ -52,16 +52,6 @@ const ModelWithImageTexture = ({ texturePath, modelType, transparent }: { textur
         currentRotation.y = Math.max(Math.min(currentRotation.y, maxRotation), -maxRotation)
     })
 
-    let geometry
-    switch(modelType) {
-        case 'circle': geometry = <circleGeometry args={[2, 32, 32]} />
-            break;
-        case 'square': geometry = <boxGeometry args={[2, 2, 2]} />
-            break;
-        case 'plane': geometry = <planeGeometry args={[3,3]} />
-            break;
-    }
-
     let textureMaterial = {
         map: texture,
         roughness: 1,
@@ -80,10 +70,9 @@ const ModelWithImageTexture = ({ texturePath, modelType, transparent }: { textur
         }
     }
     
-    console.log(modelType)
     return (
         <mesh ref={meshRef}>
-            {geometry}
+<planeGeometry args={[3,3]} />
             <meshPhysicalMaterial {...textureMaterial} />
         </mesh>
     )
