@@ -71,29 +71,29 @@ const PortfolioHTML = (props: Props) => {
               </div>
           </div>
           <div className={styles.innerContainer} > 
-            <div style={{ position: 'absolute', zIndex: 1000, width: '70%', height: '100%', pointerEvents: 'none',}}>
+            <div style={{ position: 'absolute', zIndex: 1000, width: '70%', height: '100%', pointerEvents: 'none' }}>
               <ThreeCanvas>
-              {currentItem.mediaType === 'mobile' ? (
-                <PointerTrackerGroup>
-                  <MobilePhoneModel 
-                      images={[currentItem.media[0]]} 
-                      position={[3, 4, 0]}
-                      rotation={[-0.5, -0.5, -0.4]}
+                {currentItem.mediaType === 'mobile' ? (
+                  <PointerTrackerGroup>
+                    <MobilePhoneModel 
+                        images={[currentItem.media[0]]} 
+                        position={[3, 4, 0]}
+                        rotation={[-0.5, -0.5, -0.4]}
+                      />
+                    <MobilePhoneModel 
+                      isSlideshow={true}
+                      images={currentItem.media.slice(1)}
+                      position={[1.4, 2, -0.5]}
+                      rotation={[-0.3, 0.5, 0.4]}
                     />
-                  <MobilePhoneModel 
-                    isSlideshow={true}
-                    images={currentItem.media.slice(1)}
-                    position={[1.4, 2, -0.5]}
-                    rotation={[-0.3, 0.5, 0.4]}
+                  </PointerTrackerGroup>
+                )  : (
+                  <ModelWithImageTexture
+                    texturePath={`/portfolio/projects/${currentItem.media[0]}`} 
+                    transparent={currentItem.title === 'XRD Domains' ? true : true}
                   />
-                </PointerTrackerGroup>
-              )  : (
-                <ModelWithImageTexture
-                  texturePath={`/portfolio/projects/${currentItem.media[0]}`} 
-                  transparent={currentItem.title === 'XRD Domains' ? true : true}
-                />
-              )}
-            </ThreeCanvas>
+                )}
+              </ThreeCanvas>
             </div>
           </div>
         </div>

@@ -7,7 +7,7 @@ import { Suspense } from 'react'
 export default function ThreeCanvas({ style, children }: { style?: React.CSSProperties, children: React.ReactNode }) {
     return (
         <Canvas gl={{ antialias: true }} dpr={[1, 1.5]} style={style} >
-            <ambientLight intensity={1} />
+            <ambientLight intensity={4} />
             <OrbitControls 
                 enablePan={false}
                 enableZoom={false}

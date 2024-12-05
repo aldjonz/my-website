@@ -43,7 +43,7 @@ const contentArray: ProjectContent[] = [
         type: 'Web',
         description: 'Transform your research into a living archive for all the family',
         techStack: ['React', 'Next.js', 'MUI', 'Cesium', 'Redux', 'Python', 'Django REST Framework', 'PostgreSQL', 'Docker', 'AWS', 'Jira', 'Figma'],
-        media: [],
+        media: ['wearexyz-logo.png'],
         mediaType: '',
         link: 'https://weare.xyz/'
     },
@@ -61,7 +61,7 @@ const contentArray: ProjectContent[] = [
         type: 'Web',
         description: '04postal is a fast growing fashion brand providing their customers with limited edition, high quality design items.',
         techStack: ['TypeScript', 'Next.js', 'Python', 'AWS Lambda', 'TensorFlow Lite', 'Computer Vision', 'Squarespace'],
-        media: ['https://04postal-id.vercel.app/'],
+        media: ['postal-logo.png'],
         mediaType: 'iframe',
         link: 'https://04postal.com/register'
     },
@@ -77,7 +77,7 @@ const contentArray: ProjectContent[] = [
 ]
 
 export const useProjectDisplay = () => {
-  const [currentIndex, setCurrentIndex] = useState<number | null>(1);
+  const [currentIndex, setCurrentIndex] = useState<number | null>(5);
 
   const selectIndex = (index: number) => {
     setCurrentIndex(index)
