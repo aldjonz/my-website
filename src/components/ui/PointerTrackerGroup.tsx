@@ -23,9 +23,12 @@ const PointerTrackerGroup = ({ children }: { children: React.ReactNode }) => {
         if (!meshRef.current) return
 
         // Calculate target position in 3D space
+        let posY = mouse.current.y * viewport.width / 24
+        if (posY < -0.2) posY = -0.2
+        
         target.current.set(
             mouse.current.x * viewport.width / 24,
-            mouse.current.y * viewport.width / 24,
+            posY,
             4      
         )
 

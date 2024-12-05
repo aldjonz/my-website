@@ -46,30 +46,7 @@ const PortfolioHTML = (props: Props) => {
     <>
         <div className={styles.blurBg} />
         <div className={styles.container}>
-          <div className={styles.innerContainer}> 
-            <ThreeCanvas>
-              {currentItem.mediaType === 'mobile' ? (
-                <PointerTrackerGroup>
-                  <MobilePhoneModel 
-                      images={[currentItem.media[0]]} 
-                      position={[3, 4, 0]}
-                      rotation={[-0.5, -0.5, -0.4]}
-                    />
-                  <MobilePhoneModel 
-                    isSlideshow={true}
-                    images={currentItem.media.slice(1)}
-                    position={[1.4, 2, -0.5]}
-                    rotation={[-0.3, 0.5, 0.4]}
-                  />
-                </PointerTrackerGroup>
-              )  : (
-                <ModelWithImageTexture
-                  texturePath={`/portfolio/projects/${currentItem.media[0]}`} 
-                  transparent={currentItem.title === 'XRD Domains' ? true : true}
-                />
-              )}
-            </ThreeCanvas>
-          </div>
+          
           <div className={styles.innerContainer}>
               <div className={styles.projectDisplay}>
                 <div className={styles.info}>
@@ -92,6 +69,32 @@ const PortfolioHTML = (props: Props) => {
                   View Project
                 </a>
               </div>
+          </div>
+          <div className={styles.innerContainer} > 
+            <div style={{ position: 'absolute', zIndex: 1000, width: '70%', height: '100%', pointerEvents: 'none',}}>
+              <ThreeCanvas>
+              {currentItem.mediaType === 'mobile' ? (
+                <PointerTrackerGroup>
+                  <MobilePhoneModel 
+                      images={[currentItem.media[0]]} 
+                      position={[3, 4, 0]}
+                      rotation={[-0.5, -0.5, -0.4]}
+                    />
+                  <MobilePhoneModel 
+                    isSlideshow={true}
+                    images={currentItem.media.slice(1)}
+                    position={[1.4, 2, -0.5]}
+                    rotation={[-0.3, 0.5, 0.4]}
+                  />
+                </PointerTrackerGroup>
+              )  : (
+                <ModelWithImageTexture
+                  texturePath={`/portfolio/projects/${currentItem.media[0]}`} 
+                  transparent={currentItem.title === 'XRD Domains' ? true : true}
+                />
+              )}
+            </ThreeCanvas>
+            </div>
           </div>
         </div>
     </>

@@ -2,6 +2,7 @@
     width: 100vw;
     height: 100vh;
     display: flex;
+    flex-direction: row-reverse;
     position: absolute;
     top: 0;
     left: 0;
@@ -18,10 +19,9 @@
 }
 
 .innerContainer {
-  /* position: absolute; */
   top: 0;
   right: 0;
-  width: 45vw;
+  width: 50vw;
   overflow: visible;
   height: 100vh;
   flex: 1;
@@ -30,18 +30,6 @@
   align-items: center;
   justify-content: center;
 }
-
-.imageContainer {
-    width: 45vw;
-    height: 100vh;
-    flex: 1;
-    background-color: red;
-    position: relative;
-}
-
-/* .image {
-  position: absolute;
-} */
 
 .blurBg {
   position: absolute;
