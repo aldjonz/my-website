@@ -107,6 +107,11 @@ const PortfolioHTML = ({ selectedProjectIndex, setSelectedProjectIndex }: Props)
             </>
           )}
         </div>
+        <div className={styles.projectNavigator}>
+          {Array.from({ length: 7 }, (_, index) => (
+            <div key={index} className={styles.projectNavigatorItem} style={{ backgroundColor: selectedProjectIndex === index ? '#631814' : 'rgba(255,255,255,0.7)' }} onClick={() => setSelectedProjectIndex(index)} />
+            ))}
+        </div>
     </>
   )
 }
