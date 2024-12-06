@@ -34,7 +34,7 @@ export default function Portfolio() {
                                 isExploded={isExploded}
                                 setIsExploded={setIsExploded}
                             />
-                            <CentralSphere />
+                            <CentralSphere imgPath='/portfolio/red-marble.jpg' />
                             <Projects 
                                 isExploded={isExploded}
                                 setSelectedProjectIndex={setSelectedProjectIndex}

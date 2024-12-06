@@ -4,7 +4,7 @@ import { useGLTF } from '@react-three/drei'
 import { useRef } from 'react'
 import { Group, Mesh, MeshPhysicalMaterial, TextureLoader } from 'three'
 
-export default function CentralSphere() {
+export default function CentralSphere({ imgPath }: { imgPath: string }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/portfolio/glass-sphere.glb')
 
@@ -12,7 +12,7 @@ export default function CentralSphere() {
     clonedScene.traverse((child) => {
          if (child instanceof Mesh) {
             const textureLoader = new TextureLoader()
-            const texture = textureLoader.load('/portfolio/red-marble.jpg')
+            const texture = textureLoader.load(imgPath)
             child.material = new MeshPhysicalMaterial({
                 roughness: 0,
                 transmission: 1, 
@@ -30,9 +30,9 @@ export default function CentralSphere() {
     if (!scene) return null
 
     return (
-        <group ref={group}>
+        <mesh ref={group}>
             <primitive object={clonedScene} />
-        </group>
+        </mesh>
     )
 }
 

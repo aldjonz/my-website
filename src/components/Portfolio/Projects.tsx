@@ -1,63 +1,109 @@
-import { useProjectDisplay } from '@/hooks/useProjectDisplay'
-import { Html } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import React, { useRef } from 'react'
-import { Group, Mesh, MeshStandardMaterial, Object3DEventMap, OctahedronGeometry, Vector3 } from 'three'
+import { Group, Mesh, MeshBasicMaterial, Vector3, Color, IcosahedronGeometry } from 'three'
 
 const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean, setSelectedProjectIndex: (index: number | null) => void }) => {
     const group = useRef<Group>(null)
     const scene = new Group()
+    const orbitRadius = 4
 
-    const { selectIndex } = useProjectDisplay()
-    const orbitRadiusCubes = 4
-    const cubes = Array.from({ length: 7 }, (_, index) => {
-        const cube = new Mesh(new OctahedronGeometry(0.5), new MeshStandardMaterial({ 
-            color: 0x008080,
-            transparent: true,
-            opacity: 0.8
-        }))
-        cube.visible = false
-        cube.userData.index = index
-        scene.add(cube)
+    const projectNodes = Array.from({ length: 7 }, (_, index) => {
+        const nodeGroup = new Group()
+        
+        const particleCount = 5
+        for (let i = 0; i < particleCount; i++) {
+            const particle = new Mesh(
+                new IcosahedronGeometry(0.05 + Math.random() * 0.1),
+                new MeshBasicMaterial({ 
+                    color: 0x00ffff,
+                    transparent: true,
+                    opacity: 0.8
+                })
+            )
+            
+            particle.position.set(
+                (Math.random() - 0.5) * 0.4,
+                (Math.random() - 0.5) * 0.4,
+                (Math.random() - 0.5) * 0.4
+            )
+            
+            nodeGroup.add(particle)
+        }
 
-        const phi = Math.acos(-1 + (2 * index) / 7)
-        const theta = Math.PI * (1 + Math.sqrt(5)) * index
+        nodeGroup.visible = false
+        nodeGroup.userData = {
+            index,
+            orbitPhi: Math.acos(-1 + (2 * index) / 7),
+            orbitTheta: Math.PI * (1 + Math.sqrt(5)) * index,
+            orbitSpeed: 0.05 + Math.random() * 0.3,
+            originalScale: nodeGroup.scale.clone()
+        }
 
-        cube.userData.orbitPhi = phi
-        cube.userData.orbitTheta = theta
-        cube.userData.orbitSpeed = 0.05 + Math.random() * 0.3
-
-        return cube
+        scene.add(nodeGroup)
+        return nodeGroup
     })
-
 
     useFrame((state) => {
-        cubes.forEach((cube) => {
+        projectNodes.forEach((node) => {
+            console.log(node)
             if (isExploded) {
-                cube.visible = true
-                cube.userData.orbitTheta += cube.userData.orbitSpeed * 0.01
+                node.userData.orbitTheta += node.userData.orbitSpeed * 0.01
 
-                const x = orbitRadiusCubes * Math.sin(cube.userData.orbitPhi) * Math.cos(cube.userData.orbitTheta)
-                const y = orbitRadiusCubes * Math.sin(cube.userData.orbitPhi) * Math.sin(cube.userData.orbitTheta)
-                const z = orbitRadiusCubes * Math.cos(cube.userData.orbitPhi)
+                const x = orbitRadius * Math.sin(node.userData.orbitPhi) * Math.cos(node.userData.orbitTheta)
+                const y = orbitRadius * Math.sin(node.userData.orbitPhi) * Math.sin(node.userData.orbitTheta)
+                const z = orbitRadius * Math.cos(node.userData.orbitPhi)
 
                 const targetPos = new Vector3(x, y, z)
-                cube.position.lerp(targetPos, 0.03)
-
-                cube.lookAt(0, 0, 0)
-                cube.rotateY(Math.PI)
+                node.position.lerp(targetPos, 0.03)
+                node.lookAt(0, 0, 0)
+                node.visible = true
+                
             }
+            
+            node.children.forEach(particle => {
+                if (particle instanceof Mesh) {
+
+                    const material = particle.material as MeshBasicMaterial
+                    
+                    const targetScale = node.userData.isHovered ? 1.3 : 1
+                    node.scale.lerp(node.userData.originalScale.clone().multiplyScalar(targetScale), 0.1)
+
+                    const targetColor = node.userData.isHovered ? 0x631814 : 0x00ffff
+                    material.color.lerp(new Color(targetColor), 0.3)
+
+                }
+            })
         })
     })
+
+    const onPointerEnter = (e: PointerEvent) => {
+        const parent = e.object.parent
+        parent.userData.isHovered = true
+        document.body.style.cursor =  'pointer'
+
+    }
+
+    const onPointerLeave = (e: PointerEvent) => {
+        const parent = e.object.parent
+        parent.userData.isHovered = false
+        document.body.style.cursor =  'default'
+    }
 
   return (
     <group 
         ref={group} 
+        onPointerEnter={onPointerEnter}
+        onPointerLeave={onPointerLeave}
         onClick={(e) => {
             e.stopPropagation()
-            setSelectedProjectIndex(e.object.userData.index)
-    }}>
-        <primitive object={scene} />
+            setSelectedProjectIndex(e.object.parent.userData.index)
+            console.log(e.object)
+        }}
+        style={{ cursor: 'pointer' }}
+    >
+        {scene.children.map((child) => (
+            <primitive key={child.uuid} object={child} />
+        ))}
     </group>
   )
 }
