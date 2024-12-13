@@ -47,7 +47,7 @@ const Expertise = () => {
                 </div>
 
             </div>
-            <ExpertiseHTML isLeft={isLeft} />
+            <ExpertiseHTML isLeft={isLeft} isExploded={isExploded} />
         </div>
     </>
   )

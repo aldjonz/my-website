@@ -18,7 +18,7 @@ const expertiseText = [
     },
 ]
 
-const ExpertiseHTML = ({ isLeft }: { isLeft: boolean }) => {
+const ExpertiseHTML = ({ isLeft, isExploded }: { isLeft: boolean, isExploded: boolean }) => {
 
     console.log(isLeft)
   return (
@@ -30,13 +30,12 @@ const ExpertiseHTML = ({ isLeft }: { isLeft: boolean }) => {
           width: '50vw', 
           height: `${expertiseText.length * 100}vh`, 
           opacity: isLeft ? 0 : 1, 
-          pointerEvents: isLeft ? 'none' : 'auto',
+          pointerEvents: !isExploded || isLeft ? 'none' : 'auto',
           transition: 'opacity 0.5s ease-in-out',
-          backgroundColor: 'red',
           
       }}>
           {isLeft && expertiseText.map((item, index) => (
-            <div key={index} style={{ height: '100vh' }}>   
+            <div key={index} style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>   
                 <p>{item.title}</p>
             </div>
           ))}
@@ -48,12 +47,11 @@ const ExpertiseHTML = ({ isLeft }: { isLeft: boolean }) => {
           width: '50vw', 
           height: `${expertiseText.length * 100}vh`, 
           opacity: isLeft ? 1 : 0,
-          pointerEvents: isLeft ? 'auto' : 'none',
+          pointerEvents: !isExploded || !isLeft ? 'none' : 'auto',
           transition: 'opacity 0.5s ease-in-out', 
-          backgroundColor: 'blue',
       }}>
           {!isLeft && expertiseText.map((item, index) => (
-            <div key={index} style={{ height: '100vh' }}>
+            <div key={index} style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <p>{item.title}</p>
             </div>  
           ))}
