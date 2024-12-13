@@ -11,9 +11,10 @@ const Expertise = () => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const handleScroll = () => {
-    // if (scrollY % 300 === 0)
-    console.log(containerRef.current?.scrollTop)
-    setIsLeft(containerRef.current?.scrollTop % window.innerHeight * 2 < window.innerHeight)
+    const scrollPosition = containerRef.current?.scrollTop || 0
+    const fraction = scrollPosition / window.innerHeight;
+    console.log(Math.floor(fraction) % 2 !== 0)
+    setIsLeft(Math.floor(fraction) % 2 === 0)
   }
 
   useEffect(() => {
@@ -40,14 +41,19 @@ const Expertise = () => {
                         /> */}
                         <Suspense fallback={null}>
                             <Center>
-                                <Title isExploded={isExploded} setIsExploded={setIsExploded} isLeft={isLeft} />
+                                <Title 
+                                    isExploded={isExploded} 
+                                    setIsExploded={setIsExploded} 
+                                    isLeft={isLeft}
+                                    shapeIndex={Math.floor(containerRef.current?.scrollTop / window.innerHeight)}
+                                />
                             </Center>
                         </Suspense>
                     </Canvas>
                 </div>
 
             </div>
-            <ExpertiseHTML isLeft={isLeft} isExploded={isExploded} />
+            <ExpertiseHTML isLeft={isLeft} isExploded={isExploded}  />
         </div>
     </>
   )

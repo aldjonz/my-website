@@ -7,11 +7,11 @@ import { useRef, useState, useEffect } from 'react'
 import { Group, Mesh, Vector3 } from 'three'
 import { useSpring, animated } from '@react-spring/three'
 
-export default function Title({ isExploded, setIsExploded, isLeft }: { isExploded: boolean, setIsExploded: (value: boolean) => void, isLeft: boolean }) {
+export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex }: { isExploded: boolean, setIsExploded: (value: boolean) => void, isLeft: boolean, shapeIndex: number }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/Expertise/expertise.glb')
     const [scrollPosition, setScrollPosition] = useState(0)
-    const [shapeIndex, setShapeIndex] = useState(-1);
+
 
     const allCells = scene.children
         .filter(child => child.name.includes('Text_cell'))
@@ -33,7 +33,9 @@ export default function Title({ isExploded, setIsExploded, isLeft }: { isExplode
 
     // Update shape index on isLeft change
     useEffect(() => {
-        setShapeIndex((prevIndex) => (prevIndex + 1) % 4);
+        if (group.current) {
+            group.current.rotation.y = 0
+        }
     }, [isLeft]);
 
     console.log(shapeIndex)
@@ -44,7 +46,7 @@ export default function Title({ isExploded, setIsExploded, isLeft }: { isExplode
     
             // Apply slow rotation to the entire group
             if (group.current && shapeIndex !== 2) {
-                group.current.rotation.y += 0.001; // Adjust rotation speed as needed
+                group.current.rotation.y += 0.0003; // Adjust rotation speed as needed
             }
     
                 const camera = state.camera
@@ -63,14 +65,7 @@ export default function Title({ isExploded, setIsExploded, isLeft }: { isExplode
                                 const y = Math.floor(index / side) - side / 2;
                                 targetPos = new Vector3(x, y, 0);
                                 break;
-                            case 1: // Cube
-                                const cubeSide = Math.cbrt(allCells.length);
-                                const cx = (index % cubeSide) - cubeSide / 2;
-                                const cy = (Math.floor(index / cubeSide) % cubeSide) - cubeSide / 2;
-                                const cz = Math.floor(index / (cubeSide * cubeSide)) - cubeSide / 2;
-                                targetPos = new Vector3(cx, cy, cz);
-                                break;
-                            case 2: // Spiral
+                            case 1: // Spiral
                                 const spiralAngle = index * 0.1;
                                 const spiralRadius = 0.5 + index * 0.05;
                                 targetPos = new Vector3(
@@ -79,11 +74,33 @@ export default function Title({ isExploded, setIsExploded, isLeft }: { isExplode
                                     -index * 0.1
                                 );
                                 break;
-                            case 3: // Pyramid
-                                const pyramidHeight = Math.floor(Math.sqrt(index));
-                                const pyramidX = (index % (pyramidHeight + 1)) - pyramidHeight / 2;
-                                const pyramidY = pyramidHeight - index / (pyramidHeight + 1);
-                                targetPos = new Vector3(pyramidX, pyramidY, pyramidHeight / 2);
+                            case 2: // Cube
+                                const cubeSide = Math.cbrt(allCells.length);
+                                const cx = (index % cubeSide) - cubeSide / 2;
+                                const cy = (Math.floor(index / cubeSide) % cubeSide) - cubeSide / 2;
+                                const cz = (Math.floor(index / (cubeSide * cubeSide)) - cubeSide / 2) - 3;
+                                targetPos = new Vector3(cx, cy, cz);
+                                break;
+         
+                            case 3: // Cylinder
+                                const angle = (index / allCells.length) * Math.PI * 2;
+                                const radius = 2;
+                                targetPos = new Vector3(
+                                    Math.cos(angle) * radius,
+                                    (index % 10) - 5, // Adjust height as needed
+                                    (Math.sin(angle) * radius) - 3
+                                );
+                                break;
+                            case 4: // Zigzag Cone
+                                const coneHeight = 5;
+                                const coneRadius = (coneHeight - (index % coneHeight)) * 0.5;
+                                const coneAngle = (index / allCells.length) * Math.PI * 2;
+                                const zigzagFactor = Math.sin(index * 0.5) * 0.5; // Adjust zigzag frequency and amplitude
+                                targetPos = new Vector3(
+                                    Math.cos(coneAngle) * (coneRadius + zigzagFactor),
+                                    (index % coneHeight) - coneHeight / 2,
+                                    (Math.sin(coneAngle) * (coneRadius + zigzagFactor) - 3)
+                                );
                                 break;
                             default:
                                 targetPos = new Vector3(0, 0, 0);
