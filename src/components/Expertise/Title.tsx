@@ -92,14 +92,12 @@ export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex }:
                                 );
                                 break;
                             case 4: // Zigzag Cone
-                                const coneHeight = 5;
-                                const coneRadius = (coneHeight - (index % coneHeight)) * 0.5;
-                                const coneAngle = (index / allCells.length) * Math.PI * 2;
-                                const zigzagFactor = Math.sin(index * 0.5) * 0.5; // Adjust zigzag frequency and amplitude
+                                const coneAngle = index * -0.02;
+                                const coneRadius = 0.5 + index * 0.05;
                                 targetPos = new Vector3(
-                                    Math.cos(coneAngle) * (coneRadius + zigzagFactor),
-                                    (index % coneHeight) - coneHeight / 2,
-                                    (Math.sin(coneAngle) * (coneRadius + zigzagFactor) - 3)
+                                    Math.cos(coneAngle) * coneRadius,
+                                    Math.sin(coneAngle) * coneRadius,
+                                    -index * 0.05
                                 );
                                 break;
                             default:

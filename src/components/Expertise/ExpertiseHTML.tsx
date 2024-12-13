@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
+import styles from './Expertise.module.css'
 
 const expertiseText = [
     {
         title: 'Frontend Development',
-        skills: ['TypeScript', 'React', 'React Native', 'Next JS', 'Redux', 'MUI', 'Tailwind', 'Jest']
+        skills: ['HTML', 'CSS', 'TypeScript', 'React', 'React Native', 'Next JS', 'Redux', 'MUI', 'Tailwind', 'Jest', 'Figma', 'Blender', 'Three JS']
     },
     {
         title: 'Backend Development',
@@ -23,59 +24,55 @@ const expertiseText = [
     },
 ]
 
-const ExpertiseHTML = ({ isLeft, isExploded }: { isLeft: boolean, isExploded: boolean }) => {
 
-    console.log(isLeft)
+const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: boolean, position: string}) => {  
+    let opacity:number = 0;
+    let shouldShow:boolean = false;
+    let titleStyles = {}
+    let border = {}
+    if (position === 'left') {
+        opacity = !isLeft ? 1 : 0;
+        shouldShow = Boolean(textIndex) && textIndex % 2 !== 0;
+        titleStyles = {
+            marginLeft: 'auto',
+            paddingLeft: 60
+        }
+        border = { borderRight: '1px solid black' }
+    } else {
+        opacity = isLeft ? 1 : 0;
+        shouldShow = Boolean(textIndex) && textIndex % 2 === 0 || textIndex === 0;
+        titleStyles = {
+            marginRight: 'auto',
+            paddingRight: 60
+        }
+        border = { borderLeft: '1px solid black' }
+    }
+    
+    return (
+    <div className={styles.sectionContainer} style={{ opacity: opacity, right: position === 'left' ? 'auto' : 0 }}>
+        <div className={styles.section}>
+            {shouldShow ? (
+                <div className={styles.textContainer} style={{ ...border,  }}>
+                    <h1 className={`accent ${styles.title}`} style={{ ...titleStyles }}>{expertiseText[textIndex].title}</h1>
+                    <div className={styles.skillsContainer} style={{ justifyContent: position === 'left' ? 'right' : 'left' }}>
+                        {expertiseText[textIndex].skills.map((skill, index) => (
+                            <h2 key={index}>{skill} {index !== expertiseText[textIndex].skills.length - 1 && '|'}</h2>
+                        ))}
+                    </div>
+                </div>
+            ) :<></>}
+        </div>  
+    </div>
+)}
+
+const ExpertiseHTML = ({ isLeft, isExploded, textIndex = 0 }: { isLeft: boolean, isExploded: boolean, textIndex: number }) => {
+
+    console.log(textIndex && textIndex % 2 === 0)
   return (
-    <>
-      <div style={{ 
-          position: 'absolute', 
-          top: 0, 
-          left: 0,
-          width: '50vw', 
-          height: `${expertiseText.length * 100}vh`, 
-          opacity: !isLeft ? 1 : 0,
-          pointerEvents: isExploded ? 'auto' : 'none',
-          transition: 'opacity 0.5s ease-in-out',
-          
-      }}>
-          {expertiseText.map((item, index) => (
-            <div key={index} style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid green', padding: 60 }}>   
-                {index % 2 !== 0 ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                        <h1>{item.title}</h1>
-                        {item.skills.map((skill, index) => (
-                            <h2 key={index}>{skill}</h2>
-                        ))}
-                    </div>
-                ) :<></>}
-            </div>
-          ))}
-      </div>
-      <div style={{ 
-          position: 'absolute', 
-          top: 0, 
-          left: '50vw',
-          width: '50vw', 
-          height: `${expertiseText.length * 100}vh`, 
-          opacity: isLeft ? 1 : 0,
-          pointerEvents: isExploded ? 'auto' : 'none',
-          transition: 'opacity 0.5s ease-in-out', 
-      }}>
-          {expertiseText.map((item, index) => (
-            <div key={index} style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid green', padding: 60 }}>
-                {index % 2 === 0 ? (
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-                        <h1>{item.title}</h1>
-                        {item.skills.map((skill, index) => (
-                            <h2 key={index}>{skill}</h2>
-                        ))}
-                    </div>
-                ) :<></>}
-            </div>  
-          ))}
-      </div>
-    </>
+    <div style={{ position: 'absolute', height: `${expertiseText.length * 100}vh`, width: '100vw', pointerEvents: isExploded ? 'auto' : 'none'   }}>
+        <Section textIndex={textIndex} isLeft={isLeft} position='left'/>
+        <Section textIndex={textIndex} isLeft={isLeft} position='right'/>
+    </div>
   )
 }
 
