@@ -55,49 +55,51 @@ export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex }:
         
                 allCells.forEach((cell, index) => {
                     if (isExploded) {
-                        const offset = scrollPosition * 0.001;
+                        const offset = scrollPosition * 0.01;
                         let targetPos;
         
                         switch (shapeIndex) {
-                            case 0: // Square
+                            case 0: 
                                 const side = Math.ceil(Math.sqrt(allCells.length));
                                 const x = (index % side) - side / 2;
                                 const y = Math.floor(index / side) - side / 2;
                                 targetPos = new Vector3(x, y, 0);
                                 break;
-                            case 1: // Spiral
-                                const spiralAngle = index * 0.1;
-                                const spiralRadius = 0.5 + index * 0.05;
-                                targetPos = new Vector3(
-                                    Math.cos(spiralAngle) * spiralRadius,
-                                    Math.sin(spiralAngle) * spiralRadius,
-                                    -index * 0.1
-                                );
-                                break;
-                            case 2: // Cube
+                            case 1:
                                 const cubeSide = Math.cbrt(allCells.length);
                                 const cx = (index % cubeSide) - cubeSide / 2;
                                 const cy = (Math.floor(index / cubeSide) % cubeSide) - cubeSide / 2;
                                 const cz = (Math.floor(index / (cubeSide * cubeSide)) - cubeSide / 2) - 3;
                                 targetPos = new Vector3(cx, cy, cz);
-                                break;
-         
-                            case 3: // Cylinder
-                                const angle = (index / allCells.length) * Math.PI * 2;
-                                const radius = 2;
+                                break;    
+                            case 2: 
+                                const torusRadius = 4;
+                                const tubeRadius = 1;
+                                const torusAngle = (index / allCells.length) * Math.PI * 2;
+                                const tubeAngle = (index % 10) * Math.PI * 2 / 20;
                                 targetPos = new Vector3(
-                                    Math.cos(angle) * radius,
-                                    (index % 10) - 5, // Adjust height as needed
-                                    (Math.sin(angle) * radius) - 3
+                                    tubeRadius * Math.cos(tubeAngle),
+                                    (torusRadius + tubeRadius * Math.cos(tubeAngle)) * Math.sin(torusAngle),
+                                    (torusRadius + tubeRadius * Math.cos(tubeAngle)) * Math.cos(torusAngle) - 4
+                                );
+                                break;    
+                            case 3: 
+                                const sphereRadius = 2; // Adjust the radius of the sphere as needed
+                                const phi = Math.acos(-1 + (2 * index) / allCells.length);
+                                const theta = Math.sqrt(allCells.length * Math.PI) * phi;
+                                targetPos = new Vector3(
+                                    sphereRadius * Math.sin(phi) * Math.cos(theta),
+                                    sphereRadius * Math.sin(phi) * Math.sin(theta),
+                                    sphereRadius * Math.cos(phi)
                                 );
                                 break;
-                            case 4: // Zigzag Cone
-                                const coneAngle = index * -0.02;
-                                const coneRadius = 0.5 + index * 0.05;
+                            case 4: 
+                                const spiralAngle = index * 0.1;
+                                const spiralRadius = 0.5 + index * 0.05;
                                 targetPos = new Vector3(
-                                    Math.cos(coneAngle) * coneRadius,
-                                    Math.sin(coneAngle) * coneRadius,
-                                    -index * 0.05
+                                    Math.cos(spiralAngle) * spiralRadius - 2,
+                                    Math.sin(spiralAngle) * spiralRadius,
+                                    -index * 0.1
                                 );
                                 break;
                             default:
