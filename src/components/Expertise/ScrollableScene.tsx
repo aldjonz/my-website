@@ -11,80 +11,37 @@ const ScrollableScene = () => {
     renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current?.appendChild(renderer.domElement);
 
-    // Function to create text sprite
-    const createTextSprite = (message: string, color: string) => {
-      const canvas = document.createElement('canvas');
-      const context = canvas.getContext('2d');
-      context!.font = 'Bold 24px Arial';
-      context!.fillStyle = color;
-      context!.fillText(message, 0, 24);
+    // Create base geometry (e.g., a box)
+    const baseGeometry = new THREE.BoxGeometry(1, 1, 1);
 
-      const texture = new THREE.CanvasTexture(canvas);
-      const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-      const sprite = new THREE.Sprite(spriteMaterial);
-      sprite.scale.set(2, 1, 1); // Adjust the scale as needed
-      return sprite;
-    };
+    // Create target geometry (e.g., a sphere)
+    const sphereGeometry = new THREE.SphereGeometry(0.75, 32, 32);
 
-    // Create skill panes with text
-    const createPane = (color: string, positionZ: number, text: string) => {
-      const geometry = new THREE.BoxGeometry(1, 1, 1);
-      const material = new THREE.MeshBasicMaterial({ color });
+    // Add sphere geometry as a morph target
+    baseGeometry.morphAttributes.position = [sphereGeometry.attributes.position];
 
-      // Create two halves of the cube
-      const leftHalf = new THREE.Mesh(geometry, material);
-      const rightHalf = new THREE.Mesh(geometry, material);
+    // Create a mesh with morph targets
+    const material = new THREE.MeshBasicMaterial({ color: 'blue', wireframe: true });
+    const morphMesh = new THREE.Mesh(baseGeometry, material);
+    scene.add(morphMesh);
 
-      // Position the halves
-      leftHalf.position.set(-0.5, 0, positionZ);
-      rightHalf.position.set(0.5, 0, positionZ);
-
-      scene.add(leftHalf);
-      scene.add(rightHalf);
-
-      const textSprite = createTextSprite(text, 'white');
-      textSprite.position.set(0, 0.6, positionZ); // Position text above the cube
-      scene.add(textSprite);
-
-      return { leftHalf, rightHalf };
-    };
-
-    // Add skill panes with text
-    const panes = [
-      createPane('red', -2, 'Frontend Skills'),
-      createPane('green', -6, 'Backend Skills'),
-      createPane('blue', -10, 'AI Skills'),
-      createPane('yellow', -14, 'DevOps Skills'),
-      createPane('purple', -18, 'Human Languages Skills'),
-    ];
-
-    camera.position.z = 0;
+    camera.position.z = 5;
 
     const animate = () => {
       requestAnimationFrame(animate);
-
-      // Check camera position and animate cube halves
-      panes.forEach(({ leftHalf, rightHalf }) => {
-        const distance = Math.abs(camera.position.z - leftHalf.position.z);
-        if (distance < 1.5) {
-          // Open the cube halves
-          leftHalf.position.x = THREE.MathUtils.lerp(leftHalf.position.x, -1.5, 0.05);
-          rightHalf.position.x = THREE.MathUtils.lerp(rightHalf.position.x, 1.5, 0.05);
-        } else {
-          // Close the cube halves
-          leftHalf.position.x = THREE.MathUtils.lerp(leftHalf.position.x, -0.5, 0.05);
-          rightHalf.position.x = THREE.MathUtils.lerp(rightHalf.position.x, 0.5, 0.05);
-        }
-      });
-
       renderer.render(scene, camera);
     };
 
     animate();
 
-    // Handle scroll to move camera
+    // Handle scroll to morph shapes
     const handleScroll = (event: WheelEvent) => {
-      camera.position.z += -event.deltaY * 0.01; // Adjust the multiplier for sensitivity
+      // Adjust morph target influence based on scroll
+      morphMesh.morphTargetInfluences![0] = THREE.MathUtils.clamp(
+        morphMesh.morphTargetInfluences![0] + event.deltaY * 0.001,
+        0,
+        1
+      );
     };
 
     window.addEventListener('wheel', handleScroll);
@@ -96,7 +53,12 @@ const ScrollableScene = () => {
     };
   }, []);
 
-  return <div ref={mountRef} />;
+  return (
+    <div>
+      <div ref={mountRef} />
+      <div style={{ backgroundColor: 'red', height: '10vh', width: '15vw', position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }}></div>
+    </div>
+  );
 };
 
 export default ScrollableScene;
