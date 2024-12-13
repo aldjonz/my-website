@@ -24,7 +24,7 @@ const Expertise = dynamic(
 export default function Home() {
   return (
     <div>
-      {/* <TopographySvg /> */}
+      <TopographySvg />
       <Expertise />
       {/* <Portfolio /> */}
     </div>

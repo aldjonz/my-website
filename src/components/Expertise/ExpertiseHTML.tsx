@@ -35,17 +35,15 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
         shouldShow = Boolean(textIndex) && textIndex % 2 !== 0;
         titleStyles = {
             marginLeft: 'auto',
-            paddingLeft: 60
         }
-        border = { borderRight: '1px solid black' }
+        border = { borderRight: '1px solid white' }
     } else {
         opacity = isLeft ? 1 : 0;
         shouldShow = Boolean(textIndex) && textIndex % 2 === 0 || textIndex === 0;
         titleStyles = {
             marginRight: 'auto',
-            paddingRight: 60
         }
-        border = { borderLeft: '1px solid black' }
+        border = { borderLeft: '1px solid white' }
     }
     
     return (
@@ -53,7 +51,7 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
         <div className={styles.section}>
             {shouldShow ? (
                 <div className={styles.textContainer} style={{ ...border,  }}>
-                    <h1 className={`accent ${styles.title}`} style={{ ...titleStyles }}>{expertiseText[textIndex].title}</h1>
+                    <h1 className={`accent ${styles.title}`} style={{ ...titleStyles, }}>{expertiseText[textIndex].title}</h1>
                     <div className={styles.skillsContainer} style={{ justifyContent: position === 'left' ? 'right' : 'left' }}>
                         {expertiseText[textIndex].skills.map((skill, index) => (
                             <h2 key={index}>{skill} {index !== expertiseText[textIndex].skills.length - 1 && '|'}</h2>
