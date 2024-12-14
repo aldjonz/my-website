@@ -11,6 +11,7 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/about/about.glb')
     const [scrollPosition, setScrollPosition] = useState(0)
+    const [lastScrollDirection, setLastScrollDirection] = useState(0)
 
     const allCells = scene.children
         .filter(child => child.name.includes('Text_cell'))
@@ -20,7 +21,14 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
         });
 
     const handleScroll = () => {
-        setScrollPosition(window.scrollY)
+        const currentScrollPosition = window.scrollY
+        if (currentScrollPosition > scrollPosition) {
+            setLastScrollDirection(1) 
+        } else if (currentScrollPosition < scrollPosition) {
+            setLastScrollDirection(-1) 
+        }
+        setScrollPosition(currentScrollPosition)
+
     }
 
     useFrame((state) => {
@@ -34,9 +42,12 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
                 const y = Math.cos(offset + index) * 2
                 const targetPos = new Vector3(x, y, 0)
                 cell.position.lerp(targetPos, 0.03)
-
-            } 
+            }
         })
+
+        if (isExploded && group.current) {
+            group.current.rotation.z += lastScrollDirection * 0.002
+        }
     })
 
     useEffect(() => {
@@ -51,7 +62,7 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
             ref={group}
             onClick={(e) => {
                 e.stopPropagation()
-                setIsExploded(!isExploded) // Toggle the exploded state
+                setIsExploded(!isExploded)
             }}
         >
             <AnimatedTextWrapper scene={scene}>
