@@ -3,6 +3,7 @@
 import styles from "./page.module.css";
 import dynamic from "next/dynamic";
 import TopographySvg from '@/components/TopographySvg/TopographySvg'
+import About from "@/components/About";
 
 
 const Portfolio = dynamic(
@@ -25,8 +26,9 @@ export default function Home() {
   return (
     <div>
       <TopographySvg />
-      <Expertise />
+      {/* <Expertise /> */}
       {/* <Portfolio /> */}
+      <About />
     </div>
   );
 }
