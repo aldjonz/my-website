@@ -16,7 +16,7 @@ const expertiseText = [
     },
     {
         title: 'AI & ML',
-        skills: ['Python', 'TensorFlow', 'TensorFlow Lite', 'PyTorch', 'OpenCV', 'Pandas', 'Numpy', 'Computer Vision (Depth-Anything-V2, YOLO)', 'ChatGPT Integration']
+        skills: ['Python', 'TensorFlow', 'TensorFlow Lite', 'PyTorch',  'ChatGPT Integration', 'OpenCV', 'Pandas', 'Numpy', 'Computer Vision (Depth-Anything-V2, YOLO)']
     },
     {
         title: 'Non-Computer (human) Languages',
@@ -32,7 +32,7 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
     let border = {}
     if (position === 'left') {
         opacity = !isLeft ? 1 : 0;
-        shouldShow = Boolean(textIndex) && textIndex % 2 !== 0;
+        shouldShow = textIndex > -1 && textIndex % 2 !== 0;
         titleStyles = {
             marginLeft: 'auto',
         }
@@ -50,7 +50,7 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
     <div className={styles.sectionContainer} style={{ opacity: opacity, right: position === 'left' ? 'auto' : 0 }}>
         <div className={styles.section}>
             {shouldShow ? (
-                <div className={styles.textContainer} style={{ ...border,  }}>
+                <div className={styles.textContainer} style={{ ...border  }}>
                     <h1 className={`accent ${styles.title}`} style={{ ...titleStyles, }}>{expertiseText[textIndex].title}</h1>
                     <div className={styles.skillsContainer} style={{ justifyContent: position === 'left' ? 'right' : 'left' }}>
                         {expertiseText[textIndex].skills.map((skill, index) => (
@@ -65,7 +65,6 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
 
 const ExpertiseHTML = ({ isLeft, isExploded, textIndex = 0 }: { isLeft: boolean, isExploded: boolean, textIndex: number }) => {
 
-    console.log(textIndex && textIndex % 2 === 0)
   return (
     <div style={{ position: 'absolute', height: `${expertiseText.length * 100}vh`, width: '100vw', pointerEvents: isExploded ? 'auto' : 'none'   }}>
         <Section textIndex={textIndex} isLeft={isLeft} position='left'/>

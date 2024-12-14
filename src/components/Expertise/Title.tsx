@@ -20,33 +20,28 @@ export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex }:
             return mesh;
         });
 
-    // Update scroll position
     const handleScroll = () => {
         setScrollPosition(window.scrollY)
     }
 
-    // Use react-spring to animate the camera position
     const { cameraX } = useSpring({
         cameraX: isLeft ? 4 : -4,
         config: { mass: 1, tension: 170, friction: 100 },
     })
 
-    // Update shape index on isLeft change
     useEffect(() => {
         if (group.current) {
             group.current.rotation.y = 0
         }
     }, [isLeft]);
 
-    console.log(shapeIndex)
     useFrame((state) => {
         if (isExploded) {
 
             const time = state.clock.getElapsedTime();
     
-            // Apply slow rotation to the entire group
             if (group.current && shapeIndex !== 2) {
-                group.current.rotation.y += 0.0003; // Adjust rotation speed as needed
+                group.current.rotation.y += 0.0003; 
             }
     
                 const camera = state.camera
@@ -84,7 +79,7 @@ export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex }:
                                 );
                                 break;    
                             case 3: 
-                                const sphereRadius = 2; // Adjust the radius of the sphere as needed
+                                const sphereRadius = 2;
                                 const phi = Math.acos(-1 + (2 * index) / allCells.length);
                                 const theta = Math.sqrt(allCells.length * Math.PI) * phi;
                                 targetPos = new Vector3(
@@ -106,8 +101,7 @@ export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex }:
                                 targetPos = new Vector3(0, 0, 0);
                         }
         
-                        // Add floating effect
-                        const floatOffset = Math.sin(time + index) * 0.1; // Adjust amplitude as needed
+                        const floatOffset = Math.sin(time + index) * 0.1; 
                         targetPos.y += floatOffset;
         
                     cell.position.lerp(targetPos, 0.03);
@@ -116,7 +110,6 @@ export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex }:
         }
     })
 
-    // Add scroll event listener
     useEffect(() => {
         window.addEventListener('scroll', handleScroll)
         return () => window.removeEventListener('scroll', handleScroll)
@@ -129,7 +122,7 @@ export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex }:
             ref={group}
             onClick={(e) => {
                 e.stopPropagation()
-                setIsExploded(!isExploded) // Toggle the exploded state
+                setIsExploded(!isExploded)
             }}
         >
             <AnimatedTextWrapper scene={scene}>

@@ -1,5 +1,4 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react'
-import ScrollableScene from './ScrollableScene'
 import { Center } from '@react-three/drei'
 import { Canvas } from '@react-three/fiber'
 import Title from './Title'
@@ -13,7 +12,6 @@ const Expertise = () => {
   const handleScroll = () => {
     const scrollPosition = containerRef.current?.scrollTop || 0
     const fraction = scrollPosition / window.innerHeight;
-    console.log(Math.floor(fraction) % 2 !== 0)
     setIsLeft(Math.floor(fraction) % 2 === 0)
   }
 
