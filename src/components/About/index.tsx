@@ -4,6 +4,7 @@ import { Canvas } from '@react-three/fiber'
 import { Suspense, useState } from 'react'
 import { Center, OrbitControls, Plane } from '@react-three/drei'
 import dynamic from 'next/dynamic'
+import AboutHTML from './AboutHTML'
 
 const Title = dynamic(() => import('./Title'), { ssr: false })
 
@@ -13,18 +14,18 @@ export default function About() {
 
     return (
         <>
-            <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', marginTop: '0', backgroundColor: '#000000' }}>
+            <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', marginTop: '0', position: 'fixed', top: 0, left: 0, zIndex: 1000 }}>
                 <Canvas gl={{ antialias: true }} dpr={[1, 1.5]} style={{ position: 'absolute', top: 0, left: 0, }}>
                     <ambientLight intensity={4} />
                     <directionalLight position={[0, 0, 5]} intensity={4} />
                     <directionalLight position={[-5, 0, 0]} intensity={4} />
-                    <OrbitControls 
+                    {/* <OrbitControls 
                         enablePan={true}
                         enableZoom={true}
                         enableRotate={true}
                         panSpeed={0.5}
                         rotateSpeed={0.5}
-                    />
+                    /> */}
                     <Suspense fallback={null}>
                         <Center>
                             <Title 
@@ -35,10 +36,7 @@ export default function About() {
                     </Suspense>
                 </Canvas>
             </div>
-            {/* <PortfolioHTML 
-                selectedProjectIndex={selectedProjectIndex}
-                setSelectedProjectIndex={setSelectedProjectIndex}
-            /> */}
+            <AboutHTML textIndex={0} isExploded={isExploded} />
         </>
     )
 }
