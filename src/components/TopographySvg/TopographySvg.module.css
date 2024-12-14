@@ -3,10 +3,14 @@
     height: auto;
     display: block;
     max-width: 100vw;
+    background-color: #000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
 }
 
 .svg path { 
-    transform: translateZ(0);
     will-change: stroke;
     pointer-events: stroke;
     stroke-width: 6;

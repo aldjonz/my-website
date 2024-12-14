@@ -13,11 +13,20 @@ const Portfolio = dynamic(
   }
 )
 
+const Expertise = dynamic(
+  () => import('@/components/Expertise/index'),
+  { 
+    ssr: false,
+    loading: () => <div>Loading...</div>
+  }
+)
+
 export default function Home() {
   return (
     <div>
       <TopographySvg />
-      <Portfolio />
+      <Expertise />
+      {/* <Portfolio /> */}
     </div>
   );
 }
