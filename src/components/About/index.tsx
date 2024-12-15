@@ -29,7 +29,7 @@ export default function About() {
                     </Suspense>
                 </Canvas>
             </div>
-            <AboutHTML textIndex={0} isExploded={isExploded} />
+            <AboutHTML isExploded={isExploded} />
         </>
     )
 }

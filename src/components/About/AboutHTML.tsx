@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from './About.module.css'
 
 const aboutText = [
-    ["I'm Aled, web and mobile app developer and designer"],
     [
         "During the COVID-19 lockdown, I seized the opportunity to teach myself programming.",
         "In just 9 months, I transformed from a complete beginner to a professional developer, driven by curiosity and perseverance."
@@ -37,19 +36,30 @@ const AboutHTML = ({ isExploded, }: { isExploded: boolean }) => {
 
   return (
     <div className={styles.aboutContainer} style={{ pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0 }}>
-        {aboutText.map((text, index) => (
-            <div key={index} className={styles.textContainer}>
-                {text.map((line, idx) => (
+        {isExploded && (
+            <>
+                <div className={styles.textContainer}>
                     <p 
-                        key={idx} 
-                        className={styles.text + ' ' + (index === textIndex ? styles.visible + ' ' + (line === "Let's talk." ? styles.slideIn : '') : '')}
-                        style={{ transitionDelay: `${idx * 0.7}s` }}
+                        className={styles.text + ' ' + styles.introText + ' ' + (textIndex === 0 ? styles.visible : '')}
                     >
-                        {line}
+                        <span>I'm Aled</span><span  className={styles.secondHalf}>, web and mobile app developer and designer</span>
                     </p>
+                </div>
+                {aboutText.map((text, index) => (
+                    <div key={index} className={styles.textContainer}>
+                        {text.map((line, idx) => (
+                            <p 
+                                key={idx} 
+                                className={styles.text + ' ' + (index + 1 === textIndex ? styles.visible + ' ' + (line === "Let's talk." ? styles.slideIn : '') : '')}
+                                style={{ transitionDelay: `${idx * 0.7}s` }}
+                            >
+                                {line}
+                            </p>
+                        ))}
+                    </div>
                 ))}
-            </div>
-        ))}
+            </>
+        )}
     </div>
   )
 }
