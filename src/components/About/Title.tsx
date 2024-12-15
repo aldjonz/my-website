@@ -3,57 +3,81 @@
 import AnimatedTextWrapper from '@/components/TextAnimationWrapper/TextAnimationWrapper'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { useSpring } from 'framer-motion'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useMemo } from 'react'
 import { Group, Mesh, Vector3 } from 'three'
+
+const ANIMATION_CONSTANTS = {
+    SCROLL_VELOCITY_MULTIPLIER: 0.001,
+    OFFSET_MULTIPLIER: 0.01,
+    BASE_LERP_SPEED: 0.03,
+    MAX_LERP_SPEED: 0.1,
+    ROTATION_SPEED: 0.002,
+    POSITION_MULTIPLIER: 2
+}
 
 export default function Title({ isExploded, setIsExploded }: { isExploded: boolean, setIsExploded: (value: boolean) => void }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/about/about.glb')
-    const [scrollPosition, setScrollPosition] = useState(0)
-    const [lastScrollDirection, setLastScrollDirection] = useState(0)
+    const scrollRef = useRef(0)
+    const lastScrollRef = useRef(0)
+    const targetPositions = useRef<Vector3[]>([])
 
-    const allCells = scene.children
-        .filter(child => child.name.includes('Text_cell'))
-        .map((cell) => {
-            const mesh = cell as Mesh;
-            return mesh;
-        });
-
-    const handleScroll = () => {
-        const currentScrollPosition = window.scrollY
-        if (currentScrollPosition > scrollPosition) {
-            setLastScrollDirection(1) 
-        } else if (currentScrollPosition < scrollPosition) {
-            setLastScrollDirection(-1) 
-        }
-        setScrollPosition(currentScrollPosition)
-
-    }
-
-    useFrame((state) => {
-        const camera = state.camera
-        camera.updateProjectionMatrix()
-
-        allCells.forEach((cell, index) => {
-            if (isExploded) {
-                const offset = scrollPosition * 0.01
-                const x = Math.sin(offset + index) * 2
-                const y = Math.cos(offset + index) * 2
-                const targetPos = new Vector3(x, y, 0)
-                cell.position.lerp(targetPos, 0.03)
-            }
-        })
-
-        if (isExploded && group.current) {
-            group.current.rotation.z += lastScrollDirection * 0.002
-        }
-    })
+    const allCells = useMemo(() => 
+        scene.children
+            .filter(child => child.name.includes('Text_cell'))
+            .map((cell) => cell as Mesh),
+        [scene]
+    )
 
     useEffect(() => {
-        window.addEventListener('scroll', handleScroll)
+        let ticking = false
+        
+        const handleScroll = () => {
+            if (!ticking) {
+                requestAnimationFrame(() => {
+                    lastScrollRef.current = scrollRef.current
+                    scrollRef.current = window.scrollY
+                    ticking = false
+                })
+                ticking = true
+            }
+        }
+
+        window.addEventListener('scroll', handleScroll, { passive: true })
         return () => window.removeEventListener('scroll', handleScroll)
     }, [])
+
+    useEffect(() => {
+        targetPositions.current = allCells.map(() => new Vector3())
+    }, [allCells])
+
+    useFrame((state, delta) => {
+        if (!isExploded) return
+
+        const calculatedScrollVelocity = (scrollRef.current - lastScrollRef.current) * ANIMATION_CONSTANTS.SCROLL_VELOCITY_MULTIPLIER
+        let scrollVelocity = 0.02
+        if (calculatedScrollVelocity < 0.02 && calculatedScrollVelocity > -0.02) {
+            scrollVelocity = calculatedScrollVelocity
+        }
+        const offset = scrollRef.current * ANIMATION_CONSTANTS.OFFSET_MULTIPLIER
+        const lerpSpeed = Math.min(
+            ANIMATION_CONSTANTS.BASE_LERP_SPEED + Math.abs(scrollVelocity) * ANIMATION_CONSTANTS.SCROLL_VELOCITY_MULTIPLIER,
+            ANIMATION_CONSTANTS.MAX_LERP_SPEED
+        )
+
+        allCells.forEach((cell, index) => {
+            const angle = offset + index
+            const x = Math.sin(angle) * ANIMATION_CONSTANTS.POSITION_MULTIPLIER
+            const y = Math.cos(angle) * ANIMATION_CONSTANTS.POSITION_MULTIPLIER
+            
+            targetPositions.current[index].set(x, y, 0)
+            cell.position.lerp(targetPositions.current[index], lerpSpeed)
+        })
+
+        if (group.current) {
+            group.current.rotation.z += ANIMATION_CONSTANTS.ROTATION_SPEED
+        }
+    })
 
     if (!scene) return null
 
@@ -71,6 +95,5 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
         </group>
     )
 }
-
 
 useGLTF.preload('/about/about.glb')
