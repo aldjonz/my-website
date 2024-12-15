@@ -19,13 +19,6 @@ export default function About() {
                     <ambientLight intensity={4} />
                     <directionalLight position={[0, 0, 5]} intensity={4} />
                     <directionalLight position={[-5, 0, 0]} intensity={4} />
-                    {/* <OrbitControls 
-                        enablePan={true}
-                        enableZoom={true}
-                        enableRotate={true}
-                        panSpeed={0.5}
-                        rotateSpeed={0.5}
-                    /> */}
                     <Suspense fallback={null}>
                         <Center>
                             <Title 

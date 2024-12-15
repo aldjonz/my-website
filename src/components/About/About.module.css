@@ -5,6 +5,7 @@
     z-index: 1000;
     background-color: rgba(0,0,0,0.5);
     backdrop-filter: blur(2px);
+    transition: opacity 1s ease-in-out;
 }
 .textContainer {
     height: 100vh;
@@ -14,6 +15,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    scroll-snap-align: start;
 }
 .text {
     font-size: 2em;

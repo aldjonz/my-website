@@ -21,7 +21,7 @@ const aboutText = [
 const AboutHTML = ({ isExploded, textIndex = 0 }: { isExploded: boolean, textIndex: number }) => {
 
   return (
-    <div className={styles.aboutContainer} style={{ pointerEvents: isExploded ? 'auto' : 'none' }}>
+    <div className={styles.aboutContainer} style={{ pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0 }}>
         {aboutText.map((text, index) => (
             <div key={index} className={styles.textContainer}>
                 {text.map((line, index) => (
