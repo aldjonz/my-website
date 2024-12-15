@@ -9,6 +9,8 @@ interface ProjectContent {
     link: string;
   }
   
+export const email = "hello@joshua.so"
+
 export const contentArray: ProjectContent[] = [
       {
           title: 'Cambridge Carbon Map',
