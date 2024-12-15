@@ -3,7 +3,10 @@ import styles from './About.module.css'
 
 const aboutText = [
     ["I'm Aled, web and mobile app developer and designer"],
-    ["During the COVID-19 lockdown, I seized the opportunity to teach myself programming. In just 9 months, I transformed from a complete beginner to a professional developer, driven by curiosity and perseverance."],
+    [
+        "During the COVID-19 lockdown, I seized the opportunity to teach myself programming.",
+        "In just 9 months, I transformed from a complete beginner to a professional developer, driven by curiosity and perseverance."
+    ],
     [
         "I specialize in full-stack development with a creative edge, building apps that seamlessly blend functionality and aesthetics. Leveraging React and Django (or any stack necessary), I craft scalable, engaging experiences for both web and mobile.",
         "I have collaborated with diverse teams to deliver impactful projects."
@@ -39,7 +42,7 @@ const AboutHTML = ({ isExploded, }: { isExploded: boolean }) => {
                 {text.map((line, idx) => (
                     <p 
                         key={idx} 
-                        className={styles.text + ' ' + (index === textIndex ? styles.visible : '')}
+                        className={styles.text + ' ' + (index === textIndex ? styles.visible + ' ' + (line === "Let's talk." ? styles.slideIn : '') : '')}
                         style={{ transitionDelay: `${idx * 0.7}s` }}
                     >
                         {line}
