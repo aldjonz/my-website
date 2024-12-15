@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './About.module.css'
+import { email } from '@/constants/constants';
 
 const aboutText = [
     [
@@ -66,6 +67,11 @@ const AboutHTML = ({ isExploded, }: { isExploded: boolean }) => {
                         {text.map((line, idx) => (
                             <p 
                                 key={idx} 
+                                onClick={() => {
+                                    if (line === "Let's talk.") {
+                                        window.location.href = `mailto:${email}`;
+                                    }
+                                }}
                                 className={styles.text + ' ' + (index + 1 === textIndex ? styles.visible + ' ' + (line === "Let's talk." ? styles.slideIn : '') : '')}
                                 style={{ transitionDelay: `${idx * 0.7}s` }}
                             >
