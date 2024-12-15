@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './About.module.css'
 
 const aboutText = [
@@ -18,14 +18,32 @@ const aboutText = [
     ]
 ]
 
-const AboutHTML = ({ isExploded, textIndex = 0 }: { isExploded: boolean, textIndex: number }) => {
+const AboutHTML = ({ isExploded, }: { isExploded: boolean }) => {
+  const textRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const [textIndex, setTextIndex] = useState(0)
+
+  const handleScroll = () => {
+    const scrollPosition = window.scrollY
+    const fraction = scrollPosition / window.innerHeight;
+    setTextIndex(Math.floor(fraction))
+  }
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   return (
     <div className={styles.aboutContainer} style={{ pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0 }}>
         {aboutText.map((text, index) => (
             <div key={index} className={styles.textContainer}>
-                {text.map((line, index) => (
-                    <p key={index} className={styles.text}>{line}</p>
+                {text.map((line, idx) => (
+                    <p 
+                        key={idx} 
+                        className={styles.text + ' ' + (index === textIndex ? styles.visible : '')}
+                        style={{ transitionDelay: `${idx * 0.7}s` }}
+                    >
+                        {line}
+                    </p>
                 ))}
             </div>
         ))}
