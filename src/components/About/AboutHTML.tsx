@@ -23,19 +23,35 @@ const aboutText = [
 const AboutHTML = ({ isExploded, }: { isExploded: boolean }) => {
   const textRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [textIndex, setTextIndex] = useState(0)
+  const [isScrolling, setIsScrolling] = useState(false);
 
   const handleScroll = () => {
     const scrollPosition = window.scrollY
     const fraction = scrollPosition / window.innerHeight;
     setTextIndex(Math.floor(fraction))
+    
+    // Set scrolling state
+    setIsScrolling(true);
+    
+    // Reset after animation duration
+    clearTimeout(window.scrollTimeout);
+    window.scrollTimeout = setTimeout(() => {
+      setIsScrolling(false);
+    }, 300) as any;
   }
   useEffect(() => {
     window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      clearTimeout(window.scrollTimeout)
+    }
   }, [])
 
   return (
-    <div className={styles.aboutContainer} style={{ pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0 }}>
+    <div 
+      className={`${styles.aboutContainer} ${isScrolling ? styles.scrolling : ''}`} 
+      style={{ pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0 }}
+    >
         {isExploded && (
             <>
                 <div className={styles.textContainer}>
