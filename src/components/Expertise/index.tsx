@@ -4,21 +4,22 @@ import { Canvas } from '@react-three/fiber'
 import Title from './Title'
 import ExpertiseHTML from './ExpertiseHTML'
 
-const Expertise = () => {
+const Expertise = ({ setItemActive }: { setItemActive: (value: string) => void }) => {
   const [isExploded, setIsExploded] = useState(false)
   const [isLeft, setIsLeft] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
-
+  const [textIndex, setTextIndex] = useState(0)
   const handleScroll = () => {
-    const scrollPosition = containerRef.current?.scrollTop || 0
-    const fraction = scrollPosition / window.innerHeight;
-    setIsLeft(Math.floor(fraction) % 2 === 0)
-  }
-
-  useEffect(() => {
-    containerRef.current?.addEventListener('scroll', handleScroll)
-    return () => containerRef.current?.removeEventListener('scroll', handleScroll)
-  }, [])
+      const scrollPosition = window.scrollY
+      const fraction = scrollPosition / window.innerHeight;
+      setTextIndex(Math.floor(fraction))
+    }
+    useEffect(() => {
+      window.addEventListener('scroll', handleScroll)
+      return () => {
+        window.removeEventListener('scroll', handleScroll)
+      }
+    }, [])
 
   return (
     <>
@@ -34,8 +35,9 @@ const Expertise = () => {
                                 <Title 
                                     isExploded={isExploded} 
                                     setIsExploded={setIsExploded} 
-                                    isLeft={isLeft}
-                                    shapeIndex={Math.floor(containerRef.current?.scrollTop / window.innerHeight)}
+                                    isLeft={textIndex % 2 === 0}
+                                    setItemActive={setItemActive}
+                                    shapeIndex={textIndex}
                                 />
                             {/* </Center> */}
                         </Suspense>

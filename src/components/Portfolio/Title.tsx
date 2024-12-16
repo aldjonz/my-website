@@ -6,9 +6,9 @@ import { useFrame } from '@react-three/fiber'
 import { useRef, useState } from 'react'
 import { Group, Mesh, Vector3 } from 'three'
 
-export default function Title({ isExploded, setIsExploded }: { isExploded: boolean, setIsExploded: (value: boolean) => void }) {
+export default function Title({ isExploded, setIsExploded, setItemActive }: { isExploded: boolean, setIsExploded: (value: boolean) => void, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
-    const { scene } = useGLTF('/portfolio/portfolio-metalic.glb')
+    const { scene } = useGLTF('/portfolio/portfolio.glb')
     const orbitRadius = 3
 
     const allCells = scene.children
@@ -42,10 +42,7 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
                 cell.lookAt(0, 0, 0)
                 cell.rotateY(Math.PI)
 
-            } else {
-                cell.scale.lerp(new Vector3(1, 1, 1), 0.1)
-                cell.rotation.set(0, 0, 0)
-            }
+            } 
         })
     })
 
@@ -56,6 +53,7 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
             ref={group}
             onClick={(e) => {
                 e.stopPropagation()
+                setItemActive('portfolio')
                 setIsExploded(true)
             }}
         >
@@ -66,4 +64,4 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
     )
 }
 
-useGLTF.preload('/portfolio/portfolio-metalic.glb')
+useGLTF.preload('/portfolio/portfolio.glb')

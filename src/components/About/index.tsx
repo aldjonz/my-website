@@ -8,9 +8,8 @@ import AboutHTML from './AboutHTML'
 
 const Title = dynamic(() => import('./Title'), { ssr: false })
 
-export default function About() {
+export default function About({ setItemActive }: { setItemActive: (value: string) => void }) {
     const [isExploded, setIsExploded] = useState(false)
-    const [selectedProjectIndex, setSelectedProjectIndex] = useState<null | number>(null)
 
     return (
         <>
@@ -24,6 +23,7 @@ export default function About() {
                             <Title 
                                 isExploded={isExploded}
                                 setIsExploded={setIsExploded}
+                                setItemActive={setItemActive}
                             />
                         {/* </Center> */}
                     </Suspense>

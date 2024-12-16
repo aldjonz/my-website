@@ -15,7 +15,7 @@ const ANIMATION_CONSTANTS = {
     POSITION_MULTIPLIER: 2
 }
 
-export default function Title({ isExploded, setIsExploded }: { isExploded: boolean, setIsExploded: (value: boolean) => void }) {
+export default function Title({ isExploded, setIsExploded, setItemActive }: { isExploded: boolean, setIsExploded: (value: boolean) => void, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/about/about.glb')
     const scrollRef = useRef(0)
@@ -86,6 +86,7 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
             ref={group}
             onClick={(e) => {
                 e.stopPropagation()
+                setItemActive('about')
                 setIsExploded(!isExploded)
             }}
         >

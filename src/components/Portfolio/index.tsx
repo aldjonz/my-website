@@ -10,7 +10,7 @@ const Title = dynamic(() => import('./Title'), { ssr: false })
 const CentralSphere = dynamic(() => import('./CentralSphere'), { ssr: false })
 const Projects = dynamic(() => import('./Projects'), { ssr: false })
 
-export default function Portfolio() {
+export default function Portfolio({ setItemActive }: { setItemActive: (value: string) => void }) {
     const [isExploded, setIsExploded] = useState(false)
     const [selectedProjectIndex, setSelectedProjectIndex] = useState<null | number>(null)
 
@@ -33,6 +33,7 @@ export default function Portfolio() {
                             <Title 
                                 isExploded={isExploded}
                                 setIsExploded={setIsExploded}
+                                setItemActive={setItemActive}
                             />
                             {/* <CentralSphere imgPath='/portfolio/red-marble.jpg' /> */}
                             <Projects 
