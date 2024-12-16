@@ -16,37 +16,37 @@ export default function Portfolio() {
 
     return (
         <>
-            <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', marginTop: '0', backgroundColor: '#000000' }}>
+            {/* <div style={{ width: '100vw', height: '100vh', overflow: 'hidden', marginTop: '0', backgroundColor: '#000000' }}>
                 <Canvas gl={{ antialias: true }} dpr={[1, 1.5]} style={{ position: 'absolute', top: 0, left: 0, }}>
                     <ambientLight intensity={4} />
                     <directionalLight position={[0, 0, 5]} intensity={4} />
-                    <directionalLight position={[-5, 0, 0]} intensity={4} />
-                    <OrbitControls 
+                    <directionalLight position={[-5, 0, 0]} intensity={4} /> */}
+                    {/* <OrbitControls 
                         enablePan={true}
                         enableZoom={true}
                         enableRotate={true}
                         panSpeed={0.5}
                         rotateSpeed={0.5}
-                    />
+                    /> */}
                     <Suspense fallback={null}>
-                        <Center>
+                        {/* <Center> */}
                             <Title 
                                 isExploded={isExploded}
                                 setIsExploded={setIsExploded}
                             />
-                            <CentralSphere imgPath='/portfolio/red-marble.jpg' />
+                            {/* <CentralSphere imgPath='/portfolio/red-marble.jpg' /> */}
                             <Projects 
                                 isExploded={isExploded}
                                 setSelectedProjectIndex={setSelectedProjectIndex}
                             />
-                        </Center>
+                        {/* </Center> */}
                     </Suspense>
-                </Canvas>
-            </div>
-            <PortfolioHTML 
+                {/* </Canvas>
+            </div> */}
+            {/* <PortfolioHTML 
                 selectedProjectIndex={selectedProjectIndex}
                 setSelectedProjectIndex={setSelectedProjectIndex}
-            />
+            /> */}
         </>
     )
 }

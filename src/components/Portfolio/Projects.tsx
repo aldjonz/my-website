@@ -45,7 +45,6 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
 
     useFrame((state) => {
         projectNodes.forEach((node) => {
-            console.log(node)
             if (isExploded) {
                 node.userData.orbitTheta += node.userData.orbitSpeed * 0.01
 
@@ -97,7 +96,6 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
         onClick={(e) => {
             e.stopPropagation()
             setSelectedProjectIndex(e.object.parent.userData.index)
-            console.log(e.object)
         }}
         style={{ cursor: 'pointer' }}
     >
