@@ -77,7 +77,7 @@ const ExpertiseHTML = ({ isExploded }: { isExploded: boolean }) => {
         }
       }, [])
   return (
-    <div style={{ height: `${expertiseText.length * 100}vh`, width: '100vw', pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0, transition: 'opacity 0.5s ease-in-out', scrollSnapAlign: 'start' }}>
+    <div style={{ height: isExploded ? `${expertiseText.length * 100}vh` : '100vh', width: '100vw', pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0, transition: 'opacity 0.5s ease-in-out', scrollSnapAlign: 'start' }}>
         <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
         <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
     </div>

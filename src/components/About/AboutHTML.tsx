@@ -51,7 +51,7 @@ const AboutHTML = ({ isExploded, }: { isExploded: boolean }) => {
   return (
     <div 
       className={`${styles.aboutContainer} ${isScrolling ? styles.scrolling : ''}`} 
-      style={{ pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0 }}
+      style={{ pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0, height: isExploded ? '500vh' : '100vh' }}
     >
         {isExploded && (
             <>
