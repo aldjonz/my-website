@@ -41,7 +41,6 @@ export default function Title({ isExploded, setIsExploded, setItemActive }: { is
                 
                 cell.lookAt(0, 0, 0)
                 cell.rotateY(Math.PI)
-
             } 
         })
     })

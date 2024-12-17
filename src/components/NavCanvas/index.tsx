@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import AnimatedGroups from './AnimatedGroups'
 import AboutHTML from '../About/AboutHTML'
 import ExpertiseHTML from '../Expertise/ExpertiseHTML'
+import PortfolioHTML from '../Portfolio/PortfolioHTML'
 
 const NavCanvas = () => {
     const [itemActive, setItemActive] = useState(null)
@@ -24,6 +25,7 @@ const NavCanvas = () => {
         <ExpertiseHTML 
             isExploded={itemActive === 'expertise'} 
         />
+        <PortfolioHTML />
     </>
 
   )

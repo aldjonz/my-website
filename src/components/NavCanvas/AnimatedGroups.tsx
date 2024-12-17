@@ -4,6 +4,7 @@ import About from '../About'
 import Expertise from '../Expertise'
 import { useFrame } from '@react-three/fiber'
 import { Group } from 'three'
+import { OrbitControls } from '@react-three/drei'
 
 const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | null, setItemActive: (value: string | null) => void }) => {
     const topGroupRef = useRef<Group>(null)
@@ -30,7 +31,9 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
     }
 
     useFrame((state, delta) => {
-        setTimer(prev => prev + delta)
+        if (timer < 1.4) {
+            setTimer(prev => prev + delta)
+        }
 
         if (!itemActive) {
             // Top group starts immediately
@@ -57,13 +60,21 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
             } else if (itemActive === 'portfolio') {
                 // Animate middle group to center
                 animateActiveItem(middleGroupRef, topGroupRef, bottomGroupRef, 15, -15)
+                if (middleGroupRef.current.position.z > -4) {
+                    middleGroupRef.current.position.z += (-2 - middleGroupRef.current.position.z) * 0.1;
+                    topGroupRef.current.scale.x += (0 - topGroupRef.current.scale.x) * 0.1;
+                    topGroupRef.current.scale.y += (0 - topGroupRef.current.scale.y) * 0.1;
+                    topGroupRef.current.scale.z += (0 - topGroupRef.current.scale.z) * 0.1;
+                    bottomGroupRef.current.scale.x += (0 - bottomGroupRef.current.scale.x) * 0.1;
+                    bottomGroupRef.current.scale.y += (0 - bottomGroupRef.current.scale.y) * 0.1;
+                    bottomGroupRef.current.scale.z += (0 - bottomGroupRef.current.scale.z) * 0.1;
+                }
+                
             } else if (itemActive === 'expertise') {
                 // Animate bottom group to center
                 animateActiveItem(bottomGroupRef, topGroupRef, middleGroupRef, 15, 15)
             }
         }
-
-
     })
 
     return (
@@ -72,6 +83,7 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
                 ref={topGroupRef}
                 position={[-startX,  topPosition[1] - 2, 0]} 
                 rotation={[0, 0.15, 0.1]}
+                // visible={itemActive !== 'portfolio'}
             >
                 <About setItemActive={setItemActive} />
             </group>
@@ -88,6 +100,7 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
                 ref={bottomGroupRef}
                 position={[-startX, bottomPosition[1] - 2, 0]} 
                 rotation={[0, 0.15, 0.01]}
+                // visible={itemActive !== 'portfolio'}
             >
                 <Expertise setItemActive={setItemActive} />
             </group>
