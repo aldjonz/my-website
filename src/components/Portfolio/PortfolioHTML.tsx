@@ -47,37 +47,37 @@ type Props = {
 const PortfolioHTML = () => {
   const { selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
   const currentItem = contentArray[selectedProjectIndex]
-    return (
+  return (
     <>
-        <div className={styles.blurBg} style={{ opacity: Boolean(currentItem) ? 1 : 0, pointerEvents: Boolean(currentItem) ? 'auto' : 'none', transitionDuration: '0.4s'  }} />
-        {currentItem && (
-            <>
-        <div className={styles.container} style={{ pointerEvents: Boolean(currentItem) ? 'auto' : 'none' }}>
-                  <div className={styles.innerContainer}>
-                    <div className={styles.projectDisplay}>
-                    <div className={styles.info}>
-                      <List open={Boolean(currentItem)}>
-                        <h3 style={{ fontSize: '2em', letterSpacing: '0.01px' }}>
-                          <span className="accent">{currentItem.type}</span>
-                        </h3>
-                        <h3 className={styles.title}>{currentItem.title}</h3>
-                        <p style={{ borderTop: '1px solid black', padding: '20px 0' }}>
-                          {currentItem.description}
-                        </p>
-                        <div className={styles.techStack}>
-                          {currentItem.techStack.map((tech, index) => (
-                            <p key={index}>{tech}</p>
-                          ))}
-                        </div>
-                      </List>
-                    </div>
-                    <a href={currentItem.link} target="_blank" rel="noreferrer" className={styles.link}>
-                      View Project
-                    </a>
-                    <div style={{ position: 'absolute', top: 0, right: 0,  cursor: 'pointer', padding: 16 }} onClick={() => setSelectedProjectIndex(null)}>
-                      <img src="/close.png" alt="Close" height={30} width={30} />
-                    </div>
+      <div className={styles.blurBg} style={{ opacity: Boolean(currentItem) ? 1 : 0, pointerEvents: Boolean(currentItem) ? 'auto' : 'none', transitionDuration: '0.4s'  }} />
+      {currentItem && (
+          <>
+            <div className={styles.container} style={{ pointerEvents: Boolean(currentItem) ? 'auto' : 'none' }}>
+              <div className={styles.innerContainer}>
+                <div className={styles.projectDisplay}>
+                  <div className={styles.info}>
+                    <List open={Boolean(currentItem)}>
+                      <h3 style={{ fontSize: '2em', letterSpacing: '0.01px' }}>
+                        <span className="accent">{currentItem.type}</span>
+                      </h3>
+                      <h3 className={styles.title}>{currentItem.title}</h3>
+                      <p style={{ borderTop: '1px solid black', padding: '20px 0' }}>
+                        {currentItem.description}
+                      </p>
+                      <div className={styles.techStack}>
+                        {currentItem.techStack.map((tech, index) => (
+                          <p key={index}>{tech}</p>
+                        ))}
+                      </div>
+                    </List>
                   </div>
+                  <a href={currentItem.link} target="_blank" rel="noreferrer" className={styles.link}>
+                    View Project
+                  </a>
+                  <div style={{ position: 'absolute', top: 0, right: 0,  cursor: 'pointer', padding: 16 }} onClick={() => setSelectedProjectIndex(null)}>
+                    <img src="/close.png" alt="Close" height={30} width={30} />
+                  </div>
+                </div>
               </div>
               <div className={styles.innerContainer} > 
                 <div style={{ position: 'absolute', width: '70%', height: '100%', pointerEvents: 'none' }}>
@@ -104,16 +104,15 @@ const PortfolioHTML = () => {
                     )}
                   </ThreeCanvas>
                 </div>
- 
               </div>
+            </div>
+            <div className={styles.projectNavigator}>
+            {Array.from({ length: 7 }, (_, index) => (
+              <div key={index} className={styles.projectNavigatorItem} style={{ backgroundColor: selectedProjectIndex === index ? '#631814' : 'rgba(255,255,255,0.7)' }} onClick={() => setSelectedProjectIndex(index)} />
+            ))}
         </div>
-        <div className={styles.projectNavigator}>
-          {Array.from({ length: 7 }, (_, index) => (
-            <div key={index} className={styles.projectNavigatorItem} style={{ backgroundColor: selectedProjectIndex === index ? '#631814' : 'rgba(255,255,255,0.7)' }} onClick={() => setSelectedProjectIndex(index)} />
-          ))}
-        </div>
-          </>
-        )}
+        </>
+      )}
     </>
   )
 }
