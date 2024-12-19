@@ -45,7 +45,6 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
             }
     
             const camera = state.camera
-            console.log(camera)
             camera.position.x = cameraX.get()
             camera.updateProjectionMatrix()
     

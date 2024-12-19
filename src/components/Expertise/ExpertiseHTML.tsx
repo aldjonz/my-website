@@ -55,7 +55,10 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
                     <h1 className={`accent ${styles.title}`} style={{ ...titleStyles, }}>{expertiseText[textIndex].title}</h1>
                     <div className={styles.skillsContainer} style={{ justifyContent: position === 'left' ? 'right' : 'left' }}>
                         {expertiseText[textIndex].skills.map((skill, index) => (
-                            <h2 key={index}>{skill} {index !== expertiseText[textIndex].skills.length - 1 && '|'}</h2>
+                            <>
+                                <h2 key={index} className={styles.skill}>{skill}</h2>
+                                {index !== expertiseText[textIndex].skills.length - 1 && <h2 className={styles.skillSeparator}>|</h2>}
+                            </>
                         ))}
                     </div>
                 </div>
