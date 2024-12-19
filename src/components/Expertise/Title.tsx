@@ -7,7 +7,7 @@ import { useRef, useState, useEffect, useMemo } from 'react'
 import { Group, Mesh, Vector3 } from 'three'
 import { useSpring, animated } from '@react-spring/three'
 
-export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex, setItemActive }: { isExploded: boolean, setIsExploded: (value: boolean) => void, isLeft: boolean, shapeIndex: number, setItemActive: (value: string) => void }) {
+export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }: { isExploded: boolean, isLeft: boolean, shapeIndex: number, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/Expertise/expertise.glb')
     const [scrollPosition, setScrollPosition] = useState(0)
@@ -50,6 +50,7 @@ export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex, s
             }
     
             const camera = state.camera
+            console.log(camera)
             camera.position.x = cameraX.get()
             camera.updateProjectionMatrix()
     
@@ -142,7 +143,6 @@ export default function Title({ isExploded, setIsExploded, isLeft, shapeIndex, s
             onClick={(e) => {
                 e.stopPropagation()
                 setItemActive('expertise')
-                setIsExploded(!isExploded)
             }}
         >
             <AnimatedTextWrapper scene={scene}>

@@ -15,7 +15,7 @@ const ANIMATION_CONSTANTS = {
     POSITION_MULTIPLIER: 2
 }
 
-export default function Title({ isExploded, setIsExploded, setItemActive }: { isExploded: boolean, setIsExploded: (value: boolean) => void, setItemActive: (value: string) => void }) {
+export default function Title({ isExploded, setItemActive }: { isExploded: boolean, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
     const originalGroupRotation = useRef(new Vector3(0, 0, 0))
     const { scene } = useGLTF('/about/about.glb')
@@ -113,7 +113,6 @@ export default function Title({ isExploded, setIsExploded, setItemActive }: { is
             onClick={(e) => {
                 e.stopPropagation()
                 setItemActive('about')
-                setIsExploded(!isExploded)
             }}
         >
             <AnimatedTextWrapper scene={scene}>

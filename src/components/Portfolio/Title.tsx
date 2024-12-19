@@ -6,7 +6,7 @@ import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef, useState } from 'react'
 import { Group, Mesh, Vector3 } from 'three'
 
-export default function Title({ isExploded, setIsExploded, setItemActive }: { isExploded: boolean, setIsExploded: (value: boolean) => void, setItemActive: (value: string) => void }) {
+export default function Title({ isExploded, setItemActive }: { isExploded: boolean, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/portfolio/portfolio.glb')
     const orbitRadius = 3
@@ -55,7 +55,16 @@ export default function Title({ isExploded, setIsExploded, setItemActive }: { is
                 
                 const targetPos = new Vector3(x, y, z)
                 cell.position.lerp(targetPos, 0.08)
+                
+                cell.rotation.set(
+                    cell.userData.originalRotation.x, 
+                    cell.userData.originalRotation.y, 
+                    cell.userData.originalRotation.z
+                )
             })
+            
+            // state.camera.position.lerp(new Vector3(0, 0, 5), 0.1)
+            state.camera.lookAt(0, 0, 0)
         }
     })
 
@@ -67,7 +76,6 @@ export default function Title({ isExploded, setIsExploded, setItemActive }: { is
             onClick={(e) => {
                 e.stopPropagation()
                 setItemActive('portfolio')
-                setIsExploded(true)
             }}
         >
             <AnimatedTextWrapper scene={scene}>

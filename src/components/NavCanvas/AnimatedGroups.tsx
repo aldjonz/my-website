@@ -49,12 +49,16 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
             if (middleGroupRef.current && timer > 1.1) {
                 middleGroupRef.current.position.x += ((middlePosition[0] - middleGroupRef.current.position.x) * 0.3)
                 middleGroupRef.current.position.y += ((middlePosition[1] - middleGroupRef.current.position.y) * 0.3)
+                middleGroupRef.current.position.z += ((middlePosition[2] - middleGroupRef.current.position.z) * 0.3)
+                middleGroupRef.current.rotation.set(0, -0.15, -0.1)
+
             }
     
             // Bottom group starts after 1 second
             if (bottomGroupRef.current && timer > 1.4) {
                 bottomGroupRef.current.position.x += ((bottomPosition[0] - bottomGroupRef.current.position.x) * 0.3)
                 bottomGroupRef.current.position.y += ((bottomPosition[1] - bottomGroupRef.current.position.y) * 0.3)
+                bottomGroupRef.current.position.z += ((bottomPosition[2] - bottomGroupRef.current.position.z) * 0.3)
                 bottomGroupRef.current.scale.x += (1 - bottomGroupRef.current.scale.x) * 0.1;
                 bottomGroupRef.current.scale.y += (1 - bottomGroupRef.current.scale.y) * 0.1;
                 bottomGroupRef.current.scale.z += (1 - bottomGroupRef.current.scale.z) * 0.1;
