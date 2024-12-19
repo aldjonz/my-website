@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { FrontSide, Mesh, TextureLoader, Vector3, Vector2 } from 'three'
 import { useLoader, useFrame, useThree } from '@react-three/fiber'
+import { Center } from '@react-three/drei'
 
 const ModelWithImageTexture = ({ texturePath, transparent }: { texturePath: string, transparent?: boolean }) => {
     const meshRef = useRef<Mesh>(null)
@@ -71,10 +72,12 @@ const ModelWithImageTexture = ({ texturePath, transparent }: { texturePath: stri
     }
     
     return (
-        <mesh ref={meshRef}>
-<planeGeometry args={[3,3]} />
-            <meshPhysicalMaterial {...textureMaterial} />
-        </mesh>
+        <Center>
+            <mesh ref={meshRef}>
+                <planeGeometry args={[3,3]} />
+                <meshPhysicalMaterial {...textureMaterial} />
+            </mesh>
+        </Center>
     )
 }
 
