@@ -8,7 +8,7 @@ import AboutHTML from './AboutHTML'
 
 const Title = dynamic(() => import('./Title'), { ssr: false })
 
-export default function About({ setItemActive }: { setItemActive: (value: string) => void }) {
+export default function About({ setItemActive, isActive }: { setItemActive: (value: string) => void, isActive: boolean }) {
     const [isExploded, setIsExploded] = useState(false)
 
     return (
@@ -21,7 +21,7 @@ export default function About({ setItemActive }: { setItemActive: (value: string
                     <Suspense fallback={null}>
                         {/* <Center> */}
                             <Title 
-                                isExploded={isExploded}
+                                isExploded={isActive}
                                 setIsExploded={setIsExploded}
                                 setItemActive={setItemActive}
                             />

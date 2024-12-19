@@ -40,6 +40,9 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
             if (topGroupRef.current && timer > 0.8) {
                 topGroupRef.current.position.x += ((topPosition[0] - topGroupRef.current.position.x) * 0.3)
                 topGroupRef.current.position.y += ((topPosition[1] - topGroupRef.current.position.y) * 0.3)
+                topGroupRef.current.scale.x += (1 - topGroupRef.current.scale.x) * 0.1;
+                topGroupRef.current.scale.y += (1 - topGroupRef.current.scale.y) * 0.1;
+                topGroupRef.current.scale.z += (1 - topGroupRef.current.scale.z) * 0.1;
             }
     
             // Middle group starts after 0.5 seconds
@@ -52,6 +55,9 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
             if (bottomGroupRef.current && timer > 1.4) {
                 bottomGroupRef.current.position.x += ((bottomPosition[0] - bottomGroupRef.current.position.x) * 0.3)
                 bottomGroupRef.current.position.y += ((bottomPosition[1] - bottomGroupRef.current.position.y) * 0.3)
+                bottomGroupRef.current.scale.x += (1 - bottomGroupRef.current.scale.x) * 0.1;
+                bottomGroupRef.current.scale.y += (1 - bottomGroupRef.current.scale.y) * 0.1;
+                bottomGroupRef.current.scale.z += (1 - bottomGroupRef.current.scale.z) * 0.1;
             }
         } else {
             if (itemActive === 'about') {
@@ -85,7 +91,7 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
                 rotation={[0, 0.15, 0.1]}
                 // visible={itemActive !== 'portfolio'}
             >
-                <About setItemActive={setItemActive} />
+                <About setItemActive={setItemActive} isActive={itemActive === 'about'} />
             </group>
 
             <group 
@@ -93,7 +99,7 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
                 position={[startX, middlePosition[1] - 2, 0]} 
                 rotation={[0, -0.15, -0.1]}
             >
-                <Portfolio setItemActive={setItemActive} />
+                <Portfolio setItemActive={setItemActive} isActive={itemActive === 'portfolio'} />
             </group>
 
             <group 
@@ -102,7 +108,7 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
                 rotation={[0, 0.15, 0.01]}
                 // visible={itemActive !== 'portfolio'}
             >
-                <Expertise setItemActive={setItemActive} />
+                <Expertise setItemActive={setItemActive} isActive={itemActive === 'expertise'} />
             </group>
         </>
     )

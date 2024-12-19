@@ -1,0 +1,83 @@
+.contactContainer {
+    position: fixed;
+    top: 0;
+    right: 10px;
+    cursor: pointer;
+    z-index: 10000;
+}
+.contactInner {
+    background-color: white;
+    border-radius: 10px;
+    padding: 0 15px;
+}
+.text {
+    font-size: 32px;
+    font-weight: 600;
+    -webkit-text-stroke: 1px #48515E;
+    color: white;
+}
+
+
+.Title {
+    font-family: "Catamaran", sans-serif;
+    color: white;
+    cursor: pointer;
+    position: relative;
+}
+
+.Title h1 {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    text-transform: uppercase;
+    font-size: 3em;
+    -webkit-text-stroke: 1px white;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0);
+}
+
+.titleUnderline {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0em;
+    height: 2px;
+    background-color: #631814;
+    z-index: 5;
+    transition: transform 580ms cubic-bezier(0.2, 0.1, 0.15, 1.32);
+}
+
+.titleHighlight {
+    position: absolute;
+    width: 100%;
+    bottom: -50px;
+    left: 0;
+    height: 50px;
+    background-color: #631814;
+    z-index: -1;
+    transition: transform 400ms ease;
+}
+
+.titleFilled {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    text-transform: uppercase;
+    font-size: 3em;
+    top: 0;
+    clip-path: polygon(0% 100%, 0% 99%, 100% 99%, 100% 100%);
+    transition: clip-path 600ms cubic-bezier(0.2, 0.1, 0.15, 1.32);
+}
+
+.Title:hover .titleFilled {
+    clip-path: polygon(0% 100%, 0% 0%, 100% 0%, 100% 100%);
+}
+
+.Title:hover .titleUnderline {
+    transform: translateY(-9em);
+}
+
+.Title:hover .titleHighlight {
+    transform: translateY(-2.2em);
+}
+  

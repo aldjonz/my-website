@@ -4,6 +4,7 @@ import AnimatedGroups from './AnimatedGroups'
 import AboutHTML from '../About/AboutHTML'
 import ExpertiseHTML from '../Expertise/ExpertiseHTML'
 import PortfolioHTML from '../Portfolio/PortfolioHTML'
+import HoverText from '../ui/HoverText'
 
 const NavCanvas = () => {
     const [itemActive, setItemActive] = useState(null)
@@ -26,6 +27,11 @@ const NavCanvas = () => {
             isExploded={itemActive === 'expertise'} 
         />
         <PortfolioHTML />
+        {itemActive && (
+            <div onClick={() => setItemActive(null)} style={{ position: 'fixed', top: 0, left: 10, zIndex: 10000, }}>
+                <HoverText title={"Home"} />
+            </div>
+        )}
     </>
 
   )

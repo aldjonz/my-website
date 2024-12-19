@@ -11,7 +11,7 @@ const Title = dynamic(() => import('./Title'), { ssr: false })
 const CentralSphere = dynamic(() => import('./CentralSphere'), { ssr: false })
 const Projects = dynamic(() => import('./Projects'), { ssr: false })
 
-export default function Portfolio({ setItemActive }: { setItemActive: (value: string) => void }) {
+export default function Portfolio({ setItemActive, isActive }: { setItemActive: (value: string) => void, isActive: boolean }) {
     const { isExploded, setIsExploded, selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
 
     return (
@@ -27,15 +27,15 @@ export default function Portfolio({ setItemActive }: { setItemActive: (value: st
             />
             <Suspense fallback={null}>
                 <Title 
-                    isExploded={isExploded}
+                    isExploded={isActive}
                     setIsExploded={setIsExploded}
                     setItemActive={setItemActive}
                 />
                 <CentralSphere imgPath='/portfolio/red-marble.jpg' />
-                <Projects 
-                    isExploded={isExploded}
+                {isActive &&  <Projects 
+                    isExploded={isActive}
                     setSelectedProjectIndex={setSelectedProjectIndex}
-                />
+                />}
             </Suspense>
             {/* <PortfolioHTML 
                 selectedProjectIndex={selectedProjectIndex}

@@ -4,7 +4,7 @@ import { Canvas } from '@react-three/fiber'
 import Title from './Title'
 import ExpertiseHTML from './ExpertiseHTML'
 
-const Expertise = ({ setItemActive }: { setItemActive: (value: string) => void }) => {
+const Expertise = ({ setItemActive, isActive }: { setItemActive: (value: string) => void, isActive: boolean }) => {
   const [isExploded, setIsExploded] = useState(false)
   const [isLeft, setIsLeft] = useState(true)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -33,7 +33,7 @@ const Expertise = ({ setItemActive }: { setItemActive: (value: string) => void }
                         <Suspense fallback={null}>
                             {/* <Center> */}
                                 <Title 
-                                    isExploded={isExploded} 
+                                    isExploded={isActive} 
                                     setIsExploded={setIsExploded} 
                                     isLeft={textIndex % 2 === 0}
                                     setItemActive={setItemActive}
