@@ -6,7 +6,7 @@ import { useFrame } from '@react-three/fiber'
 import { Group, Vector3 } from 'three'
 import { OrbitControls } from '@react-three/drei'
 
-const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | null, setItemActive: (value: string | null) => void }) => {
+const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: string | null, setItemActive: (value: string | null) => void, textIndex: number  }) => {
     const topGroupRef = useRef<Group>(null)
     const middleGroupRef = useRef<Group>(null)
     const bottomGroupRef = useRef<Group>(null)
@@ -117,7 +117,7 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
                 rotation={[0, 0.15, 0.01]}
                 // visible={itemActive !== 'portfolio'}
             >
-                <Expertise setItemActive={setItemActive} isActive={itemActive === 'expertise'} />
+                <Expertise setItemActive={setItemActive} isActive={itemActive === 'expertise'} textIndex={textIndex} />
             </group>
         </>
     )

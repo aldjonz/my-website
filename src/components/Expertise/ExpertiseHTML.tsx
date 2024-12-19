@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './Expertise.module.css'
+import ScrollableWrapper from '../ui/ScrollableWrapper';
 
 const expertiseText = [
     {
@@ -63,25 +64,13 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
     </div>
 )}
 
-const ExpertiseHTML = ({ isExploded }: { isExploded: boolean }) => {
-    const [textIndex, setTextIndex] = useState(0)
-    const handleScroll = () => {
-        const scrollPosition = window.scrollY
-        const fraction = scrollPosition / window.innerHeight;
-        setTextIndex(Math.floor(fraction))
-      }
-      useEffect(() => {
-        window.addEventListener('scroll', handleScroll)
-        return () => {
-          window.removeEventListener('scroll', handleScroll)
-        }
-      }, [])
-  return (
-    <div style={{ height: isExploded ? `${expertiseText.length * 100}vh` : '100vh', width: '100vw', pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0, transition: 'opacity 0.5s ease-in-out', scrollSnapAlign: 'start' }}>
-        <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
-        <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
-    </div>
-  )
-}
+const ExpertiseHTML = ({ textIndex }: { textIndex: number }) => {
+    return (
+        <div style={{ height: `${expertiseText.length * 100}vh` }}>
+            <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
+            <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
+        </div>
+    );  
+};
 
 export default ExpertiseHTML

@@ -10,7 +10,6 @@ import { useSpring, animated } from '@react-spring/three'
 export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }: { isExploded: boolean, isLeft: boolean, shapeIndex: number, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/Expertise/expertise.glb')
-    const [scrollPosition, setScrollPosition] = useState(0)
 
 
     const allCells = useMemo(() => 
@@ -24,10 +23,6 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
             }),
         [scene]
     )
-
-    const handleScroll = () => {
-        setScrollPosition(window.scrollY)
-    }
 
     const { cameraX } = useSpring({
         cameraX: isLeft ? 4 : -4,
@@ -56,7 +51,6 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
     
             allCells.forEach((cell, index) => {
                 if (isExploded) {
-                    const offset = scrollPosition * 0.01;
                     let targetPos;
     
                     switch (shapeIndex) {
@@ -129,12 +123,7 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
             
         }
     })
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
-
+    
     if (!scene) return null
 
     return (

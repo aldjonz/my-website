@@ -4,8 +4,6 @@ import React from 'react'
 import styles from './Portfolio.module.css'
 import { Children } from 'react'
 import { motion } from 'framer-motion'
-import { useProjectDisplay } from '@/hooks/useProjectDisplay'
-import Image from 'next/image'
 import ModelWithImageTexture from './ModelWithImageTexture'
 import ThreeCanvas from '../ui/ThreeCanvas'
 import MobilePhoneModel from './MobilePhoneModel'
@@ -75,7 +73,7 @@ const PortfolioHTML = () => {
                   <a href={currentItem.link} target="_blank" rel="noreferrer" className={styles.link}>
                     View Project
                   </a>
-                  <div style={{ position: 'absolute', top: 0, right: 0,  cursor: 'pointer', padding: 16 }} onClick={() => setSelectedProjectIndex(null)}>
+                  <div style={{ position: 'absolute', top: 0, right: 0,  cursor: 'pointer', padding: 16, }} onClick={() => setSelectedProjectIndex(null)}>
                     <img src="/close.png" alt="Close" height={30} width={30} />
                   </div>
                 </div>
@@ -111,10 +109,10 @@ const PortfolioHTML = () => {
               </div>
             </div>
             <div className={styles.projectNavigator}>
-            {Array.from({ length: 7 }, (_, index) => (
-              <div key={index} className={styles.projectNavigatorItem} style={{ backgroundColor: selectedProjectIndex === index ? '#631814' : 'rgba(255,255,255,0.7)' }} onClick={() => setSelectedProjectIndex(index)} />
-            ))}
-        </div>
+                {Array.from({ length: 7 }, (_, index) => (
+                  <div key={index} className={styles.projectNavigatorItem} style={{ backgroundColor: selectedProjectIndex === index ? '#631814' : 'rgba(255,255,255,0.7)' }} onClick={() => setSelectedProjectIndex(index)} />
+                ))}
+            </div>
         </>
       )}
     </>
