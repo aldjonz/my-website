@@ -17,6 +17,7 @@ const ANIMATION_CONSTANTS = {
 
 export default function Title({ isExploded, setIsExploded, setItemActive }: { isExploded: boolean, setIsExploded: (value: boolean) => void, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
+    const originalGroupRotation = useRef(new Vector3(0, 0, 0))
     const { scene } = useGLTF('/about/about.glb')
     const scrollRef = useRef(0)
     const lastScrollRef = useRef(0)
@@ -56,6 +57,12 @@ export default function Title({ isExploded, setIsExploded, setItemActive }: { is
         targetPositions.current = allCells.map(() => new Vector3())
     }, [allCells])
 
+    useEffect(() => {
+        if (group.current) {
+            originalGroupRotation.current.copy(group.current.rotation)
+        }
+    }, [])
+
     useFrame((state, delta) => {
         if (isExploded) {
             const calculatedScrollVelocity = (scrollRef.current - lastScrollRef.current) * ANIMATION_CONSTANTS.SCROLL_VELOCITY_MULTIPLIER
@@ -89,7 +96,11 @@ export default function Title({ isExploded, setIsExploded, setItemActive }: { is
                 
                 const targetPos = new Vector3(x, y, z)
                 cell.position.lerp(targetPos, 0.08)
+                cell.rotation.set(cell.userData.originalRotation.x, cell.userData.originalRotation.y, cell.userData.originalRotation.z)
             })
+            if (group.current) {
+                group.current.rotation.set(originalGroupRotation.current.x, originalGroupRotation.current.y, originalGroupRotation.current.z)
+            }
         }
 
     })
