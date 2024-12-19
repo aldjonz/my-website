@@ -3,7 +3,7 @@ import Portfolio from '../Portfolio'
 import About from '../About'
 import Expertise from '../Expertise'
 import { useFrame } from '@react-three/fiber'
-import { Group } from 'three'
+import { Group, Vector3 } from 'three'
 import { OrbitControls } from '@react-three/drei'
 
 const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | null, setItemActive: (value: string | null) => void }) => {
@@ -36,6 +36,9 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
         }
 
         if (!itemActive) {
+                        
+            state.camera.position.lerp(new Vector3(0, 0, 5), 0.1)
+            state.camera.lookAt(0, 0, 0)
             // Top group starts immediately
             if (topGroupRef.current && timer > 0.8) {
                 topGroupRef.current.position.x += ((topPosition[0] - topGroupRef.current.position.x) * 0.3)
@@ -43,6 +46,7 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
                 topGroupRef.current.scale.x += (1 - topGroupRef.current.scale.x) * 0.1;
                 topGroupRef.current.scale.y += (1 - topGroupRef.current.scale.y) * 0.1;
                 topGroupRef.current.scale.z += (1 - topGroupRef.current.scale.z) * 0.1;
+                topGroupRef.current.rotation.set(0, 0.15, 0.1)
             }
     
             // Middle group starts after 0.5 seconds
@@ -51,9 +55,9 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
                 middleGroupRef.current.position.y += ((middlePosition[1] - middleGroupRef.current.position.y) * 0.3)
                 middleGroupRef.current.position.z += ((middlePosition[2] - middleGroupRef.current.position.z) * 0.3)
                 middleGroupRef.current.rotation.set(0, -0.15, -0.1)
-
+                
             }
-    
+            
             // Bottom group starts after 1 second
             if (bottomGroupRef.current && timer > 1.4) {
                 bottomGroupRef.current.position.x += ((bottomPosition[0] - bottomGroupRef.current.position.x) * 0.3)
@@ -62,6 +66,7 @@ const AnimatedGroups = ({ itemActive, setItemActive }: { itemActive: string | nu
                 bottomGroupRef.current.scale.x += (1 - bottomGroupRef.current.scale.x) * 0.1;
                 bottomGroupRef.current.scale.y += (1 - bottomGroupRef.current.scale.y) * 0.1;
                 bottomGroupRef.current.scale.z += (1 - bottomGroupRef.current.scale.z) * 0.1;
+                bottomGroupRef.current.rotation.set(0, 0.15, 0.01)
             }
         } else {
             if (itemActive === 'about') {

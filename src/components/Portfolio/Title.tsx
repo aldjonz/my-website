@@ -62,9 +62,7 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
                     cell.userData.originalRotation.z
                 )
             })
-            
-            // state.camera.position.lerp(new Vector3(0, 0, 5), 0.1)
-            state.camera.lookAt(0, 0, 0)
+
         }
     })
 

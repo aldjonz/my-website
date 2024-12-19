@@ -5,6 +5,7 @@ import AboutHTML from '../About/AboutHTML'
 import ExpertiseHTML from '../Expertise/ExpertiseHTML'
 import PortfolioHTML from '../Portfolio/PortfolioHTML'
 import HoverText from '../ui/HoverText'
+import { Vector3 } from 'three'
 
 const NavCanvas = () => {
     const [itemActive, setItemActive] = useState(null)
