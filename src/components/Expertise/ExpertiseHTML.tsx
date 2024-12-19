@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Expertise.module.css'
 
 const expertiseText = [
@@ -63,12 +63,23 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
     </div>
 )}
 
-const ExpertiseHTML = ({ isLeft, isExploded, textIndex = 0 }: { isLeft: boolean, isExploded: boolean, textIndex: number }) => {
-
+const ExpertiseHTML = ({ isExploded }: { isExploded: boolean }) => {
+    const [textIndex, setTextIndex] = useState(0)
+    const handleScroll = () => {
+        const scrollPosition = window.scrollY
+        const fraction = scrollPosition / window.innerHeight;
+        setTextIndex(Math.floor(fraction))
+      }
+      useEffect(() => {
+        window.addEventListener('scroll', handleScroll)
+        return () => {
+          window.removeEventListener('scroll', handleScroll)
+        }
+      }, [])
   return (
-    <div style={{ position: 'absolute', height: `${expertiseText.length * 100}vh`, width: '100vw', pointerEvents: isExploded ? 'auto' : 'none'   }}>
-        <Section textIndex={textIndex} isLeft={isLeft} position='left'/>
-        <Section textIndex={textIndex} isLeft={isLeft} position='right'/>
+    <div style={{ height: isExploded ? `${expertiseText.length * 100}vh` : '100vh', width: '100vw', pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0, transition: 'opacity 0.5s ease-in-out', scrollSnapAlign: 'start' }}>
+        <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
+        <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
     </div>
   )
 }

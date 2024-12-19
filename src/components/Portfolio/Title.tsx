@@ -3,20 +3,25 @@
 import AnimatedTextWrapper from '@/components/TextAnimationWrapper/TextAnimationWrapper'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { Group, Mesh, Vector3 } from 'three'
 
-export default function Title({ isExploded, setIsExploded }: { isExploded: boolean, setIsExploded: (value: boolean) => void }) {
+export default function Title({ isExploded, setItemActive }: { isExploded: boolean, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
-    const { scene } = useGLTF('/portfolio/portfolio-metalic.glb')
+    const { scene } = useGLTF('/portfolio/portfolio.glb')
     const orbitRadius = 3
 
-    const allCells = scene.children
-        .filter(child => child.name.includes('Text_cell'))
-        .map((cell) => {
-            const mesh = cell as Mesh;
-            return mesh;
-        });
+    const allCells = useMemo(() => 
+        scene.children
+            .filter(child => child.name.includes('Text_cell'))
+            .map((cell) => {
+                const mesh = cell as Mesh;
+                mesh.userData.originalPosition = cell.position.clone()
+                mesh.userData.originalRotation = cell.rotation.clone()
+                return mesh;
+            }),
+        [scene]
+    )
 
     allCells.forEach((cell, index) => {
         const phi = Math.acos(-1 + (2 * index) / allCells.length)
@@ -28,8 +33,8 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
     })
 
     useFrame((state) => {
-        allCells.forEach((cell, index) => {
-            if (isExploded) {
+        if (isExploded) {
+            allCells.forEach((cell, index) => {
                 cell.userData.orbitTheta += cell.userData.orbitSpeed * 0.01
                 
                 const x = orbitRadius * Math.sin(cell.userData.orbitPhi) * Math.cos(cell.userData.orbitTheta)
@@ -41,12 +46,24 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
                 
                 cell.lookAt(0, 0, 0)
                 cell.rotateY(Math.PI)
+            })
+        } else {
+            allCells.forEach((cell, index) => {
+                const x = cell.userData.originalPosition.x
+                const y = cell.userData.originalPosition.y
+                const z = cell.userData.originalPosition.z
+                
+                const targetPos = new Vector3(x, y, z)
+                cell.position.lerp(targetPos, 0.08)
+                
+                cell.rotation.set(
+                    cell.userData.originalRotation.x, 
+                    cell.userData.originalRotation.y, 
+                    cell.userData.originalRotation.z
+                )
+            })
 
-            } else {
-                cell.scale.lerp(new Vector3(1, 1, 1), 0.1)
-                cell.rotation.set(0, 0, 0)
-            }
-        })
+        }
     })
 
     if (!scene) return null
@@ -56,7 +73,7 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
             ref={group}
             onClick={(e) => {
                 e.stopPropagation()
-                setIsExploded(true)
+                setItemActive('portfolio')
             }}
         >
             <AnimatedTextWrapper scene={scene}>
@@ -66,4 +83,4 @@ export default function Title({ isExploded, setIsExploded }: { isExploded: boole
     )
 }
 
-useGLTF.preload('/portfolio/portfolio-metalic.glb')
+useGLTF.preload('/portfolio/portfolio.glb')

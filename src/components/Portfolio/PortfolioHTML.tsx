@@ -11,6 +11,7 @@ import ThreeCanvas from '../ui/ThreeCanvas'
 import MobilePhoneModel from './MobilePhoneModel'
 import PointerTrackerGroup from '../ui/PointerTrackerGroup'
 import { contentArray } from '@/constants/constants'
+import { usePortfolio } from '@/context/portfolioContext'
 
 const container = {
   hidden: { opacity: 0, height: 0, transition: { staggerChildren: 0.05 } },
@@ -43,9 +44,10 @@ type Props = {
   setSelectedProjectIndex: (index: number | null) => void
 }
 
-const PortfolioHTML = ({ selectedProjectIndex, setSelectedProjectIndex }: Props) => {
+const PortfolioHTML = () => {
+  const { selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
   const currentItem = contentArray[selectedProjectIndex]
-  return (
+    return (
     <>
         <div className={styles.blurBg} style={{ opacity: Boolean(currentItem) ? 1 : 0, pointerEvents: Boolean(currentItem) ? 'auto' : 'none', transitionDuration: '0.4s'  }} />
         {currentItem && (

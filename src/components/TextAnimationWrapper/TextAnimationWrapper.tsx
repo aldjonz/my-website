@@ -1,7 +1,7 @@
 "use client"
 
 import { useFrame, useThree } from '@react-three/fiber'
-import { Mesh, Raycaster, Vector3, MathUtils, Group, Object3DEventMap } from 'three'
+import { Mesh, Raycaster, Vector3, MathUtils, Group, Object3DEventMap, Quaternion } from 'three'
 
 export default function TextAnimationWrapper({ scene, children }: { scene: Group<Object3DEventMap>, children: React.ReactNode }) {
     if (!scene) return null
@@ -19,12 +19,23 @@ export default function TextAnimationWrapper({ scene, children }: { scene: Group
 
     useFrame((state) => {
         raycaster.setFromCamera(pointer, camera)
-        const allIntersections = raycaster.intersectObject(cube)
+        
+        const worldPosition = cube.getWorldPosition(new Vector3())
+        const worldScale = cube.getWorldScale(new Vector3())
+        const worldRotation = cube.getWorldQuaternion(new Quaternion())
+        
+        const worldCube = cube.clone()
+        worldCube.position.copy(worldPosition)
+        worldCube.scale.copy(worldScale)
+        worldCube.quaternion.copy(worldRotation)
+        
+        const allIntersections = raycaster.intersectObject(worldCube)
         const hitPoint = allIntersections[0]?.point
 
         allCells.forEach((cell, index) => {
             if (hitPoint) {
-                const distance = cell.position.distanceTo(hitPoint)
+                const localHitPoint = cell.parent?.worldToLocal(hitPoint.clone()) || hitPoint
+                const distance = cell.position.distanceTo(localHitPoint)
                 const influence = 1
                 
                 if (distance < influence) {
