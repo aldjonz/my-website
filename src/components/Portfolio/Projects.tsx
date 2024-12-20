@@ -1,9 +1,11 @@
+import { usePortfolio } from '@/context/portfolioContext'
 import { useFrame } from '@react-three/fiber'
 import React, { useRef, useMemo } from 'react'
 import { Group, Mesh, MeshBasicMaterial, Vector3, Color, IcosahedronGeometry } from 'three'
 
 const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean, setSelectedProjectIndex: (index: number | null) => void }) => {
     const group = useRef<Group>(null)
+    const { viewedProjects } = usePortfolio()
     const orbitRadius = 4
 
     const projectNodes = useMemo(() => 
@@ -67,7 +69,10 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
                     const targetScale = node.userData.isHovered ? 1.3 : 1
                     node.scale.lerp(node.userData.originalScale.clone().multiplyScalar(targetScale), 0.1)
 
-                    const targetColor = node.userData.isHovered ? 0x631814 : 0x00ffff
+                    let targetColor = 0x00ffff
+                    if (viewedProjects.has(node.userData.index) || node.userData.isHovered) {
+                        targetColor = 0x631814
+                    }
                     material.color.lerp(new Color(targetColor), 0.3)
 
                 }
