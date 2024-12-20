@@ -6,32 +6,53 @@ type Props = {}
 const TopographyBg = (props: Props) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 })
+  const [isActive, setIsActive] = useState(true)
+  let inactivityTimer: NodeJS.Timeout
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY })
+      setIsActive(true)
+      
+      // Clear existing timer and set new one
+      clearTimeout(inactivityTimer)
+      inactivityTimer = setTimeout(() => {
+        setIsActive(false)
+      }, 1000) // 1 second timeout
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      clearTimeout(inactivityTimer)
+    }
   }, [])
 
   useEffect(() => {
-    const smoothFactor = 0.08
+    const smoothFactor = 0.1
     
     const animatePosition = () => {
-      setSmoothPosition(prev => ({
-        x: prev.x + (mousePosition.x - prev.x) * smoothFactor,
-        y: prev.y + (mousePosition.y - prev.y) * smoothFactor
-      }))
-      requestAnimationFrame(animatePosition)
+      const dx = mousePosition.x - smoothPosition.x
+      const dy = mousePosition.y - smoothPosition.y
+      
+      // Only continue animation if we're not extremely close to target
+      if (Math.abs(dx) > 0.01 || Math.abs(dy) > 0.01) {
+        setSmoothPosition(prev => ({
+          x: prev.x + dx * smoothFactor,
+          y: prev.y + dy * smoothFactor
+        }))
+        requestAnimationFrame(animatePosition)
+      } else {
+        // Snap to final position
+        setSmoothPosition(mousePosition)
+      }
     }
 
     const animationFrame = requestAnimationFrame(animatePosition)
     return () => cancelAnimationFrame(animationFrame)
-  }, [mousePosition])
+  }, [mousePosition, smoothPosition])
 
-  const pathColour = 'rgba(17,44,245,'
+  const pathColour = 'rgba(68, 51, 255,'
   return (
     <div>
       <svg style={{ 
@@ -51,7 +72,7 @@ const TopographyBg = (props: Props) => {
             >
               <animate 
                 attributeName="baseFrequency" 
-                dur="120s" 
+                dur="90" 
                 values="0.01;0.015;0.01" 
                 repeatCount="indefinite" 
               />
@@ -66,8 +87,8 @@ const TopographyBg = (props: Props) => {
               <stop offset="100%" stopColor="black" />
             </radialGradient>
             <circle 
-              cx={mousePosition.x} 
-              cy={mousePosition.y} 
+              cx={smoothPosition.x} 
+              cy={smoothPosition.y} 
               r="100%" 
               fill="url(#maskGradient)" 
             />
@@ -87,11 +108,16 @@ const TopographyBg = (props: Props) => {
         }}
       >
         <circle
-          cx={mousePosition.x}
-          cy={mousePosition.y}
+          cx={smoothPosition.x}
+          cy={smoothPosition.y}
           r={window.innerWidth / 16}
           fill="red"
           filter="url(#wavy)"
+          style={{
+            opacity: isActive ? 1 : 0,
+            transition: 'opacity 0.6s ease-in-out',
+            transitionDelay: '0.6s'
+          }}
         />
       </svg>
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh' }}>
@@ -120,10 +146,13 @@ const TopographyBg = (props: Props) => {
             left: 0,
             width: '100%',
             height: '100%',
-            background: `radial-gradient(circle at ${mousePosition.x}px ${mousePosition.y}px, 
+            opacity: isActive ? 1 : 0,
+            transition: 'opacity 0.6s ease-in-out',
+            transitionDelay: '0.6s',
+            background: `radial-gradient(circle at ${smoothPosition.x}px ${smoothPosition.y}px, 
               ${pathColour}1) 0%, 
-              ${pathColour}1) 9%, 
-              ${pathColour}0) 10%
+              ${pathColour}1) 7.5%, 
+              ${pathColour}0) 8.5%
             )`,
           }}
         />
