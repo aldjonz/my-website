@@ -6,7 +6,7 @@ type Props = {}
 const TopographyBg = (props: Props) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 })
-  const [isActive, setIsActive] = useState(true)
+  const [isActive, setIsActive] = useState(false)
   let inactivityTimer: NodeJS.Timeout
 
   useEffect(() => {
@@ -30,27 +30,29 @@ const TopographyBg = (props: Props) => {
 
   useEffect(() => {
     const smoothFactor = 0.1
-    
+    let animationFrameId: number
+
     const animatePosition = () => {
-      const dx = mousePosition.x - smoothPosition.x
-      const dy = mousePosition.y - smoothPosition.y
+      setSmoothPosition(prev => {
+        const dx = mousePosition.x - prev.x
+        const dy = mousePosition.y - prev.y
+        
+        // Only update if we're not extremely close to target
+        if (Math.abs(dx) > 0.01 || Math.abs(dy) > 0.01) {
+          return {
+            x: prev.x + dx * smoothFactor,
+            y: prev.y + dy * smoothFactor
+          }
+        }
+        return mousePosition
+      })
       
-      // Only continue animation if we're not extremely close to target
-      if (Math.abs(dx) > 0.01 || Math.abs(dy) > 0.01) {
-        setSmoothPosition(prev => ({
-          x: prev.x + dx * smoothFactor,
-          y: prev.y + dy * smoothFactor
-        }))
-        requestAnimationFrame(animatePosition)
-      } else {
-        // Snap to final position
-        setSmoothPosition(mousePosition)
-      }
+      animationFrameId = requestAnimationFrame(animatePosition)
     }
 
-    const animationFrame = requestAnimationFrame(animatePosition)
-    return () => cancelAnimationFrame(animationFrame)
-  }, [mousePosition, smoothPosition])
+    animationFrameId = requestAnimationFrame(animatePosition)
+    return () => cancelAnimationFrame(animationFrameId)
+  }, [mousePosition])
 
   const pathColour = 'rgba(68, 51, 255,'
   return (
@@ -136,7 +138,7 @@ const TopographyBg = (props: Props) => {
         height: '100vh', 
         backgroundColor: '#000', 
         mixBlendMode: 'multiply',
-        opacity: 0.4,
+        opacity: 0.2,
         pointerEvents: 'none',
       }}>
         <div 
@@ -147,7 +149,7 @@ const TopographyBg = (props: Props) => {
             width: '100%',
             height: '100%',
             opacity: isActive ? 1 : 0,
-            transition: 'opacity 0.6s ease-in-out',
+            transition: 'opacity 1.6s ease-in-out',
             transitionDelay: '0.6s',
             background: `radial-gradient(circle at ${smoothPosition.x}px ${smoothPosition.y}px, 
               ${pathColour}1) 0%, 
