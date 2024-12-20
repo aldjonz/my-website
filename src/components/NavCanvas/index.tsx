@@ -61,7 +61,9 @@ const NavCanvas = () => {
                 />
             )}
         </ScrollableWrapper>
-        <PortfolioHTML />
+        <PortfolioHTML  
+            isActive={itemActive === 'portfolio'}
+        />
         {itemActive && (
             <div onClick={() => setItemActive(null)} style={{ position: 'fixed', top: 0, left: 10, zIndex: 10000, }}>
                 <HoverText title={"Home"} />

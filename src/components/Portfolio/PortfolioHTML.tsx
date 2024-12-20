@@ -11,6 +11,7 @@ import PointerTrackerGroup from '../ui/PointerTrackerGroup'
 import { contentArray } from '@/constants/constants'
 import { usePortfolio } from '@/context/portfolioContext'
 import { Center } from '@react-three/drei'
+import TextScramble from '../ui/TextScramble'
 
 const container = {
   hidden: { opacity: 0, height: 0, transition: { staggerChildren: 0.05 } },
@@ -43,11 +44,29 @@ type Props = {
   setSelectedProjectIndex: (index: number | null) => void
 }
 
-const PortfolioHTML = () => {
+const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
   const { selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
   const currentItem = contentArray[selectedProjectIndex]
   return (
     <>
+      {isActive && <div 
+        style={{ 
+          position: 'fixed',
+          bottom: '16vh',
+          left: '2vw',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000,
+          color: 'white',
+          fontSize: '1.2em',
+          fontWeight: '200',
+          fontFamily: 'Major Mono Display',
+          letterSpacing: '0.01px',
+        }}
+      >
+        <TextScramble text="Click the blue orbs to view my projects" />
+      </div>}
       <div className={styles.blurBg} style={{ opacity: Boolean(currentItem) ? 1 : 0, pointerEvents: Boolean(currentItem) ? 'auto' : 'none', transitionDuration: '0.4s'  }} />
       {currentItem && (
           <>
