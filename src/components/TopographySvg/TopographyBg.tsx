@@ -47,9 +47,16 @@ const TopographyBg = (props: Props) => {
               type="turbulence" 
               baseFrequency="0.01" 
               numOctaves="3" 
-              seed="2"
-            />
-            <feDisplacementMap in="SourceGraphic" scale="50" />
+              seed="200"
+            >
+              <animate 
+                attributeName="baseFrequency" 
+                dur="120s" 
+                values="0.01;0.015;0.01" 
+                repeatCount="indefinite" 
+              />
+            </feTurbulence>
+            <feDisplacementMap in="SourceGraphic" scale="60" />
           </filter>
           <mask id="gradientMask">
             <radialGradient id="maskGradient">
@@ -82,7 +89,7 @@ const TopographyBg = (props: Props) => {
         <circle
           cx={mousePosition.x}
           cy={mousePosition.y}
-          r={window.innerWidth / 12}
+          r={window.innerWidth / 16}
           fill="red"
           filter="url(#wavy)"
         />
