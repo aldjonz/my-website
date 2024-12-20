@@ -98,9 +98,8 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 ref={topGroupRef}
                 position={[-startX,  topPosition[1] - 2, 0]} 
                 rotation={[0, 0.15, 0.1]}
-                // visible={itemActive !== 'portfolio'}
             >
-                <About setItemActive={setItemActive} isActive={itemActive === 'about'} />
+                <About setItemActive={setItemActive} isActive={itemActive === 'about'} textIndex={textIndex}  />
             </group>
 
             <group 
@@ -115,7 +114,6 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 ref={bottomGroupRef}
                 position={[-startX, bottomPosition[1] - 2, 0]} 
                 rotation={[0, 0.15, 0.01]}
-                // visible={itemActive !== 'portfolio'}
             >
                 <Expertise setItemActive={setItemActive} isActive={itemActive === 'expertise'} textIndex={textIndex} />
             </group>

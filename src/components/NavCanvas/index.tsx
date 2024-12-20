@@ -33,6 +33,7 @@ const NavCanvas = () => {
           clearTimeout(scrollTimeoutRef.current)
         }
       }, [])
+
   return (
     <>
         <div style={{ position: 'fixed', height: '100vh', top: 0, left: 0, width: '100vw'}}>
