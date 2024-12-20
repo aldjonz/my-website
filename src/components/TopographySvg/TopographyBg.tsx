@@ -54,7 +54,7 @@ const TopographyBg = (props: Props) => {
     return () => cancelAnimationFrame(animationFrameId)
   }, [mousePosition])
 
-  const pathColour = 'rgba(68, 51, 255,'
+  const pathColour = 'rgba(0, 0, 255,'
 
   const spotlightTransition = {
     transform: isActive ? 'scale(1)' : 'scale(0)',
@@ -121,8 +121,8 @@ const TopographyBg = (props: Props) => {
         <circle
           cx={smoothPosition.x}
           cy={smoothPosition.y}
-          r={window.innerWidth / 16}
-          fill="red"
+          r={window.innerWidth / 14}
+          fill="#631814"
           filter="url(#wavy)"
         />
       </svg>
