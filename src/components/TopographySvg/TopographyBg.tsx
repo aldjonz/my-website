@@ -55,6 +55,13 @@ const TopographyBg = (props: Props) => {
   }, [mousePosition])
 
   const pathColour = 'rgba(68, 51, 255,'
+
+  const spotlightTransition = {
+    transform: isActive ? 'scale(1)' : 'scale(0)',
+    transformOrigin: `${smoothPosition.x}px ${smoothPosition.y}px`,
+    transition: 'transform 0.6s ease-in-out',
+    transitionDelay: '1s'
+  }
   return (
     <div>
       <svg style={{ 
@@ -106,7 +113,9 @@ const TopographyBg = (props: Props) => {
           left: 0, 
           height: '100vh', 
           width: '100vw',
-          pointerEvents: 'none'
+          pointerEvents: 'none',
+          ...spotlightTransition
+
         }}
       >
         <circle
@@ -115,11 +124,6 @@ const TopographyBg = (props: Props) => {
           r={window.innerWidth / 16}
           fill="red"
           filter="url(#wavy)"
-          style={{
-            opacity: isActive ? 1 : 0,
-            transition: 'opacity 0.6s ease-in-out',
-            transitionDelay: '0.6s'
-          }}
         />
       </svg>
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh' }}>
@@ -148,9 +152,7 @@ const TopographyBg = (props: Props) => {
             left: 0,
             width: '100%',
             height: '100%',
-            opacity: isActive ? 1 : 0,
-            transition: 'opacity 1.6s ease-in-out',
-            transitionDelay: '0.6s',
+            ...spotlightTransition,
             background: `radial-gradient(circle at ${smoothPosition.x}px ${smoothPosition.y}px, 
               ${pathColour}1) 0%, 
               ${pathColour}1) 7.5%, 
