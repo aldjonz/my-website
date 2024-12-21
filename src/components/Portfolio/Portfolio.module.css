@@ -116,6 +116,7 @@
   transition: 1s ease-in-out;
   animation: activeTitle 2s forwards;
   animation-delay: 2s;
+  padding-bottom: 15px;
 }
 
 @keyframes activeTitle {

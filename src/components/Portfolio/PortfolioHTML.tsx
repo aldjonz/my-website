@@ -79,9 +79,15 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                         <span className="accent">{currentItem.type}</span>
                       </h3>
                       <h3 className={styles.title}>{currentItem.title}</h3>
-                      <p style={{ borderTop: '1px solid black', padding: '20px 0' }}>
-                        {currentItem.description}
-                      </p>
+                      <div style={{ display: 'flex', flexDirection: 'column', padding: '15px 0', borderTop: '1px solid black' }}>
+                        {currentItem.description.map((paragraph, index) => {
+                          return (
+                            <p key={index}>
+                              {paragraph}
+                            </p>
+                          )
+                        })}
+                      </div>
                       <div className={styles.techStack}>
                         {currentItem.techStack.map((tech, index) => (
                           <p key={index}>{tech}</p>
