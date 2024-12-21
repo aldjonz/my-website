@@ -9,20 +9,22 @@ import { Vector3 } from 'three'
 import ScrollableWrapper from '../ui/ScrollableWrapper'
 
 const NavCanvas = () => {
-    const [itemActive, setItemActive] = useState(null)
-
+    const [itemActive, setItemActive] = useState<string | null>(null)
     const [textIndex, setTextIndex] = useState(0)
     const [isScrolling, setIsScrolling] = useState(false);
     const scrollContainerRef = useRef<HTMLDivElement>(null);
     const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
     const handleScroll = () => {
+        if (!scrollContainerRef.current) return
         const scrollPosition = scrollContainerRef.current?.scrollTop
         const fraction = scrollPosition / scrollContainerRef.current?.clientHeight;
         setTextIndex(Math.floor(fraction))
         setIsScrolling(true);
         
-        clearTimeout(scrollTimeoutRef.current);
+        if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
+        }
         scrollTimeoutRef.current = setTimeout(() => {
             setIsScrolling(false);
         }, 300) as any;
@@ -30,7 +32,9 @@ const NavCanvas = () => {
 
     useEffect(() => {
         return () => {
-          clearTimeout(scrollTimeoutRef.current)
+          if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
+          }
         }
       }, [])
 

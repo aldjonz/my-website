@@ -7,9 +7,9 @@ import { Group, Vector3 } from 'three'
 import { OrbitControls } from '@react-three/drei'
 
 const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: string | null, setItemActive: (value: string | null) => void, textIndex: number  }) => {
-    const topGroupRef = useRef<Group>(null)
-    const middleGroupRef = useRef<Group>(null)
-    const bottomGroupRef = useRef<Group>(null)
+    const topGroupRef = useRef<Group | null>(null)
+    const middleGroupRef = useRef<Group | null>(null)
+    const bottomGroupRef = useRef<Group | null>(null)
     const [timer, setTimer] = useState(0)
 
     const topPosition = [0, 1.6, 0]
@@ -18,16 +18,18 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
 
     const startX = 15
 
-    const animateActiveItem = (group: Group, group1: Group, group2: Group, group1Y: number, group2Y: number) => {
-        group.current.position.x += (0 - group.current.position.x) * 0.1;
-        group.current.position.y += (0 - group.current.position.y) * 0.1;
-        group.current.rotation.x += (0 - group.current.rotation.x) * 0.1;
-        group.current.rotation.y += (0 - group.current.rotation.y) * 0.1;
-        group.current.rotation.z += (0 - group.current.rotation.z) * 0.1;
+    const animateActiveItem = (group: Group | null, group1: Group | null, group2: Group | null, group1Y: number, group2Y: number) => {
+        if (group && group1 && group2) {
+            group.position.x += (0 - group.position.x) * 0.1;
+            group.position.y += (0 - group.position.y) * 0.1;
+            group.rotation.x += (0 - group.rotation.x) * 0.1;
+            group.rotation.y += (0 - group.rotation.y) * 0.1;
+            group.rotation.z += (0 - group.rotation.z) * 0.1;
 
-        // Animate others out of view
-        group1.current.position.y += (group1Y - group1.current.position.y) * 0.1;
-        group2.current.position.y += (group2Y - group2.current.position.y) * 0.1;
+            // Animate others out of view
+            group1.position.y += (group1Y - group1.position.y) * 0.1;
+            group2.position.y += (group2Y - group2.position.y) * 0.1;
+        }
     }
 
     useFrame((state, delta) => {
@@ -36,10 +38,9 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
         }
 
         if (!itemActive) {
-                        
             state.camera.position.lerp(new Vector3(0, 0, 5), 0.1)
             state.camera.lookAt(0, 0, 0)
-            // Top group starts immediately
+
             if (topGroupRef.current && timer > 0.8) {
                 topGroupRef.current.position.x += ((topPosition[0] - topGroupRef.current.position.x) * 0.3)
                 topGroupRef.current.position.y += ((topPosition[1] - topGroupRef.current.position.y) * 0.3)
@@ -48,17 +49,14 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 topGroupRef.current.scale.z += (1 - topGroupRef.current.scale.z) * 0.1;
                 topGroupRef.current.rotation.set(0, 0.15, 0.1)
             }
-    
-            // Middle group starts after 0.5 seconds
+
             if (middleGroupRef.current && timer > 1.1) {
                 middleGroupRef.current.position.x += ((middlePosition[0] - middleGroupRef.current.position.x) * 0.3)
                 middleGroupRef.current.position.y += ((middlePosition[1] - middleGroupRef.current.position.y) * 0.3)
                 middleGroupRef.current.position.z += ((middlePosition[2] - middleGroupRef.current.position.z) * 0.3)
                 middleGroupRef.current.rotation.set(0, -0.15, -0.1)
-                
             }
-            
-            // Bottom group starts after 1 second
+
             if (bottomGroupRef.current && timer > 1.4) {
                 bottomGroupRef.current.position.x += ((bottomPosition[0] - bottomGroupRef.current.position.x) * 0.3)
                 bottomGroupRef.current.position.y += ((bottomPosition[1] - bottomGroupRef.current.position.y) * 0.3)
@@ -70,34 +68,38 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
             }
         } else {
             if (itemActive === 'about') {
-                // Animate top group to center
-                animateActiveItem(topGroupRef, middleGroupRef, bottomGroupRef, -15, -15)
+                animateActiveItem(topGroupRef.current, middleGroupRef.current, bottomGroupRef.current, -15, -15)
             } else if (itemActive === 'portfolio') {
-                // Animate middle group to center
-                animateActiveItem(middleGroupRef, topGroupRef, bottomGroupRef, 15, -15)
-                if (middleGroupRef.current.position.z > -4) {
+                animateActiveItem(middleGroupRef.current, topGroupRef.current, bottomGroupRef.current, 15, -15)
+                if (middleGroupRef.current && middleGroupRef.current.position.z > -4) {
                     middleGroupRef.current.position.z += (-2 - middleGroupRef.current.position.z) * 0.1;
-                    topGroupRef.current.scale.x += (0 - topGroupRef.current.scale.x) * 0.1;
-                    topGroupRef.current.scale.y += (0 - topGroupRef.current.scale.y) * 0.1;
-                    topGroupRef.current.scale.z += (0 - topGroupRef.current.scale.z) * 0.1;
-                    bottomGroupRef.current.scale.x += (0 - bottomGroupRef.current.scale.x) * 0.1;
-                    bottomGroupRef.current.scale.y += (0 - bottomGroupRef.current.scale.y) * 0.1;
-                    bottomGroupRef.current.scale.z += (0 - bottomGroupRef.current.scale.z) * 0.1;
+                    if (topGroupRef.current) {
+                        topGroupRef.current.scale.x += (0 - topGroupRef.current.scale.x) * 0.1;
+                        topGroupRef.current.scale.y += (0 - topGroupRef.current.scale.y) * 0.1;
+                        topGroupRef.current.scale.z += (0 - topGroupRef.current.scale.z) * 0.1;
+                    }
+                    if (bottomGroupRef.current) {
+                        bottomGroupRef.current.scale.x += (0 - bottomGroupRef.current.scale.x) * 0.1;
+                        bottomGroupRef.current.scale.y += (0 - bottomGroupRef.current.scale.y) * 0.1;
+                        bottomGroupRef.current.scale.z += (0 - bottomGroupRef.current.scale.z) * 0.1;
+                    }
                 }
-                
             } else if (itemActive === 'expertise') {
-                // Animate bottom group to center
-                animateActiveItem(bottomGroupRef, topGroupRef, middleGroupRef, 15, 15)
+                animateActiveItem(bottomGroupRef.current, topGroupRef.current, middleGroupRef.current, 15, 15)
             }
         }
     })
 
-    const handlePointerOver = (group: Group) => {
-        document.body.style.cursor = 'pointer'
+    const handlePointerOver = (group: Group | null) => {
+        if (group) {
+            document.body.style.cursor = 'pointer';
+        }
     }
 
-    const handlePointerOut = (group: Group) => {
-        document.body.style.cursor = 'default'
+    const handlePointerOut = (group: Group | null) => {
+        if (group) {
+            document.body.style.cursor = 'default';
+        }
     }
 
     return (
@@ -106,8 +108,8 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 ref={topGroupRef}
                 position={[-startX,  topPosition[1] - 2, 0]} 
                 rotation={[0, 0.15, 0.1]}
-                onPointerOver={() => handlePointerOver(topGroupRef)}
-                onPointerOut={() => handlePointerOut(topGroupRef)}
+                onPointerOver={() => handlePointerOver(topGroupRef.current)}
+                onPointerOut={() => handlePointerOut(topGroupRef.current)}
             >
                 <About setItemActive={setItemActive} isActive={itemActive === 'about'} textIndex={textIndex}  />
             </group>
@@ -116,8 +118,8 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 ref={middleGroupRef}
                 position={[startX, middlePosition[1] - 2, 0]} 
                 rotation={[0, -0.15, -0.1]}
-                onPointerOver={() => handlePointerOver(middleGroupRef)}
-                onPointerOut={() => handlePointerOut(middleGroupRef)}
+                onPointerOver={() => handlePointerOver(middleGroupRef.current)}
+                onPointerOut={() => handlePointerOut(middleGroupRef.current)}
             >
                 <Portfolio setItemActive={setItemActive} isActive={itemActive === 'portfolio'} />
             </group>
@@ -126,8 +128,8 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 ref={bottomGroupRef}
                 position={[-startX, bottomPosition[1] - 2, 0]} 
                 rotation={[0, 0.15, 0.01]}
-                onPointerOver={() => handlePointerOver(bottomGroupRef)}
-                onPointerOut={() => handlePointerOut(bottomGroupRef)}
+                onPointerOver={() => handlePointerOver(bottomGroupRef.current)}
+                onPointerOut={() => handlePointerOut(bottomGroupRef.current)}
             >
                 <Expertise setItemActive={setItemActive} isActive={itemActive === 'expertise'} textIndex={textIndex} />
             </group>
