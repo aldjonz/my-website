@@ -60,6 +60,14 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
         }
     })
 
+    const handlePointerOver = () => {
+        document.body.style.cursor = 'grab'
+    }
+
+    const handlePointerOut = () => {
+        document.body.style.cursor = 'default'
+    }
+
     if (!scene) return null
 
     return (
@@ -69,6 +77,8 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
                 e.stopPropagation()
                 setItemActive('portfolio')
             }}
+            onPointerOver={handlePointerOver}
+            onPointerOut={handlePointerOut}
         >
             <AnimatedTextWrapper scene={scene}>
                 <primitive object={scene} />

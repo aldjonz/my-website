@@ -91,7 +91,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
     })
 
     const handlePointerOver = (group: Group | null) => {
-        if (group) {
+        if (group && itemActive === null) {
             document.body.style.cursor = 'pointer';
         }
     }
