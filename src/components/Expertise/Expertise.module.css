@@ -7,13 +7,11 @@
     transition: opacity 1.2s ease-in-out;
     scroll-snap-align: start;
 }
-
 .section {
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-
 }
 .textContainer {
     display: flex;
@@ -23,7 +21,6 @@
     padding: 60px 20px;
     color: white;
     background-color: rgba(0, 0, 0, 0.2);
-
 }
 .skillsContainer {
     display: flex;
@@ -42,4 +39,12 @@
     border-radius: 5px;
     margin: 0;
     padding: 10px;
+}
+.skill {
+    pointer-events: all;
+    color: rgba(255, 255, 255, 0.6);
+    transition: color 0.2s ease-in-out;
+}
+.skill:hover {
+    color: rgba(255, 255, 255, 1);
 }

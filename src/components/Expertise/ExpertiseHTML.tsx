@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import styles from './Expertise.module.css'
+import AnimatedPixelBg from '../ui/AnimatedPixelBg/AnimatedPixelBg';
 
 const expertiseText = [
     {
@@ -24,7 +25,6 @@ const expertiseText = [
     },
 ]
 
-
 const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: boolean, position: string}) => {  
     let opacity:number = 0;
     let shouldShow:boolean = false;
@@ -47,41 +47,44 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
     }
     
     return (
-    <div className={styles.sectionContainer} style={{ opacity: opacity, right: position === 'left' ? 'auto' : 0 }}>
-        <div className={styles.section}>
-            {shouldShow ? (
-                <div className={styles.textContainer} style={{ ...border  }}>
-                    <h1 className={`accent ${styles.title}`} style={{ ...titleStyles, }}>{expertiseText[textIndex].title}</h1>
-                    <div className={styles.skillsContainer} style={{ justifyContent: position === 'left' ? 'right' : 'left' }}>
-                        {expertiseText[textIndex].skills.map((skill, index) => (
-                            <h2 key={index}>{skill} {index !== expertiseText[textIndex].skills.length - 1 && '|'}</h2>
-                        ))}
+        <div className={styles.sectionContainer} style={{ opacity: opacity, right: position === 'left' ? 'auto' : 0 }}>
+            <div className={styles.section}>
+                {shouldShow ? (
+                    <div className={styles.textContainer} style={{ ...border  }}>
+                        <h1 className={`accent ${styles.title}`} style={{ ...titleStyles, }}>{expertiseText[textIndex].title}</h1>
+                        <div className={styles.skillsContainer} style={{ justifyContent: position === 'left' ? 'right' : 'left' }}>
+                            {expertiseText[textIndex].skills.map((skill, index) => (
+                                <>
+                                    <h2 key={index} className={styles.skill}>{skill}</h2>
+                                    {index !== expertiseText[textIndex].skills.length - 1 && <h2 className={styles.skillSeparator}>|</h2>}
+                                </>
+                            ))}
+                        </div>
                     </div>
-                </div>
-            ) :<></>}
-        </div>  
-    </div>
+                ) :<></>}
+            </div>  
+        </div>
 )}
 
-const ExpertiseHTML = ({ isExploded }: { isExploded: boolean }) => {
-    const [textIndex, setTextIndex] = useState(0)
-    const handleScroll = () => {
-        const scrollPosition = window.scrollY
-        const fraction = scrollPosition / window.innerHeight;
-        setTextIndex(Math.floor(fraction))
-      }
-      useEffect(() => {
-        window.addEventListener('scroll', handleScroll)
-        return () => {
-          window.removeEventListener('scroll', handleScroll)
-        }
-      }, [])
-  return (
-    <div style={{ height: isExploded ? `${expertiseText.length * 100}vh` : '100vh', width: '100vw', pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0, transition: 'opacity 0.5s ease-in-out', scrollSnapAlign: 'start' }}>
-        <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
-        <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
-    </div>
-  )
-}
+const ExpertiseHTML = ({ textIndex }: { textIndex: number }) => {
+    return (
+        <>
+            {/* <div style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none' }}>
+                <AnimatedPixelBg height={window.innerHeight} width={window.innerWidth} shouldAnimate={true} />
+            </div> */}
+            <div>
+                {Array.from({ length: expertiseText.length }, (_, index) => {
+                    return (
+                        <div style={{ height: '100vh', width: '100vw', scrollSnapAlign: 'start', }} />
+                    )
+                })}
+
+
+                <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
+                <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
+            </div>
+        </>
+    );  
+};
 
 export default ExpertiseHTML

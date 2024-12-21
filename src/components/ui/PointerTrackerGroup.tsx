@@ -1,9 +1,15 @@
 import { useRef, useEffect } from 'react'
-import { Mesh, Vector3, Vector2 } from 'three'
+import { Group, Vector2, Vector3 } from 'three'
 import { useFrame, useThree } from '@react-three/fiber'
 
-const PointerTrackerGroup = ({ children }: { children: React.ReactNode }) => {
-    const meshRef = useRef<Mesh>(null)
+const PointerTrackerGroup = ({ 
+  children, 
+  visible = true 
+}: { 
+  children: React.ReactNode,
+  visible?: boolean
+}) => {
+    const meshRef = useRef<Group>(null)
     const { viewport } = useThree()
     const mouse = useRef(new Vector2())
     const target = useRef(new Vector3())
@@ -54,9 +60,9 @@ const PointerTrackerGroup = ({ children }: { children: React.ReactNode }) => {
         currentRotation.y = Math.max(Math.min(currentRotation.y, maxRotation), -maxRotation)
     })
     return (
-        <mesh ref={meshRef}>
+        <group ref={meshRef} visible={visible}>
             {children}
-        </mesh>
+        </group>
     )
 }
 

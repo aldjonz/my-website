@@ -1,7 +1,7 @@
 .contactContainer {
     position: fixed;
     top: 0;
-    right: 10px;
+    right: 25px;
     cursor: pointer;
-    z-index: 10000;
+    z-index: 100;
 }

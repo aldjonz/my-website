@@ -1,20 +1,7 @@
 import React, { Suspense, useState, useEffect, useRef } from 'react'
 import Title from './Title'
 
-const Expertise = ({ setItemActive, isActive }: { setItemActive: (value: string) => void, isActive: boolean }) => {
-  const [textIndex, setTextIndex] = useState(0)
-  const handleScroll = () => {
-      const scrollPosition = window.scrollY
-      const fraction = scrollPosition / window.innerHeight;
-      setTextIndex(Math.floor(fraction))
-    }
-    useEffect(() => {
-      window.addEventListener('scroll', handleScroll)
-      return () => {
-        window.removeEventListener('scroll', handleScroll)
-      }
-    }, [])
-
+const Expertise = ({ setItemActive, isActive, textIndex }: { setItemActive: (value: string) => void, isActive: boolean, textIndex: number }) => {
   return (
     <Suspense fallback={null}>
         <Title 

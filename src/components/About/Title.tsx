@@ -15,7 +15,7 @@ const ANIMATION_CONSTANTS = {
     POSITION_MULTIPLIER: 2
 }
 
-export default function Title({ isExploded, setItemActive }: { isExploded: boolean, setItemActive: (value: string) => void }) {
+export default function Title({ isExploded, setItemActive, textIndex }: { isExploded: boolean, setItemActive: (value: string) => void, textIndex: number }) {
     const group = useRef<Group>(null)
     const originalGroupRotation = useRef(new Vector3(0, 0, 0))
     const { scene } = useGLTF('/about/about.glb')
@@ -42,16 +42,14 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
             if (!ticking) {
                 requestAnimationFrame(() => {
                     lastScrollRef.current = scrollRef.current
-                    scrollRef.current = window.scrollY
+                    scrollRef.current = window.innerHeight * textIndex
                     ticking = false
                 })
                 ticking = true
             }
         }
-
-        window.addEventListener('scroll', handleScroll, { passive: true })
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
+        handleScroll()
+    }, [textIndex])
 
     useEffect(() => {
         targetPositions.current = allCells.map(() => new Vector3())
@@ -96,7 +94,6 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
                 
                 const targetPos = new Vector3(x, y, z)
                 cell.position.lerp(targetPos, 0.08)
-                cell.rotation.set(cell.userData.originalRotation.x, cell.userData.originalRotation.y, cell.userData.originalRotation.z)
             })
             if (group.current) {
                 group.current.rotation.set(originalGroupRotation.current.x, originalGroupRotation.current.y, originalGroupRotation.current.z)

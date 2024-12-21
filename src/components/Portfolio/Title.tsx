@@ -55,16 +55,18 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
                 
                 const targetPos = new Vector3(x, y, z)
                 cell.position.lerp(targetPos, 0.08)
-                
-                cell.rotation.set(
-                    cell.userData.originalRotation.x, 
-                    cell.userData.originalRotation.y, 
-                    cell.userData.originalRotation.z
-                )
             })
 
         }
     })
+
+    const handlePointerOver = () => {
+        document.body.style.cursor = 'grab'
+    }
+
+    const handlePointerOut = () => {
+        document.body.style.cursor = 'default'
+    }
 
     if (!scene) return null
 
@@ -75,6 +77,8 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
                 e.stopPropagation()
                 setItemActive('portfolio')
             }}
+            onPointerOver={handlePointerOver}
+            onPointerOut={handlePointerOut}
         >
             <AnimatedTextWrapper scene={scene}>
                 <primitive object={scene} />

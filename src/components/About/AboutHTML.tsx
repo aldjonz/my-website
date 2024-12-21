@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React from 'react'
 import styles from './About.module.css'
 import { email } from '@/constants/constants';
 
@@ -21,69 +21,40 @@ const aboutText = [
     ]
 ]
 
-const AboutHTML = ({ isExploded, }: { isExploded: boolean }) => {
-  const textRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [textIndex, setTextIndex] = useState(0)
-  const [isScrolling, setIsScrolling] = useState(false);
+const AboutHTML = ({ textIndex, isScrolling }: { textIndex: number, isScrolling: boolean }) => {
 
-  const handleScroll = () => {
-    const scrollPosition = window.scrollY
-    const fraction = scrollPosition / window.innerHeight;
-    setTextIndex(Math.floor(fraction))
-    
-    // Set scrolling state
-    setIsScrolling(true);
-    
-    // Reset after animation duration
-    clearTimeout(window.scrollTimeout);
-    window.scrollTimeout = setTimeout(() => {
-      setIsScrolling(false);
-    }, 300) as any;
-  }
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll)
-    return () => {
-      window.removeEventListener('scroll', handleScroll)
-      clearTimeout(window.scrollTimeout)
-    }
-  }, [])
-
-  return (
-    <div 
-      className={`${styles.aboutContainer} ${isScrolling ? styles.scrolling : ''}`} 
-      style={{ pointerEvents: isExploded ? 'auto' : 'none', opacity: isExploded ? 1 : 0, height: isExploded ? '500vh' : '100vh' }}
-    >
-        {isExploded && (
-            <>
-                <div className={styles.textContainer}>
-                    <p 
-                        className={styles.text + ' ' + styles.introText + ' ' + (textIndex === 0 ? styles.visible : '')}
-                    >
-                        <span>I'm Aled</span><span  className={styles.secondHalf}>, web and mobile app developer and designer</span>
-                    </p>
+    return (
+        <div 
+            className={`${styles.aboutContainer} ${isScrolling ? styles.scrolling : ''}`} 
+            style={{ height: `${(aboutText.length + 1) * 100}vh` }}
+        >
+            <div className={styles.textContainer}>
+                <p 
+                    className={styles.text + ' ' + styles.introText + ' ' + (textIndex === 0 ? styles.visible : '')}
+                >
+                    <span>I'm Aled</span><span  className={styles.secondHalf}>, web and mobile app developer and designer</span>
+                </p>
+            </div>
+            {aboutText.map((text, index) => (
+                <div key={index} className={styles.textContainer}>
+                    {text.map((line, idx) => (
+                        <p 
+                            key={idx} 
+                            onClick={() => {
+                                if (line === "Let's talk.") {
+                                    window.location.href = `mailto:${email}`;
+                                }
+                            }}
+                            className={styles.text + ' ' + (index + 1 === textIndex ? styles.visible + ' ' + (line === "Let's talk." ? styles.slideIn : '') : '')}
+                            style={{ transitionDelay: `${idx * 0.7}s` }}
+                        >
+                            {line}
+                        </p>
+                    ))}
                 </div>
-                {aboutText.map((text, index) => (
-                    <div key={index} className={styles.textContainer}>
-                        {text.map((line, idx) => (
-                            <p 
-                                key={idx} 
-                                onClick={() => {
-                                    if (line === "Let's talk.") {
-                                        window.location.href = `mailto:${email}`;
-                                    }
-                                }}
-                                className={styles.text + ' ' + (index + 1 === textIndex ? styles.visible + ' ' + (line === "Let's talk." ? styles.slideIn : '') : '')}
-                                style={{ transitionDelay: `${idx * 0.7}s` }}
-                            >
-                                {line}
-                            </p>
-                        ))}
-                    </div>
-                ))}
-            </>
-        )}
-    </div>
-  )
+            ))}
+        </div>
+    )
 }
 
 export default AboutHTML

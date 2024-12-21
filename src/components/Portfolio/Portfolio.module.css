@@ -1,11 +1,11 @@
 .container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    flex-direction: row-reverse;
-    position: absolute;
-    top: 0;
-    left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row-reverse;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 .projectDisplay {
@@ -108,17 +108,24 @@
 }
 
 .title {
-  cursor: pointer;
   background: linear-gradient(#631814 30%, #000000) left no-repeat, #000000;
   background-size: 0% 100%;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   transition: 1s ease-in-out;
+  animation: activeTitle 2s forwards;
+  animation-delay: 2s;
+  padding-bottom: 15px;
 }
 
-.title:hover {
-  background-size: 100% 100%;
+@keyframes activeTitle {
+  from {
+    background-size: 0% 100%;
+  }
+  to {
+    background-size: 100% 100%;
+  }
 }
 
 .link {

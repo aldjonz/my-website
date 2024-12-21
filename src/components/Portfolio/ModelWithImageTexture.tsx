@@ -1,8 +1,19 @@
 import { useRef, useEffect } from 'react'
-import { FrontSide, Mesh, TextureLoader, Vector3, Vector2 } from 'three'
+import { FrontSide, Mesh, TextureLoader, Vector3, Vector2, MeshPhysicalMaterialParameters } from 'three'
 import { useLoader, useFrame, useThree } from '@react-three/fiber'
+import { Center } from '@react-three/drei'
 
-const ModelWithImageTexture = ({ texturePath, transparent }: { texturePath: string, transparent?: boolean }) => {
+const ModelWithImageTexture = ({ 
+  texturePath, 
+  transparent,
+  visible = true,
+  shouldUnmount = true
+}: { 
+  texturePath: string, 
+  transparent?: boolean,
+  visible?: boolean,
+  shouldUnmount?: boolean 
+}) => {
     const meshRef = useRef<Mesh>(null)
     const texture = useLoader(TextureLoader, texturePath)
     const { viewport } = useThree()
@@ -52,13 +63,23 @@ const ModelWithImageTexture = ({ texturePath, transparent }: { texturePath: stri
         currentRotation.y = Math.max(Math.min(currentRotation.y, maxRotation), -maxRotation)
     })
 
-    let textureMaterial = {
+    useEffect(() => {
+        if (shouldUnmount) {
+            return () => {
+                texture?.dispose()
+                if (meshRef.current) {
+                    meshRef.current.parent?.clear() // This will handle the mesh and its children
+                }
+            }
+        }
+    }, [texture])
+
+    let textureMaterial: MeshPhysicalMaterialParameters = {
         map: texture,
         roughness: 1,
         thickness: 1.5,
         ior: 1.5,
         clearcoat: 1,
-        
     }
     
     if (transparent) {
@@ -71,10 +92,12 @@ const ModelWithImageTexture = ({ texturePath, transparent }: { texturePath: stri
     }
     
     return (
-        <mesh ref={meshRef}>
-<planeGeometry args={[3,3]} />
-            <meshPhysicalMaterial {...textureMaterial} />
-        </mesh>
+        <Center>
+            <mesh ref={meshRef} visible={visible && Boolean(texturePath)}>
+                <planeGeometry args={[3,3]} />
+                <meshPhysicalMaterial {...textureMaterial} />
+            </mesh>
+        </Center>
     )
 }
 

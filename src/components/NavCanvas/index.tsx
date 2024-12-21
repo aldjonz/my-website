@@ -1,14 +1,42 @@
 import { Canvas } from '@react-three/fiber'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import AnimatedGroups from './AnimatedGroups'
 import AboutHTML from '../About/AboutHTML'
 import ExpertiseHTML from '../Expertise/ExpertiseHTML'
 import PortfolioHTML from '../Portfolio/PortfolioHTML'
 import HoverText from '../ui/HoverText'
 import { Vector3 } from 'three'
+import ScrollableWrapper from '../ui/ScrollableWrapper'
 
 const NavCanvas = () => {
-    const [itemActive, setItemActive] = useState(null)
+    const [itemActive, setItemActive] = useState<string | null>(null)
+    const [textIndex, setTextIndex] = useState(0)
+    const [isScrolling, setIsScrolling] = useState(false);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
+    const handleScroll = () => {
+        if (!scrollContainerRef.current) return
+        const scrollPosition = scrollContainerRef.current?.scrollTop
+        const fraction = scrollPosition / scrollContainerRef.current?.clientHeight;
+        setTextIndex(Math.floor(fraction))
+        setIsScrolling(true);
+        
+        if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
+        }
+        scrollTimeoutRef.current = setTimeout(() => {
+            setIsScrolling(false);
+        }, 300) as any;
+    }
+
+    useEffect(() => {
+        return () => {
+          if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
+          }
+        }
+      }, [])
 
   return (
     <>
@@ -20,17 +48,29 @@ const NavCanvas = () => {
                 <AnimatedGroups 
                     itemActive={itemActive}
                     setItemActive={setItemActive}
+                    textIndex={textIndex}
                 />
             </Canvas>
         </div>
-        <AboutHTML isExploded={itemActive === 'about'} />
-        <ExpertiseHTML 
-            isExploded={itemActive === 'expertise'} 
+        <ScrollableWrapper ref={scrollContainerRef} opacity={itemActive !== null} pointerEvents={itemActive === 'about' || itemActive === 'expertise'} onScroll={handleScroll}>
+            {itemActive === 'expertise' && (
+                <ExpertiseHTML 
+                    textIndex={textIndex}
+                />
+            )}
+            {itemActive === 'about' && (
+                <AboutHTML 
+                    textIndex={textIndex} 
+                    isScrolling={isScrolling}
+                />
+            )}
+        </ScrollableWrapper>
+        <PortfolioHTML  
+            isActive={itemActive === 'portfolio'}
         />
-        <PortfolioHTML />
         {itemActive && (
-            <div onClick={() => setItemActive(null)} style={{ position: 'fixed', top: 0, left: 10, zIndex: 10000, }}>
-                <HoverText title={"Home"} />
+            <div onClick={() => setItemActive(null)} style={{ position: 'fixed', top: 0, left: 15, zIndex: 100, }}>
+                <HoverText title={"back"} />
             </div>
         )}
     </>

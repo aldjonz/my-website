@@ -10,7 +10,6 @@ import { useSpring, animated } from '@react-spring/three'
 export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }: { isExploded: boolean, isLeft: boolean, shapeIndex: number, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/Expertise/expertise.glb')
-    const [scrollPosition, setScrollPosition] = useState(0)
 
 
     const allCells = useMemo(() => 
@@ -24,10 +23,6 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
             }),
         [scene]
     )
-
-    const handleScroll = () => {
-        setScrollPosition(window.scrollY)
-    }
 
     const { cameraX } = useSpring({
         cameraX: isLeft ? 4 : -4,
@@ -45,18 +40,16 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
 
             const time = state.clock.getElapsedTime();
     
-            if (group.current && shapeIndex !== 2) {
-                group.current.rotation.y += 0.0003; 
-            }
+            // if (group.current && shapeIndex !== 2) {
+            //     group.current.rotation.y += 0.0003; 
+            // }
     
             const camera = state.camera
-            console.log(camera)
             camera.position.x = cameraX.get()
             camera.updateProjectionMatrix()
     
             allCells.forEach((cell, index) => {
                 if (isExploded) {
-                    const offset = scrollPosition * 0.01;
                     let targetPos;
     
                     switch (shapeIndex) {
@@ -66,34 +59,29 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
                             const y = Math.floor(index / side) - side / 2;
                             targetPos = new Vector3(x, y, 0);
                             break;
-                        case 1:
-                            const cubeSide = Math.cbrt(allCells.length);
-                            const cx = (index % cubeSide) - cubeSide / 2;
-                            const cy = (Math.floor(index / cubeSide) % cubeSide) - cubeSide / 2;
-                            const cz = (Math.floor(index / (cubeSide * cubeSide)) - cubeSide / 2) - 3;
-                            targetPos = new Vector3(cx, cy, cz);
-                            break;    
-                        case 2: 
-                            const torusRadius = 4;
-                            const tubeRadius = 1;
-                            const torusAngle = (index / allCells.length) * Math.PI * 2;
-                            const tubeAngle = (index % 10) * Math.PI * 2 / 20;
+                        case 1: // Helix
+                            const angle = index * 0.3;
                             targetPos = new Vector3(
-                                tubeRadius * Math.cos(tubeAngle),
-                                (torusRadius + tubeRadius * Math.cos(tubeAngle)) * Math.sin(torusAngle),
-                                (torusRadius + tubeRadius * Math.cos(tubeAngle)) * Math.cos(torusAngle) - 4
+                                Math.cos(angle) * 3,
+                                index * 0.15 - 4,
+                                Math.sin(angle) * 2
                             );
-                            break;    
-                        case 3: 
-                            const sphereRadius = 2;
-                            const phi = Math.acos(-1 + (2 * index) / allCells.length);
-                            const theta = Math.sqrt(allCells.length * Math.PI) * phi;
+                            break; 
+                        case 2: // Sine wave
                             targetPos = new Vector3(
-                                sphereRadius * Math.sin(phi) * Math.cos(theta),
-                                sphereRadius * Math.sin(phi) * Math.sin(theta),
-                                sphereRadius * Math.cos(phi)
+                                (index * 0.3) - 5,
+                                Math.sin(index * 0.3) * 3,
+                                -1
                             );
                             break;
+                        case 3: // Figure-eight (infinity symbol)
+                            const t = (index * 0.2);
+                            targetPos = new Vector3(
+                                4 * Math.sin(t),
+                                2 * Math.sin(t * 2),
+                                -1
+                            );
+                            break;    
                         case 4: 
                             const spiralAngle = index * 0.1;
                             const spiralRadius = 0.5 + index * 0.05;
@@ -129,12 +117,7 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
             
         }
     })
-
-    useEffect(() => {
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-    }, [])
-
+    
     if (!scene) return null
 
     return (
