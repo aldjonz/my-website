@@ -65,8 +65,8 @@ const NavCanvas = () => {
             isActive={itemActive === 'portfolio'}
         />
         {itemActive && (
-            <div onClick={() => setItemActive(null)} style={{ position: 'fixed', top: 0, left: 10, zIndex: 10000, }}>
-                <HoverText title={"Home"} />
+            <div onClick={() => setItemActive(null)} style={{ position: 'fixed', top: 0, left: 15, zIndex: 100, }}>
+                <HoverText title={"back"} />
             </div>
         )}
     </>

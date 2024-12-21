@@ -63,7 +63,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          zIndex: 1000,
+          zIndex: 100,
           color: 'white',
           fontSize: '1.2em',
           fontWeight: '200',

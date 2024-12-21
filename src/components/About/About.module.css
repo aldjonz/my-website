@@ -1,7 +1,6 @@
 .aboutContainer {
     position: absolute;
     width: 100vw;
-    z-index: 1000;
     background-color: rgba(0,0,0,0.5);
     backdrop-filter: blur(2px);
     transition: opacity 0.8s ease-in-out, backdrop-filter 0.3s ease-in-out;

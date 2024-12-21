@@ -7,7 +7,7 @@ const Contact = () => {
   return (
     <div className={styles.contactContainer}>
         <a href={`mailto:${email}`}>
-            <HoverText title={"Drop me a line"} />
+            <HoverText title={"Talk to me"} />
         </a>
     </div>
   )
