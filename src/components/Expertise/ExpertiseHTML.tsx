@@ -72,7 +72,14 @@ const ExpertiseHTML = ({ textIndex }: { textIndex: number }) => {
             {/* <div style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none' }}>
                 <AnimatedPixelBg height={window.innerHeight} width={window.innerWidth} shouldAnimate={true} />
             </div> */}
-            <div style={{ height: `${expertiseText.length * 100}vh` }}>
+            <div>
+                {Array.from({ length: expertiseText.length }, (_, index) => {
+                    return (
+                        <div style={{ height: '100vh', width: '100vw', scrollSnapAlign: 'start', }} />
+                    )
+                })}
+
+
                 <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
                 <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
             </div>
