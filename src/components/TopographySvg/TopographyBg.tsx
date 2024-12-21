@@ -37,14 +37,14 @@ const TopographyBg = (props: Props) => {
         const dx = mousePosition.x - prev.x
         const dy = mousePosition.y - prev.y
         
-        // Only update if we're not extremely close to target
-        if (Math.abs(dx) > 0.01 || Math.abs(dy) > 0.01) {
+        // Only update if movement is significant
+        if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
           return {
             x: prev.x + dx * smoothFactor,
             y: prev.y + dy * smoothFactor
           }
         }
-        return mousePosition
+        return prev
       })
       
       animationFrameId = requestAnimationFrame(animatePosition)

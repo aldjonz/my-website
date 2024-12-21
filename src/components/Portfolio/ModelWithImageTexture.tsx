@@ -3,7 +3,15 @@ import { FrontSide, Mesh, TextureLoader, Vector3, Vector2 } from 'three'
 import { useLoader, useFrame, useThree } from '@react-three/fiber'
 import { Center } from '@react-three/drei'
 
-const ModelWithImageTexture = ({ texturePath, transparent }: { texturePath: string, transparent?: boolean }) => {
+const ModelWithImageTexture = ({ 
+  texturePath, 
+  transparent,
+  visible = true 
+}: { 
+  texturePath: string, 
+  transparent?: boolean,
+  visible?: boolean 
+}) => {
     const meshRef = useRef<Mesh>(null)
     const texture = useLoader(TextureLoader, texturePath)
     const { viewport } = useThree()
@@ -53,6 +61,15 @@ const ModelWithImageTexture = ({ texturePath, transparent }: { texturePath: stri
         currentRotation.y = Math.max(Math.min(currentRotation.y, maxRotation), -maxRotation)
     })
 
+    useEffect(() => {
+        return () => {
+            texture?.dispose()
+            if (meshRef.current) {
+                meshRef.current.parent?.clear() // This will handle the mesh and its children
+            }
+        }
+    }, [texture])
+
     let textureMaterial = {
         map: texture,
         roughness: 1,
@@ -73,7 +90,7 @@ const ModelWithImageTexture = ({ texturePath, transparent }: { texturePath: stri
     
     return (
         <Center>
-            <mesh ref={meshRef}>
+            <mesh ref={meshRef} visible={visible && Boolean(texturePath)}>
                 <planeGeometry args={[3,3]} />
                 <meshPhysicalMaterial {...textureMaterial} />
             </mesh>

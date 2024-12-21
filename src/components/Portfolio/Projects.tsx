@@ -1,6 +1,6 @@
 import { usePortfolio } from '@/context/portfolioContext'
 import { useFrame } from '@react-three/fiber'
-import React, { useRef, useMemo } from 'react'
+import React, { useRef, useMemo, useEffect } from 'react'
 import { Group, Mesh, MeshBasicMaterial, Vector3, Color, IcosahedronGeometry, SphereGeometry, TorusGeometry, ConeGeometry } from 'three'
 
 const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean, setSelectedProjectIndex: (index: number | null) => void }) => {
@@ -8,27 +8,68 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
     const { viewedProjects } = usePortfolio()
     const orbitRadius = 4
 
+    const geometries = useMemo(() => ({
+        cone: new ConeGeometry(0.4, 0.8, 4),
+        sphere: new SphereGeometry(0.03)
+    }), [])
+
+    const createPyramidMaterial = () => new MeshBasicMaterial({ 
+        color: 0x00ffff,
+        transparent: true,
+        opacity: 0.3,
+        wireframe: false
+    })
+
+    const createParticleMaterial = () => new MeshBasicMaterial({ 
+        color: 0xffff00,
+        transparent: true,
+        opacity: 0.8
+    })
+
+    const createPyramid = () => {
+        const pyramid = new Mesh(
+            geometries.cone,
+            createPyramidMaterial()
+        )
+        pyramid.rotation.x = Math.PI
+        return pyramid
+    }
+
+    const createParticle = () => {
+        return new Mesh(
+            geometries.sphere,
+            createParticleMaterial()
+        )
+    }
+
+    const particlePool = useMemo(() => {
+        const pool = []
+        const totalParticles = 21 // 7 projects * 3 particles
+        
+        for (let i = 0; i < totalParticles; i++) {
+            pool.push(new Mesh(
+                new SphereGeometry(0.03),
+                new MeshBasicMaterial({ 
+                    color: 0xffff00,
+                    transparent: true,
+                    opacity: 0.8
+                })
+            ))
+        }
+        return pool
+    }, [])
+
     const projectNodes = useMemo(() => 
         Array.from({ length: 7 }, (_, index) => {
             const nodeGroup = new Group()
             
             // Glass pyramid (using cone geometry)
-            const pyramid = new Mesh(
-                new ConeGeometry(0.4, 0.8, 4),  // radius, height, radialSegments
-                new MeshBasicMaterial({ 
-                    color: 0x00ffff,
-                    transparent: true,
-                    opacity: 0.3,
-                    wireframe: false
-                })
-            )
-            // Rotate pyramid to point inward
-            pyramid.rotation.x = Math.PI
+            const pyramid = createPyramid()
             nodeGroup.add(pyramid)
             
             // Wireframe outline
             const wireframePyramid = new Mesh(
-                new ConeGeometry(0.4, 0.8, 4),
+                geometries.cone,
                 new MeshBasicMaterial({ 
                     color: 0x00ffff,
                     transparent: true,
@@ -39,17 +80,11 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
             wireframePyramid.rotation.x = Math.PI
             nodeGroup.add(wireframePyramid)
 
-            // Add orbiting particles
+            // Add orbiting particles using the pool
             const particleCount = 3
-            const particles = Array.from({ length: particleCount }, () => {
-                const particle = new Mesh(
-                    new SphereGeometry(0.03),  // tiny sphere
-                    new MeshBasicMaterial({ 
-                        color: 0xffff00,
-                        transparent: true,
-                        opacity: 0.8
-                    })
-                )
+            const particles = Array.from({ length: particleCount }, (_, particleIndex) => {
+                // Get particle from pool
+                const particle = particlePool[index * particleCount + particleIndex].clone()
                 
                 // Random initial positions on a sphere
                 const theta = Math.random() * Math.PI * 2
@@ -71,7 +106,6 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
                 nodeGroup.add(particle)
                 return particle
             })
-
             nodeGroup.userData = {
                 index,
                 orbitPhi: Math.acos(-1 + (2 * index) / 7),
@@ -83,7 +117,7 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
             }
 
             return nodeGroup
-        }), []
+        }), [particlePool]
     )
 
     useFrame((state) => {
@@ -182,6 +216,16 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
             document.body.style.cursor =  'default'
         }
     }
+
+    useEffect(() => {
+        return () => {
+            // Clean up particle pool when the component unmounts
+            particlePool.forEach(particle => {
+                particle.geometry.dispose();
+                (particle.material as MeshBasicMaterial).dispose();
+            });
+        }
+    }, [particlePool])
 
   return (
     <group 

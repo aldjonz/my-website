@@ -27,7 +27,7 @@ const item = {
   show: { opacity: 1, y: 0 }
 }
 
-function List({ children, open }: { children: React.ReactNode, open: boolean }) {
+const List = React.memo(({ children, open }: { children: React.ReactNode, open: boolean }) => {
   return (
     <motion.ul variants={container} initial="hidden" animate={open ? 'show' : 'hidden'}>
       {Children.map(children, (child) => (
@@ -37,7 +37,7 @@ function List({ children, open }: { children: React.ReactNode, open: boolean }) 
       ))}
     </motion.ul>
   )
-}
+})
 
 type Props = {
   selectedProjectIndex: number | null
@@ -112,29 +112,29 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
               <div className={styles.innerContainer} > 
                 <div style={{ position: 'absolute', width: '70%', height: '100%', pointerEvents: 'none' }}>
                   <ThreeCanvas>
-                    {currentItem.mediaType === 'mobile' ? (
-                      <Center>
+                    <Center visible={currentItem?.mediaType === 'mobile'}>
+                      <PointerTrackerGroup visible={currentItem?.mediaType === 'mobile'}>
+                        <MobilePhoneModel 
+                          images={currentItem?.media?.[0] ? [currentItem.media[0]] : []} 
+                          position={[3, 4, 0]}
+                          rotation={[-0.5, -0.5, -0.4]}
+                        />
+                        <MobilePhoneModel 
+                          isSlideshow={true}
+                          images={currentItem?.media ? currentItem.media.slice(1) : []}
+                          position={[1.4, 2, -0.5]}
+                          rotation={[-0.3, 0.5, 0.4]}
+                        />
+                      </PointerTrackerGroup>
+                    </Center>
+                    <Center visible={currentItem?.mediaType !== 'mobile'}>
 
-                        <PointerTrackerGroup>
-                          <MobilePhoneModel 
-                              images={[currentItem.media[0]]} 
-                              position={[3, 4, 0]}
-                              rotation={[-0.5, -0.5, -0.4]}
-                            />
-                          <MobilePhoneModel 
-                            isSlideshow={true}
-                            images={currentItem.media.slice(1)}
-                            position={[1.4, 2, -0.5]}
-                            rotation={[-0.3, 0.5, 0.4]}
-                          />
-                        </PointerTrackerGroup>
-                      </Center>
-                    )  : (
                       <ModelWithImageTexture
-                        texturePath={`/portfolio/projects/${currentItem.media[0]}`} 
-                        transparent={currentItem.title === 'XRD Domains' ? true : true}
+                        visible={currentItem?.mediaType !== 'mobile'}
+                        texturePath={currentItem?.media?.[0] ? `/portfolio/projects/${currentItem.media[0]}` : ''} 
+                        transparent={true}
                       />
-                    )}
+                    </Center>
                   </ThreeCanvas>
                 </div>
               </div>

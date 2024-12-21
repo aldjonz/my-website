@@ -66,6 +66,26 @@ const MobilePhoneModel = ({
         return () => clearInterval(interval)
     }, [isSlideshow, images])
 
+    useEffect(() => {
+        return () => {
+            // Dispose of the entire cloned scene
+            clonedScene.traverse((object) => {
+                if (object instanceof Mesh) {
+                    object.geometry.dispose()
+                    if (Array.isArray(object.material)) {
+                        object.material.forEach(material => material.dispose())
+                    } else {
+                        object.material.dispose()
+                    }
+                }
+            })
+            clonedScene.clear() // Removes all objects from the scene
+            
+            // Dispose of texture separately since it's not part of the scene
+            texture?.dispose()
+        }
+    }, [])
+
     if (!clonedScene) return null
     return (
         <mesh

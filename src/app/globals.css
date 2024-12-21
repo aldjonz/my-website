@@ -90,6 +90,7 @@ a {
 canvas {
   opacity: 0;
   touch-action: none;
+  will-change: opacity;
   animation: fade-in 5s ease 1s forwards;
 }
 
