@@ -133,6 +133,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                         visible={currentItem?.mediaType !== 'mobile'}
                         texturePath={currentItem?.media?.[0] ? `/portfolio/projects/${currentItem.media[0]}` : ''} 
                         transparent={true}
+                        shouldUnmount={!open}
                       />
                     </Center>
                   </ThreeCanvas>

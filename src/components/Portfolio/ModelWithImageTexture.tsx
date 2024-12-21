@@ -6,11 +6,13 @@ import { Center } from '@react-three/drei'
 const ModelWithImageTexture = ({ 
   texturePath, 
   transparent,
-  visible = true 
+  visible = true,
+  shouldUnmount = true
 }: { 
   texturePath: string, 
   transparent?: boolean,
-  visible?: boolean 
+  visible?: boolean,
+  shouldUnmount?: boolean 
 }) => {
     const meshRef = useRef<Mesh>(null)
     const texture = useLoader(TextureLoader, texturePath)
@@ -62,10 +64,12 @@ const ModelWithImageTexture = ({
     })
 
     useEffect(() => {
-        return () => {
-            texture?.dispose()
-            if (meshRef.current) {
-                meshRef.current.parent?.clear() // This will handle the mesh and its children
+        if (shouldUnmount) {
+            return () => {
+                texture?.dispose()
+                if (meshRef.current) {
+                    meshRef.current.parent?.clear() // This will handle the mesh and its children
+                }
             }
         }
     }, [texture])
