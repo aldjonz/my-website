@@ -1,37 +1,61 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface TextScrambleProps {
-  text: string;
+  baseText: string;
+  wrongText: string;
+  correctText: string;
 }
 
-const TextScramble: React.FC<TextScrambleProps> = ({ text }) => {
+const TextScramble: React.FC<TextScrambleProps> = ({ baseText, wrongText, correctText }) => {
   const [displayText, setDisplayText] = useState('');
-  const [complete, setComplete] = useState(false);
+  const [phase, setPhase] = useState<'typing-wrong' | 'deleting' | 'typing-correct' | 'complete'>('typing-wrong');
   const [cursorVisible, setCursorVisible] = useState(true);
+  const currentIndex = useRef(0);
+
   useEffect(() => {
-    let currentIndex = 0;
     
     const animate = () => {
-      if (complete) return;
+      if (phase === 'complete') return;
 
-      if (currentIndex < text.length) {
-        let time = 200;
-        if (currentIndex === 22) {
-            time = 2800;
-        }   
-        setDisplayText(text.slice(0, currentIndex + 1));
-        currentIndex++;
-        setTimeout(animate, time);
-      } else {
-        setComplete(true);
+      if (phase === 'typing-wrong') {
+        if (currentIndex.current < (baseText.length + wrongText.length) + 1) {
+          setDisplayText((`${baseText} ${wrongText}`).slice(0, currentIndex.current + 1));
+          currentIndex.current++;
+          setTimeout(animate, 200);
+        } else {
+          setTimeout(() => {
+            setPhase('deleting');
+            currentIndex.current = baseText.length + wrongText.length;
+          }, 1000);
+        }
+      } else if (phase === 'deleting') {
+        if (currentIndex.current > baseText.length) {
+          setDisplayText((`${baseText} ${wrongText}`).slice(0, currentIndex.current - 1));
+          currentIndex.current--;
+          setTimeout(animate, 100);
+        } else {
+          setTimeout(() => {
+            setPhase('typing-correct');
+            currentIndex.current = baseText.length;
+          }, 600);
+        }
+        } else if (phase === 'typing-correct') {
+            if (currentIndex.current < (baseText.length + correctText.length) + 1) {
+          setDisplayText((`${baseText} ${correctText}`).slice(0, currentIndex.current + 1));
+          currentIndex.current++;
+          setTimeout(animate, 200);
+        } else {
+          setPhase('complete');
+        }
       }
     };
 
-    setDisplayText('');
-    setComplete(false);
-    currentIndex = 0;
-    setTimeout(animate, 4000);
-  }, []);
+    if (displayText.length === 0) { 
+      setTimeout(animate, 3000);
+    } else {
+      setTimeout(animate, 1000);
+    }
+  }, [baseText, wrongText, correctText, phase]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -42,10 +66,10 @@ const TextScramble: React.FC<TextScrambleProps> = ({ text }) => {
   }, []);
 
   return (
-    <p
-     style={{ 
-      minWidth: `${text.length}ch`,
-    }}>
+    <p style={{ minWidth: `${Math.max(
+      baseText.length + wrongText.length,
+      baseText.length + correctText.length
+    )}ch` }}>
       {displayText}
       <span style={{ color: 'white', opacity: cursorVisible ? 1 : 0 }}>|</span>
     </p>

@@ -65,7 +65,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
           letterSpacing: '0.01px',
         }}
       >
-        <TextScramble text="Click the blue orbs to view my projects" />
+        <TextScramble baseText="Click the pyramids to" wrongText="unlock ancient secrets" correctText="view my projects" />
       </div>}
       <div className={styles.blurBg} style={{ opacity: Boolean(currentItem) ? 1 : 0, pointerEvents: Boolean(currentItem) ? 'auto' : 'none', transitionDuration: '0.4s'  }} />
       {currentItem && (
