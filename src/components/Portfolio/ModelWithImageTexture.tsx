@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react'
-import { FrontSide, Mesh, TextureLoader, Vector3, Vector2 } from 'three'
+import { FrontSide, Mesh, TextureLoader, Vector3, Vector2, MeshPhysicalMaterialParameters } from 'three'
 import { useLoader, useFrame, useThree } from '@react-three/fiber'
 import { Center } from '@react-three/drei'
 
@@ -74,13 +74,12 @@ const ModelWithImageTexture = ({
         }
     }, [texture])
 
-    let textureMaterial = {
+    let textureMaterial: MeshPhysicalMaterialParameters = {
         map: texture,
         roughness: 1,
         thickness: 1.5,
         ior: 1.5,
         clearcoat: 1,
-        
     }
     
     if (transparent) {

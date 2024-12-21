@@ -46,7 +46,7 @@ type Props = {
 
 const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
   const { selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
-  const currentItem = contentArray[selectedProjectIndex]
+  const currentItem = selectedProjectIndex !== null ? contentArray[selectedProjectIndex] : null
 
   useEffect(() => {
     if (!isActive) {
@@ -86,7 +86,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                       </h3>
                       <h3 className={styles.title}>{currentItem.title}</h3>
                       <div style={{ display: 'flex', flexDirection: 'column', padding: '15px 0', borderTop: '1px solid black' }}>
-                        {currentItem.description.map((paragraph, index) => {
+                        {currentItem.description.map((paragraph: string, index: number) => {
                           return (
                             <p key={index}>
                               {paragraph}
@@ -95,7 +95,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                         })}
                       </div>
                       <div className={styles.techStack}>
-                        {currentItem.techStack.map((tech, index) => (
+                        {currentItem.techStack.map((tech: string, index: number) => (
                           <p key={index}>{tech}</p>
                         ))}
                       </div>

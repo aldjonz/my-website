@@ -1,5 +1,5 @@
 import { usePortfolio } from '@/context/portfolioContext'
-import { useFrame } from '@react-three/fiber'
+import { useFrame, ThreeEvent } from '@react-three/fiber'
 import React, { useRef, useMemo, useEffect } from 'react'
 import { Group, Mesh, MeshBasicMaterial, Vector3, Color, IcosahedronGeometry, SphereGeometry, TorusGeometry, ConeGeometry } from 'three'
 
@@ -201,19 +201,19 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
         })
     })
 
-    const onPointerEnter = (e: PointerEvent) => {
+    const onPointerEnter = (e: ThreeEvent<PointerEvent>) => {
         const parent = e.object.parent
         if (parent) {
             parent.userData.isHovered = true
-            document.body.style.cursor =  'pointer'
+            document.body.style.cursor = 'pointer'
         }
     }
 
-    const onPointerLeave = (e: PointerEvent) => {
+    const onPointerLeave = (e: ThreeEvent<PointerEvent>) => {
         const parent = e.object.parent
         if (parent) {
             parent.userData.isHovered = false
-            document.body.style.cursor =  'default'
+            document.body.style.cursor = 'default'
         }
     }
 
@@ -234,9 +234,10 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
         onPointerLeave={onPointerLeave}
         onClick={(e) => {
             e.stopPropagation()
-            setSelectedProjectIndex(e.object.parent.userData.index)
+            if (e.object.parent) {
+                setSelectedProjectIndex(e.object.parent.userData.index)
+            }
         }}
-        style={{ cursor: 'pointer' }}
     >
         {projectNodes.map((node) => (
             <primitive key={node.uuid} object={node} />
