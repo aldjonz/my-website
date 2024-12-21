@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from './Portfolio.module.css'
 import { Children } from 'react'
 import { motion } from 'framer-motion'
@@ -47,6 +47,12 @@ type Props = {
 const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
   const { selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
   const currentItem = contentArray[selectedProjectIndex]
+
+  useEffect(() => {
+    if (!isActive) {
+      setSelectedProjectIndex(null)
+    }
+  }, [isActive])
   return (
     <>
       {isActive && <div 
