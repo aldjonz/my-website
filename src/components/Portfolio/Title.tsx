@@ -55,12 +55,6 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
                 
                 const targetPos = new Vector3(x, y, z)
                 cell.position.lerp(targetPos, 0.08)
-                
-                cell.rotation.set(
-                    cell.userData.originalRotation.x, 
-                    cell.userData.originalRotation.y, 
-                    cell.userData.originalRotation.z
-                )
             })
 
         }

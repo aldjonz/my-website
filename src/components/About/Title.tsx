@@ -94,7 +94,6 @@ export default function Title({ isExploded, setItemActive, textIndex }: { isExpl
                 
                 const targetPos = new Vector3(x, y, z)
                 cell.position.lerp(targetPos, 0.08)
-                cell.rotation.set(cell.userData.originalRotation.x, cell.userData.originalRotation.y, cell.userData.originalRotation.z)
             })
             if (group.current) {
                 group.current.rotation.set(originalGroupRotation.current.x, originalGroupRotation.current.y, originalGroupRotation.current.z)
