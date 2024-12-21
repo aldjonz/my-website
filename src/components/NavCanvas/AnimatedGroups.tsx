@@ -92,12 +92,22 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
         }
     })
 
+    const handlePointerOver = (group: Group) => {
+        document.body.style.cursor = 'pointer'
+    }
+
+    const handlePointerOut = (group: Group) => {
+        document.body.style.cursor = 'default'
+    }
+
     return (
         <>
             <group 
                 ref={topGroupRef}
                 position={[-startX,  topPosition[1] - 2, 0]} 
                 rotation={[0, 0.15, 0.1]}
+                onPointerOver={() => handlePointerOver(topGroupRef)}
+                onPointerOut={() => handlePointerOut(topGroupRef)}
             >
                 <About setItemActive={setItemActive} isActive={itemActive === 'about'} textIndex={textIndex}  />
             </group>
@@ -106,6 +116,8 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 ref={middleGroupRef}
                 position={[startX, middlePosition[1] - 2, 0]} 
                 rotation={[0, -0.15, -0.1]}
+                onPointerOver={() => handlePointerOver(middleGroupRef)}
+                onPointerOut={() => handlePointerOut(middleGroupRef)}
             >
                 <Portfolio setItemActive={setItemActive} isActive={itemActive === 'portfolio'} />
             </group>
@@ -114,6 +126,8 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 ref={bottomGroupRef}
                 position={[-startX, bottomPosition[1] - 2, 0]} 
                 rotation={[0, 0.15, 0.01]}
+                onPointerOver={() => handlePointerOver(bottomGroupRef)}
+                onPointerOut={() => handlePointerOut(bottomGroupRef)}
             >
                 <Expertise setItemActive={setItemActive} isActive={itemActive === 'expertise'} textIndex={textIndex} />
             </group>
