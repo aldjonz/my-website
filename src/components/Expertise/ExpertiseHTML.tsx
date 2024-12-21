@@ -69,9 +69,9 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
 const ExpertiseHTML = ({ textIndex }: { textIndex: number }) => {
     return (
         <>
-            <div style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none' }}>
+            {/* <div style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none' }}>
                 <AnimatedPixelBg height={window.innerHeight} width={window.innerWidth} shouldAnimate={true} />
-            </div>
+            </div> */}
             <div style={{ height: `${expertiseText.length * 100}vh` }}>
                 <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
                 <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
