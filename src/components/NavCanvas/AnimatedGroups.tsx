@@ -88,14 +88,14 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 if (middleGroupRef.current && middleGroupRef.current.position.z > -4) {
                     middleGroupRef.current.position.z += (scaleFactor - middleGroupRef.current.position.z) * 0.1;
                     if (topGroupRef.current) {
-                        topGroupRef.current.scale.x += (scale - topGroupRef.current.scale.x) * 0.1;
-                        topGroupRef.current.scale.y += (scale - topGroupRef.current.scale.y) * 0.1;
-                        topGroupRef.current.scale.z += (scale - topGroupRef.current.scale.z) * 0.1;
+                        topGroupRef.current.scale.x += (0.001 - topGroupRef.current.scale.x) * 0.1;
+                        topGroupRef.current.scale.y += (0.001 - topGroupRef.current.scale.y) * 0.1;
+                        topGroupRef.current.scale.z += (0.001 - topGroupRef.current.scale.z) * 0.1;
                     }
                     if (bottomGroupRef.current) {
-                        bottomGroupRef.current.scale.x += (scale - bottomGroupRef.current.scale.x) * 0.1;
-                        bottomGroupRef.current.scale.y += (scale - bottomGroupRef.current.scale.y) * 0.1;
-                        bottomGroupRef.current.scale.z += (scale - bottomGroupRef.current.scale.z) * 0.1;
+                        bottomGroupRef.current.scale.x += (0.001 - bottomGroupRef.current.scale.x) * 0.1;
+                        bottomGroupRef.current.scale.y += (0.001 - bottomGroupRef.current.scale.y) * 0.1;
+                        bottomGroupRef.current.scale.z += (0.001 - bottomGroupRef.current.scale.z) * 0.1;
                     }
                 }
             } else if (itemActive === 'expertise') {
