@@ -93,3 +93,17 @@
         transform: translate3d(0, 0, 0);
     }
 }
+
+@media (max-width: 768px) {
+    .introText {
+        transform: translateX(0);
+        animation: none;
+    }
+    .textContainer {
+        padding: 0 10vw;
+    }
+    .text {
+        font-size: 28px;
+        text-align: center; 
+    }
+}

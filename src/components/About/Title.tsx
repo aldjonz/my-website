@@ -1,6 +1,7 @@
 "use client"
 
 import AnimatedTextWrapper from '@/components/TextAnimationWrapper/TextAnimationWrapper'
+import { useScreenDetails } from '@/hooks/useScreenDetails'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useEffect, useRef, useState, useMemo } from 'react'
@@ -12,7 +13,7 @@ const ANIMATION_CONSTANTS = {
     BASE_LERP_SPEED: 0.03,
     MAX_LERP_SPEED: 0.1,
     ROTATION_SPEED: 0.002,
-    POSITION_MULTIPLIER: 2
+    POSITION_MULTIPLIER: 3
 }
 
 export default function Title({ isExploded, setItemActive, textIndex }: { isExploded: boolean, setItemActive: (value: string) => void, textIndex: number }) {
@@ -22,6 +23,7 @@ export default function Title({ isExploded, setItemActive, textIndex }: { isExpl
     const scrollRef = useRef(0)
     const lastScrollRef = useRef(0)
     const targetPositions = useRef<Vector3[]>([])
+    const { isMobile } = useScreenDetails()
 
     const allCells = useMemo(() => 
         scene.children
@@ -76,8 +78,8 @@ export default function Title({ isExploded, setItemActive, textIndex }: { isExpl
     
             allCells.forEach((cell, index) => {
                 const angle = offset + index
-                const x = Math.sin(angle) * ANIMATION_CONSTANTS.POSITION_MULTIPLIER
-                const y = Math.cos(angle) * ANIMATION_CONSTANTS.POSITION_MULTIPLIER
+                const x = Math.sin(angle) * (ANIMATION_CONSTANTS.POSITION_MULTIPLIER * (isMobile ? 2 : 1))
+                const y = Math.cos(angle) * (ANIMATION_CONSTANTS.POSITION_MULTIPLIER * (isMobile ? 2 : 1))
                 
                 targetPositions.current[index].set(x, y, 0)
                 cell.position.lerp(targetPositions.current[index], lerpSpeed)
