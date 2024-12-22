@@ -1,14 +1,13 @@
-.contactContainer {
+.backButton {
     position: fixed;
     top: 0;
-    right: 25px;
-    cursor: pointer;
+    left: 25px;
     z-index: 100;
 }
 
 @media (max-width: 768px) or (max-height: 600px) {
-    .contactContainer {
-        right: 15px;
+    .backButton {
+        left: 15px;
         top: 15px;
     }
 }
