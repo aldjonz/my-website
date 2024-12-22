@@ -14,10 +14,11 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
     const [timer, setTimer] = useState(0)
     const { isMobile } = useScreenDetails()
     const scaleFactor = isMobile ? 2 : -2
-
-    const topPosition = [0, 1.6, 0]
-    const middlePosition = [0.3, 0, 0]
-    const bottomPosition = [-0.2, -2.2, 0]
+    const yFactor = isMobile ? 1.8 : 1
+    const mobileRotation = [0,0,0]
+    const topPosition = [0, (1.6 / yFactor), 0]
+    const middlePosition = [isMobile ? 0 : 0.3, 0, 0]
+    const bottomPosition = [isMobile ? 0 : -0.2, (-2.2 / yFactor), 0]
 
     const startX = 15
 
@@ -53,14 +54,16 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 topGroupRef.current.scale.x += (scale - topGroupRef.current.scale.x) * 0.1;
                 topGroupRef.current.scale.y += (scale - topGroupRef.current.scale.y) * 0.1;
                 topGroupRef.current.scale.z += (scale - topGroupRef.current.scale.z) * 0.1;
-                topGroupRef.current.rotation.set(0, 0.15, 0.1)
+                const rotation = isMobile ? mobileRotation : [0, 0.15, 0.01]
+                topGroupRef.current.rotation.set(rotation[0], rotation[1], rotation[2])
             }
 
             if (middleGroupRef.current && timer > 1.1) {
                 middleGroupRef.current.position.x += ((middlePosition[0] - middleGroupRef.current.position.x) * 0.3)
                 middleGroupRef.current.position.y += ((middlePosition[1] - middleGroupRef.current.position.y) * 0.3)
                 middleGroupRef.current.position.z += ((middlePosition[2] - middleGroupRef.current.position.z) * 0.3)
-                middleGroupRef.current.rotation.set(0, -0.15, -0.1)
+                const rotation = isMobile ? mobileRotation : [0, -0.15, 0.01]
+                middleGroupRef.current.rotation.set(rotation[0], rotation[1], rotation[2])
                 middleGroupRef.current.scale.x += (scale - middleGroupRef.current.scale.x) * 0.1;
                 middleGroupRef.current.scale.y += (scale - middleGroupRef.current.scale.y) * 0.1;
                 middleGroupRef.current.scale.z += (scale - middleGroupRef.current.scale.z) * 0.1;   
@@ -73,7 +76,8 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 bottomGroupRef.current.scale.x += (scale - bottomGroupRef.current.scale.x) * 0.1;
                 bottomGroupRef.current.scale.y += (scale - bottomGroupRef.current.scale.y) * 0.1;
                 bottomGroupRef.current.scale.z += (scale - bottomGroupRef.current.scale.z) * 0.1;
-                bottomGroupRef.current.rotation.set(0, 0.15, 0.01)
+                const rotation = isMobile ? mobileRotation : [0, 0.15, 0.01]
+                bottomGroupRef.current.rotation.set(rotation[0], rotation[1], rotation[2])
             }
         } else {
             if (itemActive === 'about') {
