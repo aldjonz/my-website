@@ -56,20 +56,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
   return (
     <>
       {isActive && <div 
-        style={{ 
-          position: 'fixed',
-          bottom: '16vh',
-          left: '2vw',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 100,
-          color: 'white',
-          fontSize: '1.2em',
-          fontWeight: '200',
-          fontFamily: 'Major Mono Display',
-          letterSpacing: '0.01px',
-        }}
+        className={styles.textScrambleContainer}
       >
         <TextScramble baseText="Click the pyramids to" wrongText="unlock ancient secrets" correctText="view my projects" />
       </div>}
