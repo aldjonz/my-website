@@ -5,12 +5,15 @@ import Expertise from '../Expertise'
 import { useFrame, useThree } from '@react-three/fiber'
 import { Group, Vector3 } from 'three'
 import { OrbitControls } from '@react-three/drei'
+import { useScreenDetails } from '@/hooks/useScreenDetails'
 
 const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: string | null, setItemActive: (value: string | null) => void, textIndex: number  }) => {
     const topGroupRef = useRef<Group | null>(null)
     const middleGroupRef = useRef<Group | null>(null)
     const bottomGroupRef = useRef<Group | null>(null)
     const [timer, setTimer] = useState(0)
+    const { isMobile } = useScreenDetails()
+    const scaleFactor = isMobile ? 2 : -2
 
     const topPosition = [0, 1.6, 0]
     const middlePosition = [0.3, 0, 0]
@@ -83,7 +86,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
             } else if (itemActive === 'portfolio') {
                 animateActiveItem(middleGroupRef.current, topGroupRef.current, bottomGroupRef.current, 15, -15)
                 if (middleGroupRef.current && middleGroupRef.current.position.z > -4) {
-                    middleGroupRef.current.position.z += (-2 - middleGroupRef.current.position.z) * 0.1;
+                    middleGroupRef.current.position.z += (scaleFactor - middleGroupRef.current.position.z) * 0.1;
                     if (topGroupRef.current) {
                         topGroupRef.current.scale.x += (scale - topGroupRef.current.scale.x) * 0.1;
                         topGroupRef.current.scale.y += (scale - topGroupRef.current.scale.y) * 0.1;
@@ -137,7 +140,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 onPointerOver={() => handlePointerOver(middleGroupRef.current)}
                 onPointerOut={() => handlePointerOut(middleGroupRef.current)}
             >
-                <Portfolio setItemActive={setItemActive} isActive={itemActive === 'portfolio'} />
+                <Portfolio setItemActive={setItemActive} isActive={itemActive === 'portfolio'} scaleFactor={scaleFactor} />
             </group>
 
             <group 
