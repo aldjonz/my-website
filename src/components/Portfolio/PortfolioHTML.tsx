@@ -47,7 +47,7 @@ type Props = {
 const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
   const { selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
   const currentItem = selectedProjectIndex !== null ? contentArray[selectedProjectIndex] : null
-
+  
   useEffect(() => {
     if (!isActive) {
       setSelectedProjectIndex(null)
@@ -72,7 +72,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                         <span className="accent">{currentItem.type}</span>
                       </h3>
                       <h3 className={styles.title}>{currentItem.title}</h3>
-                      <div style={{ display: 'flex', flexDirection: 'column', padding: '15px 0', borderTop: '1px solid black' }}>
+                      <div className={styles.paragraphContainer}>
                         {currentItem.description.map((paragraph: string, index: number) => {
                           return (
                             <p key={index}>
@@ -97,9 +97,9 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                 </div>
               </div>
               <div className={styles.innerContainer} > 
-                <div style={{ position: 'absolute', width: '70%', height: '100%', pointerEvents: 'none' }}>
+                <div className={styles.threeCanvasContainer}>
                   <ThreeCanvas>
-                    <Center visible={currentItem?.mediaType === 'mobile'}>
+                    <Center visible={currentItem?.mediaType === 'mobile'}  >
                       <PointerTrackerGroup visible={currentItem?.mediaType === 'mobile'}>
                         <MobilePhoneModel 
                           images={currentItem?.media?.[0] ? [currentItem.media[0]] : []} 
@@ -114,7 +114,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                         />
                       </PointerTrackerGroup>
                     </Center>
-                    <Center visible={currentItem?.mediaType !== 'mobile'}>
+                    <Center visible={currentItem?.mediaType !== 'mobile'} position={[0,0,0]}>
 
                       <ModelWithImageTexture
                         visible={currentItem?.mediaType !== 'mobile'}

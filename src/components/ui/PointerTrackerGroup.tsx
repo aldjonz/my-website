@@ -1,6 +1,7 @@
 import { useRef, useEffect } from 'react'
 import { Group, Vector2, Vector3 } from 'three'
 import { useFrame, useThree } from '@react-three/fiber'
+import { useScreenDetails } from '@/hooks/useScreenDetails'
 
 const PointerTrackerGroup = ({ 
   children, 
@@ -10,10 +11,12 @@ const PointerTrackerGroup = ({
   visible?: boolean
 }) => {
     const meshRef = useRef<Group>(null)
-    const { viewport } = useThree()
+    const { viewport, camera } = useThree()
     const mouse = useRef(new Vector2())
     const target = useRef(new Vector3())
-    
+    const { width, height } = useScreenDetails()
+    const scale = Math.min(1, viewport.width / 12)
+
     useEffect(() => {
         const updateMouse = (event: MouseEvent) => {
             // Convert mouse position to normalized device coordinates (-1 to +1)
@@ -60,7 +63,7 @@ const PointerTrackerGroup = ({
         currentRotation.y = Math.max(Math.min(currentRotation.y, maxRotation), -maxRotation)
     })
     return (
-        <group ref={meshRef} visible={visible}>
+        <group ref={meshRef} visible={visible} scale={scale} >
             {children}
         </group>
     )
