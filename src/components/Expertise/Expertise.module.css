@@ -48,3 +48,24 @@
 .skill:hover {
     color: rgba(255, 255, 255, 1);
 }
+
+@media (max-height: 600px) {
+    .title {
+        font-size: 2em;
+    }
+    .skillsContainer {
+        gap: 5px;
+    }
+    .skillsContainer h2 {
+        font-size: 1.2em;
+    }
+}
+@media (max-width: 768px) {
+    .sectionContainer {
+        width: 100vw;
+    }
+    .title {
+        font-size: 2.2em;
+        text-align: center;
+    }
+}
