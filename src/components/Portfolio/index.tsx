@@ -9,7 +9,7 @@ const Title = dynamic(() => import('./Title'), { ssr: false })
 const CentralSphere = dynamic(() => import('./CentralSphere'), { ssr: false })
 const Projects = dynamic(() => import('./Projects'), { ssr: false })
 
-export default function Portfolio({ setItemActive, isActive }: { setItemActive: (value: string) => void, isActive: boolean }) {
+export default function Portfolio({ setItemActive, isActive, scaleFactor }: { setItemActive: (value: string) => void, isActive: boolean, scaleFactor: number }) {
     const { setSelectedProjectIndex } = usePortfolio()
 
     return (
@@ -17,7 +17,7 @@ export default function Portfolio({ setItemActive, isActive }: { setItemActive: 
             <OrbitControls 
                 makeDefault
                 enabled={isActive}
-                target={[0, 0, -2]}
+                target={[0, 0, scaleFactor]}
                 enablePan={false}
                 enableZoom={false}
                 enableRotate={true}

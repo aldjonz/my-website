@@ -38,6 +38,8 @@
     animation: xTranslation 1s forwards ease-in-out;
     animation-delay: 3s;
     transition-delay: 1.5s;
+    text-align: center; 
+
 }
 .secondHalf {
     opacity: 0;
@@ -91,5 +93,25 @@
     }
     to {
         transform: translate3d(0, 0, 0);
+    }
+}
+
+@media (max-width: 768px) {
+    .introText {
+        transform: translateX(0);
+        animation: none;
+        text-align: center; 
+
+    }
+    .textContainer {
+        padding: 0 10vw;
+    }
+    .text {
+        font-size: 24px;
+    }
+}
+@media (max-height: 768px) {
+    .text {
+        font-size: 24px;
     }
 }

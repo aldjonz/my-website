@@ -1,6 +1,7 @@
 import React from 'react'
 import styles from './Expertise.module.css'
 import AnimatedPixelBg from '../ui/AnimatedPixelBg/AnimatedPixelBg';
+import { useScreenDetails } from '@/hooks/useScreenDetails';
 
 const expertiseText = [
     {
@@ -13,11 +14,11 @@ const expertiseText = [
     },
     {
         title: 'Infrastructure & Delivery',
-        skills: ['Git', 'GitHub', 'Vercel', 'App Store Connect Deployment', 'Google Play Console Deployment', 'AWS']
+        skills: ['Git', 'GitHub', 'Vercel', 'AWS', 'App Store Connect Deployment', 'Google Play Console Deployment']
     },
     {
         title: 'AI & ML',
-        skills: ['Python', 'TensorFlow', 'TensorFlow Lite', 'PyTorch',  'ChatGPT Integration', 'OpenCV', 'Pandas', 'Numpy', 'Computer Vision (Depth-Anything-V2, YOLO)']
+        skills: ['Python',  'OpenCV', 'Pandas', 'Numpy', 'PyTorch', 'TensorFlow', 'Computer Vision', 'ChatGPT Integration']
     },
     {
         title: 'Non-Computer (human) Languages',
@@ -25,7 +26,8 @@ const expertiseText = [
     },
 ]
 
-const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: boolean, position: string}) => {  
+const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: boolean, position: string}) => { 
+    const { isMobile } = useScreenDetails()
     let opacity:number = 0;
     let shouldShow:boolean = false;
     let titleStyles = {}
@@ -33,26 +35,31 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
     if (position === 'left') {
         opacity = !isLeft ? 1 : 0;
         shouldShow = textIndex > -1 && textIndex % 2 !== 0;
-        titleStyles = {
-            marginLeft: 'auto',
+        if (!isMobile) {
+            titleStyles = {
+                marginLeft: 'auto',
+            }
+            border = { borderRight: '1px solid white' }
         }
-        border = { borderRight: '1px solid white' }
     } else {
         opacity = isLeft ? 1 : 0;
         shouldShow = Boolean(textIndex) && textIndex % 2 === 0 || textIndex === 0;
-        titleStyles = {
-            marginRight: 'auto',
+        if (!isMobile) {
+            titleStyles = {
+                marginRight: 'auto',
+            }
+            border = { borderLeft: '1px solid white' }
         }
-        border = { borderLeft: '1px solid white' }
     }
     
+    
     return (
-        <div className={styles.sectionContainer} style={{ opacity: opacity, right: position === 'left' ? 'auto' : 0 }}>
+        <div className={styles.sectionContainer} style={{ opacity: opacity, right: position === 'left' || isMobile ? 'auto' : 0 }}>
             <div className={styles.section}>
                 {shouldShow ? (
                     <div className={styles.textContainer} style={{ ...border  }}>
                         <h1 className={`accent ${styles.title}`} style={{ ...titleStyles, }}>{expertiseText[textIndex].title}</h1>
-                        <div className={styles.skillsContainer} style={{ justifyContent: position === 'left' ? 'right' : 'left' }}>
+                        <div className={styles.skillsContainer} style={{ justifyContent: isMobile ? 'center' : position === 'left' ? 'right' : 'left' }}>
                             {expertiseText[textIndex].skills.map((skill, index) => (
                                 <>
                                     <h2 key={index} className={styles.skill}>{skill}</h2>

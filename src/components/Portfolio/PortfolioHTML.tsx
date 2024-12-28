@@ -47,7 +47,7 @@ type Props = {
 const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
   const { selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
   const currentItem = selectedProjectIndex !== null ? contentArray[selectedProjectIndex] : null
-
+  
   useEffect(() => {
     if (!isActive) {
       setSelectedProjectIndex(null)
@@ -56,26 +56,14 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
   return (
     <>
       {isActive && <div 
-        style={{ 
-          position: 'fixed',
-          bottom: '16vh',
-          left: '2vw',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          zIndex: 100,
-          color: 'white',
-          fontSize: '1.2em',
-          fontWeight: '200',
-          fontFamily: 'Major Mono Display',
-          letterSpacing: '0.01px',
-        }}
+        className={styles.textScrambleContainer}
       >
         <TextScramble baseText="Click the pyramids to" wrongText="unlock ancient secrets" correctText="view my projects" />
       </div>}
       <div className={styles.blurBg} style={{ opacity: Boolean(currentItem) ? 1 : 0, pointerEvents: Boolean(currentItem) ? 'auto' : 'none', transitionDuration: '0.4s'  }} />
       {currentItem && (
           <>
+          <div className={styles.scrollContainer}>
             <div className={styles.container} style={{ pointerEvents: Boolean(currentItem) ? 'auto' : 'none' }}>
               <div className={styles.innerContainer}>
                 <div className={styles.projectDisplay}>
@@ -85,7 +73,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                         <span className="accent">{currentItem.type}</span>
                       </h3>
                       <h3 className={styles.title}>{currentItem.title}</h3>
-                      <div style={{ display: 'flex', flexDirection: 'column', padding: '15px 0', borderTop: '1px solid black' }}>
+                      <div className={styles.paragraphContainer}>
                         {currentItem.description.map((paragraph: string, index: number) => {
                           return (
                             <p key={index}>
@@ -110,9 +98,9 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                 </div>
               </div>
               <div className={styles.innerContainer} > 
-                <div style={{ position: 'absolute', width: '70%', height: '100%', pointerEvents: 'none' }}>
+                <div className={styles.threeCanvasContainer}>
                   <ThreeCanvas>
-                    <Center visible={currentItem?.mediaType === 'mobile'}>
+                    <Center visible={currentItem?.mediaType === 'mobile'}  >
                       <PointerTrackerGroup visible={currentItem?.mediaType === 'mobile'}>
                         <MobilePhoneModel 
                           images={currentItem?.media?.[0] ? [currentItem.media[0]] : []} 
@@ -127,7 +115,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                         />
                       </PointerTrackerGroup>
                     </Center>
-                    <Center visible={currentItem?.mediaType !== 'mobile'}>
+                    <Center visible={currentItem?.mediaType !== 'mobile'} position={[0,0,0]}>
 
                       <ModelWithImageTexture
                         visible={currentItem?.mediaType !== 'mobile'}
@@ -140,6 +128,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                 </div>
               </div>
             </div>
+          </div>
             <div className={styles.projectNavigator}>
                 {Array.from({ length: 7 }, (_, index) => (
                   <div key={index} className={styles.projectNavigatorItem} style={{ backgroundColor: selectedProjectIndex === index ? '#631814' : 'rgba(255,255,255,0.7)' }} onClick={() => setSelectedProjectIndex(index)} />

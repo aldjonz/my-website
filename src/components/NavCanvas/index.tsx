@@ -5,9 +5,8 @@ import AboutHTML from '../About/AboutHTML'
 import ExpertiseHTML from '../Expertise/ExpertiseHTML'
 import PortfolioHTML from '../Portfolio/PortfolioHTML'
 import HoverText from '../ui/HoverText'
-import { Vector3 } from 'three'
 import ScrollableWrapper from '../ui/ScrollableWrapper'
-
+import styles from './NavCanvas.module.css'
 const NavCanvas = () => {
     const [itemActive, setItemActive] = useState<string | null>(null)
     const [textIndex, setTextIndex] = useState(0)
@@ -69,7 +68,7 @@ const NavCanvas = () => {
             isActive={itemActive === 'portfolio'}
         />
         {itemActive && (
-            <div onClick={() => setItemActive(null)} style={{ position: 'fixed', top: 0, left: 15, zIndex: 100, }}>
+            <div onClick={() => setItemActive(null)} className={styles.backButton} >
                 <HoverText title={"back"} />
             </div>
         )}

@@ -6,11 +6,12 @@ import { useFrame } from '@react-three/fiber'
 import { useRef, useState, useEffect, useMemo } from 'react'
 import { Group, Mesh, Vector3 } from 'three'
 import { useSpring, animated } from '@react-spring/three'
+import { useScreenDetails } from '@/hooks/useScreenDetails'
 
 export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }: { isExploded: boolean, isLeft: boolean, shapeIndex: number, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/Expertise/expertise.glb')
-
+    const { isMobile } = useScreenDetails()
 
     const allCells = useMemo(() => 
         scene.children
@@ -44,9 +45,11 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
             //     group.current.rotation.y += 0.0003; 
             // }
     
-            const camera = state.camera
-            camera.position.x = cameraX.get()
-            camera.updateProjectionMatrix()
+            if (!isMobile) {
+                const camera = state.camera
+                camera.position.x = cameraX.get()
+                camera.updateProjectionMatrix()
+            }
     
             allCells.forEach((cell, index) => {
                 if (isExploded) {
@@ -62,7 +65,7 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
                         case 1: // Helix
                             const angle = index * 0.3;
                             targetPos = new Vector3(
-                                Math.cos(angle) * 3,
+                                Math.cos(angle) * 3 * (isMobile ? 1 : 2),
                                 index * 0.15 - 4,
                                 Math.sin(angle) * 2
                             );
