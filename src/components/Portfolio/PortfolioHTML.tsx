@@ -63,6 +63,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
       <div className={styles.blurBg} style={{ opacity: Boolean(currentItem) ? 1 : 0, pointerEvents: Boolean(currentItem) ? 'auto' : 'none', transitionDuration: '0.4s'  }} />
       {currentItem && (
           <>
+          <div className={styles.scrollContainer}>
             <div className={styles.container} style={{ pointerEvents: Boolean(currentItem) ? 'auto' : 'none' }}>
               <div className={styles.innerContainer}>
                 <div className={styles.projectDisplay}>
@@ -127,6 +128,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                 </div>
               </div>
             </div>
+          </div>
             <div className={styles.projectNavigator}>
                 {Array.from({ length: 7 }, (_, index) => (
                   <div key={index} className={styles.projectNavigatorItem} style={{ backgroundColor: selectedProjectIndex === index ? '#631814' : 'rgba(255,255,255,0.7)' }} onClick={() => setSelectedProjectIndex(index)} />

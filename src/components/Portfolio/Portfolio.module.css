@@ -7,7 +7,6 @@
   top: 0;
   left: 0;
 }
-
 .projectDisplay {
   background-color: rgba(255,255,255,0.7);
   width: 90%;
@@ -175,13 +174,20 @@
     font-size: 0.8em;
     left: 3vw;
   }
+  .scrollContainer {
+    overflow-y: scroll;
+    max-height: 100vh;
+    height: auto;
+    padding-bottom: 60px;
+    -webkit-overflow-scrolling: touch;
+    position: absolute;
+    top: 0;
+    left: 0;
+  } 
   .container {
     flex-direction: column-reverse;
     height: auto; 
-    max-height: 100vh;
-    padding-bottom: 60px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; 
+    position: relative;
   }
   .innerContainer {
     width: 100vw;
