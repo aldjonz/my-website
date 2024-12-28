@@ -5,7 +5,7 @@ import AboutHTML from '../About/AboutHTML'
 import ExpertiseHTML from '../Expertise/ExpertiseHTML'
 import PortfolioHTML from '../Portfolio/PortfolioHTML'
 import HoverText from '../ui/HoverText'
-import ScrollableWrapper from '../ui/ScrollableWrapper'
+import ScrollableWrapper from '../ui/ScrollableWrapper/ScrollableWrapper'
 import styles from './NavCanvas.module.css'
 const NavCanvas = () => {
     const [itemActive, setItemActive] = useState<string | null>(null)
