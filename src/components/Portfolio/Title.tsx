@@ -75,10 +75,6 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
     return (
         <group 
             ref={group}
-            onClick={(e) => {
-                e.stopPropagation()
-                setItemActive('portfolio')
-            }}
             onPointerOver={handlePointerOver}
             onPointerOut={handlePointerOut}
         >

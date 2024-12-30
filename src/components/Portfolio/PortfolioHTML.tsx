@@ -47,12 +47,38 @@ type Props = {
 const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
   const { selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
   const currentItem = selectedProjectIndex !== null ? contentArray[selectedProjectIndex] : null
-  
+
+  const close = () => {
+    setSelectedProjectIndex(null)
+    window.location.hash = 'portfolio'
+  }
+
+  const navigateToProject = (index: number) => {
+    setSelectedProjectIndex(index)
+    window.location.hash = `portfolio/${index}`
+  }
+
   useEffect(() => {
-    if (!isActive) {
-      setSelectedProjectIndex(null)
-    }
-  }, [isActive])
+    const handleHashChange = () => {
+        const hash = window.location.hash.slice(1);
+        const [section, projectId] = hash.split('/');
+        
+        if (section === 'portfolio' && projectId !== undefined) {
+            const index = parseInt(projectId);
+            if (!isNaN(index)) {
+                setSelectedProjectIndex(index);
+            }
+        }
+    };
+
+    handleHashChange()
+    window.addEventListener('hashchange', handleHashChange);
+    
+    return () => {
+        window.removeEventListener('hashchange', handleHashChange);
+    };
+}, [setSelectedProjectIndex]);
+
   return (
     <>
       {isActive && <div 
@@ -92,7 +118,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                   <a href={currentItem.link} target="_blank" rel="noreferrer" className={styles.link}>
                     View Project
                   </a>
-                  <div style={{ position: 'absolute', top: 0, right: 0,  cursor: 'pointer', padding: 16, }} onClick={() => setSelectedProjectIndex(null)}>
+                  <div style={{ position: 'absolute', top: 0, right: 0,  cursor: 'pointer', padding: 16, }} onClick={close}>
                     <img src="/close.png" alt="Close" height={30} width={30} />
                   </div>
                 </div>
@@ -131,7 +157,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
           </div>
             <div className={styles.projectNavigator}>
                 {Array.from({ length: 7 }, (_, index) => (
-                  <div key={index} className={styles.projectNavigatorItem} style={{ backgroundColor: selectedProjectIndex === index ? '#631814' : 'rgba(255,255,255,0.7)' }} onClick={() => setSelectedProjectIndex(index)} />
+                  <div key={index} className={styles.projectNavigatorItem} style={{ backgroundColor: selectedProjectIndex === index ? '#631814' : 'rgba(255,255,255,0.7)' }} onClick={() => navigateToProject(index)} />
                 ))}
             </div>
         </>
