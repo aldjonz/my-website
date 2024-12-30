@@ -40,14 +40,21 @@ const NavCanvas = () => {
     }
 
     useEffect(() => {
-        const hash = window.location.hash.slice(1); 
-        if (hash) {
-            setItemActive(hash);
-        } 
+        const hash = window.location.hash.slice(1);
+        const [mainSection] = hash.split('/');
+        
+        if (mainSection) {
+            setItemActive(mainSection);
+        } else {
+            if (pathname === '/') {
+                router.push('/#');
+            }
+        }
 
         const handleHashChange = () => {
             const newHash = window.location.hash.slice(1);
-            setItemActive(newHash || null);
+            const [mainSection] = newHash.split('/');
+            setItemActive(mainSection || null);
         };
 
         window.addEventListener('hashchange', handleHashChange);

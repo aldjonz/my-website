@@ -217,6 +217,14 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
         }
     }
 
+    const handleClick = (e: ThreeEvent<MouseEvent>) => {
+        e.stopPropagation()
+        if (e.object.parent) {
+            const projectIndex = e.object.parent.userData.index;
+            window.location.hash = `portfolio/${projectIndex}`;
+        }
+    }
+
     useEffect(() => {
         return () => {
             // Clean up particle pool when the component unmounts
@@ -232,12 +240,7 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
         ref={group} 
         onPointerEnter={onPointerEnter}
         onPointerLeave={onPointerLeave}
-        onClick={(e) => {
-            e.stopPropagation()
-            if (e.object.parent) {
-                setSelectedProjectIndex(e.object.parent.userData.index)
-            }
-        }}
+        onClick={handleClick}
     >
         {projectNodes.map((node) => (
             <primitive key={node.uuid} object={node} />
