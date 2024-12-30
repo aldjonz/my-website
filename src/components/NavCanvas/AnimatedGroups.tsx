@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import Portfolio from '../Portfolio'
 import About from '../About'
 import Expertise from '../Expertise'
-import { useFrame, useThree } from '@react-three/fiber'
+import { ThreeEvent, useFrame, useThree } from '@react-three/fiber'
 import { Group, Vector3 } from 'three'
 import { OrbitControls } from '@react-three/drei'
 import { useScreenDetails } from '@/hooks/useScreenDetails'
@@ -125,6 +125,11 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
         }
     }
 
+    const handleClick = (event: ThreeEvent<MouseEvent>, group: string) => {
+        event.stopPropagation()
+        window.location.hash = group
+    }
+
     return (
         <>
             <group 
@@ -133,6 +138,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 rotation={[0, 0.15, 0.1]}
                 onPointerOver={() => handlePointerOver(topGroupRef.current)}
                 onPointerOut={() => handlePointerOut(topGroupRef.current)}
+                onClick={(e) => handleClick(e, 'about')}
             >
                 <About setItemActive={setItemActive} isActive={itemActive === 'about'} textIndex={textIndex}  />
             </group>
@@ -143,6 +149,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 rotation={[0, -0.15, -0.1]}
                 onPointerOver={() => handlePointerOver(middleGroupRef.current)}
                 onPointerOut={() => handlePointerOut(middleGroupRef.current)}
+                onClick={(e) => handleClick(e, 'portfolio')}
             >
                 <Portfolio setItemActive={setItemActive} isActive={itemActive === 'portfolio'} scaleFactor={scaleFactor} />
             </group>
@@ -153,6 +160,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 rotation={[0, 0.15, 0.01]}
                 onPointerOver={() => handlePointerOver(bottomGroupRef.current)}
                 onPointerOut={() => handlePointerOut(bottomGroupRef.current)}
+                onClick={(e) => handleClick(e, 'expertise')}
             >
                 <Expertise setItemActive={setItemActive} isActive={itemActive === 'expertise'} textIndex={textIndex} />
             </group>

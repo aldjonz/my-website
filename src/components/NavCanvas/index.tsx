@@ -1,3 +1,5 @@
+'use client'
+
 import { Canvas } from '@react-three/fiber'
 import React, { useEffect, useRef, useState } from 'react'
 import AnimatedGroups from './AnimatedGroups'
@@ -7,7 +9,11 @@ import PortfolioHTML from '../Portfolio/PortfolioHTML'
 import HoverText from '../ui/HoverText'
 import ScrollableWrapper from '../ui/ScrollableWrapper/ScrollableWrapper'
 import styles from './NavCanvas.module.css'
+import { usePathname, useRouter } from 'next/navigation'
+
 const NavCanvas = () => {
+    const pathname = usePathname()
+    const router = useRouter()
     const [itemActive, setItemActive] = useState<string | null>(null)
     const [textIndex, setTextIndex] = useState(0)
     const [isScrolling, setIsScrolling] = useState(false);
@@ -28,6 +34,28 @@ const NavCanvas = () => {
             setIsScrolling(false);
         }, 300) as any;
     }
+
+    const goBack = () => {
+        window.location.hash = ''
+    }
+
+    useEffect(() => {
+        const hash = window.location.hash.slice(1); 
+        if (hash) {
+            setItemActive(hash);
+        } 
+
+        const handleHashChange = () => {
+            const newHash = window.location.hash.slice(1);
+            setItemActive(newHash || null);
+        };
+
+        window.addEventListener('hashchange', handleHashChange);
+        
+        return () => {
+            window.removeEventListener('hashchange', handleHashChange);
+        };
+    }, [pathname, router]);
 
     useEffect(() => {
         return () => {
@@ -68,7 +96,7 @@ const NavCanvas = () => {
             isActive={itemActive === 'portfolio'}
         />
         {itemActive && (
-            <div onClick={() => setItemActive(null)} className={styles.backButton} >
+            <div onClick={goBack} className={styles.backButton} >
                 <HoverText title={"back"} />
             </div>
         )}

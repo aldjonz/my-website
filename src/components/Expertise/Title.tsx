@@ -124,13 +124,7 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
     if (!scene) return null
 
     return (
-        <group 
-            ref={group}
-            onClick={(e) => {
-                e.stopPropagation()
-                setItemActive('expertise')
-            }}
-        >
+        <group ref={group}>
             <AnimatedTextWrapper scene={scene}>
                 <primitive object={scene} />
             </AnimatedTextWrapper>
