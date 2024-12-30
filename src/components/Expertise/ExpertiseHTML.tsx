@@ -61,10 +61,10 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
                         <h1 className={`accent ${styles.title}`} style={{ ...titleStyles, }}>{expertiseText[textIndex].title}</h1>
                         <div className={styles.skillsContainer} style={{ justifyContent: isMobile ? 'center' : position === 'left' ? 'right' : 'left' }}>
                             {expertiseText[textIndex].skills.map((skill, index) => (
-                                <>
-                                    <h2 key={index} className={styles.skill}>{skill}</h2>
+                                <div key={index} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+                                    <h2 className={styles.skill}>{skill}</h2>
                                     {index !== expertiseText[textIndex].skills.length - 1 && <h2 className={styles.skillSeparator}>|</h2>}
-                                </>
+                                </div>
                             ))}
                         </div>
                     </div>
@@ -75,22 +75,17 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
 
 const ExpertiseHTML = ({ textIndex }: { textIndex: number }) => {
     return (
-        <>
-            {/* <div style={{ position: 'fixed', top: 0, left: 0, pointerEvents: 'none' }}>
-                <AnimatedPixelBg height={window.innerHeight} width={window.innerWidth} shouldAnimate={true} />
-            </div> */}
-            <div>
-                {Array.from({ length: expertiseText.length }, (_, index) => {
-                    return (
-                        <div style={{ height: '100vh', width: '100vw', scrollSnapAlign: 'start', }} />
-                    )
-                })}
+        <div>
+            {Array.from({ length: expertiseText.length }, (_, index) => {
+                return (
+                    <div key={index} style={{ height: '100vh', width: '100vw', scrollSnapAlign: 'start', }} />
+                )
+            })}
 
 
-                <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
-                <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
-            </div>
-        </>
+            <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='left'/>
+            <Section textIndex={textIndex} isLeft={textIndex % 2 === 0} position='right'/>
+        </div>
     );  
 };
 
