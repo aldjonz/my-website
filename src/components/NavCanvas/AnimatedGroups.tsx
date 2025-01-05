@@ -12,7 +12,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
     const middleGroupRef = useRef<Group | null>(null)
     const bottomGroupRef = useRef<Group | null>(null)
     const [timer, setTimer] = useState(0)
-    const { isMobile } = useScreenDetails()
+    const { isMobile, isPortrait } = useScreenDetails()
     const scaleFactor = isMobile ? 2 : -2
     const yFactor = isMobile ? 1.8 : 1
     const mobileRotation = [0,0,0]
@@ -109,6 +109,8 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                     bottomGroupRef.current.scale.y += (scale - bottomGroupRef.current.scale.y) * 0.1;
                     bottomGroupRef.current.scale.z += (scale - bottomGroupRef.current.scale.z) * 0.1;
                 }
+                const cameraZ = isPortrait ? 1.6 : 3.4
+                state.camera.position.lerp(new Vector3(0, 0, cameraZ), 0.1)
             }
         }
     })

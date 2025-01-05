@@ -4,7 +4,7 @@ import AnimatedTextWrapper from '@/components/TextAnimationWrapper/TextAnimation
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useRef, useState, useEffect, useMemo } from 'react'
-import { Group, Mesh, Vector3 } from 'three'
+import { Group, Mesh, Vector3, MathUtils } from 'three'
 import { useSpring, animated } from '@react-spring/three'
 import { useScreenDetails } from '@/hooks/useScreenDetails'
 
@@ -25,9 +25,9 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
         [scene]
     )
 
-    const { cameraX } = useSpring({
-        cameraX: isLeft ? 4 : -4,
-        config: { mass: 1, tension: 170, friction: 100 },
+    const { rotation } = useSpring({
+        rotation: isLeft ? Math.PI : 0,
+        config: { mass: 1, tension: 60, friction: 16 }
     })
 
     useEffect(() => {
@@ -38,76 +38,31 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
 
     useFrame((state) => {
         if (isExploded) {
-
             const time = state.clock.getElapsedTime();
-    
-            // if (group.current && shapeIndex !== 2) {
-            //     group.current.rotation.y += 0.0003; 
-            // }
-    
-            if (!isMobile) {
-                const camera = state.camera
-                camera.position.x = cameraX.get()
-                camera.updateProjectionMatrix()
-            }
-    
+            
+            const { width: viewportWidth, height: viewportHeight } = state.viewport
+                        
+            const totalCells = allCells.length
+            const aspectRatio = viewportWidth / viewportHeight
+            const cols = Math.ceil(Math.sqrt(totalCells * aspectRatio))
+            const rows = Math.ceil(totalCells / cols)
+
             allCells.forEach((cell, index) => {
-                if (isExploded) {
-                    let targetPos;
-    
-                    switch (shapeIndex) {
-                        case 0: 
-                            const side = Math.ceil(Math.sqrt(allCells.length));
-                            const x = (index % side) - side / 2;
-                            const y = Math.floor(index / side) - side / 2;
-                            targetPos = new Vector3(x, y, 0);
-                            break;
-                        case 1: // Helix
-                            const angle = index * 0.3;
-                            targetPos = new Vector3(
-                                Math.cos(angle) * 3 * (isMobile ? 1 : 2),
-                                index * 0.15 - 4,
-                                Math.sin(angle) * 2
-                            );
-                            break; 
-                        case 2: // Sine wave
-                            targetPos = new Vector3(
-                                (index * 0.3) - 5,
-                                Math.sin(index * 0.3) * 3,
-                                -1
-                            );
-                            break;
-                        case 3: // Figure-eight (infinity symbol)
-                            const t = (index * 0.2);
-                            targetPos = new Vector3(
-                                4 * Math.sin(t),
-                                2 * Math.sin(t * 2),
-                                -1
-                            );
-                            break;    
-                        case 4: 
-                            const spiralAngle = index * 0.1;
-                            const spiralRadius = 0.5 + index * 0.05;
-                            targetPos = new Vector3(
-                                Math.cos(spiralAngle) * spiralRadius - 2,
-                                Math.sin(spiralAngle) * spiralRadius,
-                                -index * 0.1
-                            );
-                            break;
-                        default:
-                            const targetPos = new Vector3(
-                                cell.userData.originalPosition.x, 
-                                cell.userData.originalPosition.y, 
-                                cell.userData.originalPosition.z
-                            )
-                    }
-    
-                    const floatOffset = Math.sin(time + index) * 0.1; 
-                    targetPos.y += floatOffset;
-    
-                    cell.position.lerp(targetPos, 0.03);
-                }
-            }); 
+                const col = index % cols
+                const row = Math.floor(index / cols)
+                
+                const targetPos = new Vector3(
+                    (col / (cols - 1) - 0.5) * viewportWidth,
+                    ((rows - 1 - row) / (rows - 1) - 0.5) * viewportHeight,
+                    0
+                )
+
+                const floatOffset = Math.sin(time + index) * 0.1
+                targetPos.y += floatOffset
+
+                cell.position.lerp(targetPos, 0.03)
+                cell.rotation.y = rotation.get()
+            })
         } else {
             allCells.forEach((cell, index) => {
                 const x = cell.userData.originalPosition.x
