@@ -1,11 +1,11 @@
-import React, { forwardRef, useState, useEffect } from 'react';
+import React, { forwardRef, useState, useEffect, useRef } from 'react';
 import styles from './ScrollableWrapper.module.css';
 
 const ScrollableWrapper = forwardRef<HTMLDivElement, { children: React.ReactNode, pointerEvents: boolean, opacity: boolean, onScroll: () => void }>(
   ({ children, pointerEvents, opacity, onScroll }, ref) => {
     const [showScroll, setShowScroll] = useState(true);
     const [isAtBottom, setIsAtBottom] = useState(false);
-    let scrollTimeout: NodeJS.Timeout;
+    let scrollTimeout = useRef<NodeJS.Timeout | null>(null);
 
     const handleScroll = () => {
       onScroll();
@@ -16,8 +16,10 @@ const ScrollableWrapper = forwardRef<HTMLDivElement, { children: React.ReactNode
         setIsAtBottom(Math.ceil(scrollTop + clientHeight) >= scrollHeight - clientHeight);
       }
 
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
+      if (scrollTimeout.current) {
+        clearTimeout(scrollTimeout.current);
+      }
+      scrollTimeout.current = setTimeout(() => {
         setShowScroll(true);
       }, 5000);
     };
@@ -25,18 +27,17 @@ const ScrollableWrapper = forwardRef<HTMLDivElement, { children: React.ReactNode
     useEffect(() => {
       handleScroll()
       return () => {
-        clearTimeout(scrollTimeout);
+        if (scrollTimeout.current) {
+          clearTimeout(scrollTimeout.current);
+        }
       };
     }, [opacity]);
-
-    console.log(showScroll)
 
     const scrollToNextSection = () => {
       if (ref && 'current' in ref && ref.current) {
         const currentScroll = ref.current.scrollTop;
         const viewportHeight = window.innerHeight;
         const nextSectionPosition = currentScroll + viewportHeight;
-        console.log(nextSectionPosition)
         
         ref.current.scrollTo({
           top: nextSectionPosition,
@@ -74,6 +75,7 @@ const ScrollableWrapper = forwardRef<HTMLDivElement, { children: React.ReactNode
                 opacity: showScroll ? 0.8 : 0,
               }}
             >
+              <p>Scroll</p>
              <svg 
                 className={styles.scrollArrow}
                 width="32" 

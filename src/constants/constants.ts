@@ -79,7 +79,7 @@ export const contentArray: ProjectContent[] = [
             'Using TensorFlow the app masks the body of the user with a white outline to create a passport in the style of 04postal. The passport is then sent to the user along with their ID which they use to access the site. The UI uses Next.js and the API is built using Python and AWS Lambda.',
           ],
           techStack: ['TypeScript', 'Next.js', 'Python', 'AWS Lambda', 'TensorFlow', 'Computer Vision', 'Squarespace'],
-          media: ['postal-logo.png'],
+          media: ['postal-arrow.png'],
           mediaType: 'iframe',
           link: 'https://04postal.com/register'
       },

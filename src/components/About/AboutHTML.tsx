@@ -8,7 +8,7 @@ const aboutText = [
         "In just 9 months, I transformed from a complete beginner to a professional developer, driven by curiosity and perseverance."
     ],
     [
-        "I specialize in full-stack development with a creative edge, building apps that seamlessly blend functionality and aesthetics. Leveraging React and Django (or any stack necessary), I craft scalable, engaging experiences for both web and mobile.",
+        "I specialize in full-stack development with a creative edge, building apps that seamlessly blend functionality and aesthetics. I craft scalable, engaging experiences for both web and mobile.",
         "I have collaborated with diverse teams to deliver impactful projects."
     ],
     [
