@@ -28,8 +28,8 @@
     flex-wrap: wrap;
     gap: 10px;
 }
-.skillsContainer h2 {
-    font-size: 1.5em;
+.skillsContainer p {
+    font-size: 24px;
     font-weight: 200;
 }
 .title {
@@ -56,8 +56,8 @@
     .skillsContainer {
         gap: 5px;
     }
-    .skillsContainer h2 {
-        font-size: 1.2em;
+    .skill {
+        pointer-events: none;
     }
 }
 @media (max-width: 768px) {
@@ -67,5 +67,8 @@
     .title {
         font-size: 2.2em;
         text-align: center;
+    }
+    .skillsContainer p {
+        font-size: 16px;
     }
 }

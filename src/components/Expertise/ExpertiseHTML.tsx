@@ -62,8 +62,8 @@ const Section = ({ textIndex, isLeft, position }: {textIndex: number, isLeft: bo
                         <div className={styles.skillsContainer} style={{ justifyContent: isMobile ? 'center' : position === 'left' ? 'right' : 'left' }}>
                             {expertiseText[textIndex].skills.map((skill, index) => (
                                 <div key={index} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
-                                    <h2 className={styles.skill}>{skill}</h2>
-                                    {index !== expertiseText[textIndex].skills.length - 1 && <h2 className={styles.skillSeparator}>|</h2>}
+                                    <p className={styles.skill}>{skill}</p>
+                                    {index !== expertiseText[textIndex].skills.length - 1 && <p className={styles.skillSeparator}>|</p>}
                                 </div>
                             ))}
                         </div>
