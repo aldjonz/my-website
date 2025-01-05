@@ -129,7 +129,6 @@ export default function Title({
                 const targetPos = new Vector3(x, y, z)
                 cell.position.lerp(targetPos, 0.08)
 
-                cell.rotation.y = springs[index].rotation.get()
             })
         }
     })
