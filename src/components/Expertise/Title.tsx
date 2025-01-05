@@ -39,21 +39,35 @@ export default function Title({ isExploded, isLeft, shapeIndex, setItemActive }:
     useFrame((state) => {
         if (isExploded) {
             const time = state.clock.getElapsedTime();
-            
             const { width: viewportWidth, height: viewportHeight } = state.viewport
-                        
+            
             const totalCells = allCells.length
             const aspectRatio = viewportWidth / viewportHeight
-            const cols = Math.ceil(Math.sqrt(totalCells * aspectRatio))
-            const rows = Math.ceil(totalCells / cols)
+            
+            let cols, rows
+            if (aspectRatio > 1) {
+                rows = Math.floor(Math.sqrt(totalCells / aspectRatio))
+                cols = Math.ceil(totalCells / rows)
+            } else {
+                cols = Math.floor(Math.sqrt(totalCells * aspectRatio))
+                rows = Math.ceil(totalCells / cols)
+            }
+
+            while (rows * cols < totalCells) {
+                if (aspectRatio > 1) {
+                    cols++
+                } else {
+                    rows++
+                }
+            }
 
             allCells.forEach((cell, index) => {
                 const col = index % cols
                 const row = Math.floor(index / cols)
                 
                 const targetPos = new Vector3(
-                    (col / (cols - 1) - 0.5) * viewportWidth,
-                    ((rows - 1 - row) / (rows - 1) - 0.5) * viewportHeight,
+                    (col - (cols - 1) / 2) / ((viewportWidth * 1.2) / (cols)),
+                    (-row + (rows - 1) / 2) / ((viewportHeight * 1.4) / (rows)),
                     0
                 )
 

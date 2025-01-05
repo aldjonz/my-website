@@ -109,8 +109,6 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                     bottomGroupRef.current.scale.y += (scale - bottomGroupRef.current.scale.y) * 0.1;
                     bottomGroupRef.current.scale.z += (scale - bottomGroupRef.current.scale.z) * 0.1;
                 }
-                const cameraZ = isPortrait ? 1.6 : 3.4
-                state.camera.position.lerp(new Vector3(0, 0, cameraZ), 0.1)
             }
         }
     })
