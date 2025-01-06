@@ -205,7 +205,7 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
 
     const onPointerEnter = (e: ThreeEvent<PointerEvent>) => {
         const parent = e.object.parent
-        if (parent) {
+        if (parent && document) {
             parent.userData.isHovered = true
             document.body.style.cursor = 'pointer'
         }
@@ -213,7 +213,7 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
 
     const onPointerLeave = (e: ThreeEvent<PointerEvent>) => {
         const parent = e.object.parent
-        if (parent) {
+        if (parent && document) {
             parent.userData.isHovered = false
             document.body.style.cursor = 'default'
         }
@@ -221,7 +221,7 @@ const Projects = ({ isExploded, setSelectedProjectIndex }: { isExploded: boolean
 
     const handleClick = (e: ThreeEvent<MouseEvent>) => {
         e.stopPropagation()
-        if (e.object.parent) {
+        if (e.object.parent && typeof window !== 'undefined') {
             const projectIndex = e.object.parent.userData.index;
             window.location.hash = `portfolio/${projectIndex}`;
         }

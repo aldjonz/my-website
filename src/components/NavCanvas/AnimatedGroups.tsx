@@ -116,20 +116,22 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
     })
 
     const handlePointerOver = (group: Group | null) => {
-        if (group && itemActive === null) {
+        if (group && itemActive === null && document) {
             document.body.style.cursor = 'pointer';
         }
     }
 
     const handlePointerOut = (group: Group | null) => {
-        if (group) {
+        if (group && document) {
             document.body.style.cursor = 'default';
         }
     }
 
     const handleClick = (event: ThreeEvent<MouseEvent>, group: string) => {
         event.stopPropagation()
-        window.location.hash = group
+        if (typeof window !== 'undefined') {
+            window.location.hash = group
+        }
     }
 
     return (

@@ -41,7 +41,7 @@ const AboutHTML = ({ textIndex, isScrolling }: { textIndex: number, isScrolling:
                         <p 
                             key={idx} 
                             onClick={() => {
-                                if (line === "Let's talk.") {
+                                if (line === "Let's talk." && typeof window !== 'undefined') {
                                     window.location.href = `mailto:${email}`;
                                 }
                             }}

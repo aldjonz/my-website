@@ -34,7 +34,7 @@ const ScrollableWrapper = forwardRef<HTMLDivElement, { children: React.ReactNode
     }, [opacity]);
 
     const scrollToNextSection = () => {
-      if (ref && 'current' in ref && ref.current) {
+      if (ref && 'current' in ref && ref.current && typeof window !== 'undefined') {
         const currentScroll = ref.current.scrollTop;
         const viewportHeight = window.innerHeight;
         const nextSectionPosition = currentScroll + viewportHeight;

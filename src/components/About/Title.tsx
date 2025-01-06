@@ -43,9 +43,11 @@ export default function Title({ isExploded, setItemActive, textIndex }: { isExpl
         const handleScroll = () => {
             if (!ticking) {
                 requestAnimationFrame(() => {
-                    lastScrollRef.current = scrollRef.current
-                    scrollRef.current = window.innerHeight * textIndex
-                    ticking = false
+                    if (typeof window !== 'undefined') {
+                        lastScrollRef.current = scrollRef.current
+                        scrollRef.current = window.innerHeight * textIndex
+                        ticking = false
+                    }
                 })
                 ticking = true
             }

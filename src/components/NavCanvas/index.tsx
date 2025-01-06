@@ -36,25 +36,31 @@ const NavCanvas = () => {
     }
 
     const goBack = () => {
-        window.location.hash = ''
+        if (typeof window !== 'undefined') {
+            window.location.hash = ''
+        }
     }
 
     useEffect(() => {
-        const hash = window.location.hash.slice(1);
-        const [mainSection] = hash.split('/');
-        
-        if (mainSection) {
-            setItemActive(mainSection);
-        } else {
-            if (pathname === '/') {
-                router.push('/#');
+        if (typeof window !== 'undefined') {
+            const hash = window.location.hash.slice(1);
+            const [mainSection] = hash.split('/');
+            if (mainSection) {
+                setItemActive(mainSection);
+            } else {
+                if (pathname === '/') {
+                    router.push('/#');
+                }
             }
         }
+        
 
         const handleHashChange = () => {
-            const newHash = window.location.hash.slice(1);
-            const [mainSection] = newHash.split('/');
-            setItemActive(mainSection || null);
+            if (typeof window !== 'undefined') {
+                const newHash = window.location.hash.slice(1);
+                const [mainSection] = newHash.split('/');
+                setItemActive(mainSection || null);
+            }
         };
 
         window.addEventListener('hashchange', handleHashChange);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 
 type Props = {}
 
@@ -33,7 +33,7 @@ hello@aledjones.dev
   `;
   
   useEffect(() => {
-    if (!window.artAlreadyLogged) {
+    if (typeof window !== 'undefined' && !window.artAlreadyLogged) {
       console.log(
         '%c' + art + '%c' + message,
         'color: red; ',

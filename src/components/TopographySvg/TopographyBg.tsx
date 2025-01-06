@@ -123,7 +123,7 @@ const TopographyBg = (props: Props) => {
         <circle
           cx={smoothPosition.x}
           cy={smoothPosition.y}
-          r={window.innerWidth / 14}
+          r={ typeof window !== 'undefined' ? window.innerWidth / 14 : 80}
           fill="#631814"
           filter="url(#wavy)"
         />
@@ -166,13 +166,5 @@ const TopographyBg = (props: Props) => {
     </div>
   )
 }
-
-const styles = `
-
-`;
-
-const styleSheet = document.createElement("style");
-styleSheet.innerText = styles;
-document.head.appendChild(styleSheet);
 
 export default TopographyBg

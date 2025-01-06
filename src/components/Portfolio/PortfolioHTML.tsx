@@ -50,12 +50,16 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
 
   const close = () => {
     setSelectedProjectIndex(null)
-    window.location.hash = 'portfolio'
+    if (typeof window !== 'undefined') {
+        window.location.hash = 'portfolio'
+    }
   }
 
   const navigateToProject = (index: number) => {
     setSelectedProjectIndex(index)
-    window.location.hash = `portfolio/${index}`
+    if (typeof window !== 'undefined') {
+        window.location.hash = `portfolio/${index}`
+    }
   }
 
   useEffect(() => {

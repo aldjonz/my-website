@@ -63,11 +63,15 @@ export default function Title({ isExploded, setItemActive }: { isExploded: boole
     })
 
     const handlePointerOver = () => {
-        document.body.style.cursor = 'grab'
+        if (document) {
+            document.body.style.cursor = 'grab'
+        }
     }
 
     const handlePointerOut = () => {
-        document.body.style.cursor = 'default'
+        if (document) {
+            document.body.style.cursor = 'default'
+        }
     }
 
     if (!scene) return null
