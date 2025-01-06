@@ -1,26 +1,29 @@
 "use client";
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import TopographySvg from './TopographySvg'
 
 type Props = {}
 
 const TopographyBg = (props: Props) => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const mousePositionRef = useRef({ x: 0, y: 0 })
   const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 })
   const [isActive, setIsActive] = useState(false)
   let inactivityTimer: NodeJS.Timeout
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-      setIsActive(true)
+      mousePositionRef.current = { x: e.clientX, y: e.clientY }
+      const dx = mousePositionRef.current.x - smoothPosition.x
+      const dy = mousePositionRef.current.y - smoothPosition.y
+      if (!isActive) {
+        setIsActive(true)
+      }
       
-      // Clear existing timer and set new one
       clearTimeout(inactivityTimer)
       inactivityTimer = setTimeout(() => {
         setIsActive(false)
-      }, 1000) // 1 second timeout
+      }, 1000) 
     }
 
     window.addEventListener('mousemove', handleMouseMove)
@@ -36,10 +39,9 @@ const TopographyBg = (props: Props) => {
 
     const animatePosition = () => {
       setSmoothPosition(prev => {
-        const dx = mousePosition.x - prev.x
-        const dy = mousePosition.y - prev.y
+        const dx = mousePositionRef.current.x - prev.x
+        const dy = mousePositionRef.current.y - prev.y
         
-        // Only update if movement is significant
         if (Math.abs(dx) > 30 || Math.abs(dy) > 30) {
           return {
             x: prev.x + dx * smoothFactor,
@@ -54,7 +56,7 @@ const TopographyBg = (props: Props) => {
 
     animationFrameId = requestAnimationFrame(animatePosition)
     return () => cancelAnimationFrame(animationFrameId)
-  }, [mousePosition])
+  }, [mousePositionRef])
 
   const pathColour = 'rgba(0, 0, 255,'
 
@@ -78,17 +80,17 @@ const TopographyBg = (props: Props) => {
             <feTurbulence 
               type="turbulence" 
               baseFrequency="0.01" 
-              numOctaves="3" 
+              numOctaves="3"
               seed="200"
             >
               <animate 
                 attributeName="baseFrequency" 
-                dur="90" 
+                dur="20"
                 values="0.01;0.015;0.01" 
                 repeatCount="indefinite" 
               />
             </feTurbulence>
-            <feDisplacementMap in="SourceGraphic" scale="60" />
+            <feDisplacementMap in="SourceGraphic" scale="30" />
           </filter>
           <mask id="gradientMask">
             <radialGradient id="maskGradient">
@@ -123,14 +125,11 @@ const TopographyBg = (props: Props) => {
         <circle
           cx={smoothPosition.x}
           cy={smoothPosition.y}
-          r={ typeof window !== 'undefined' ? window.innerWidth / 14 : 80}
+          r={ typeof window !== 'undefined' ? window.innerWidth / 13 : 80}
           fill="#631814"
           filter="url(#wavy)"
         />
       </svg>
-      <div style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh' }}>
-        <TopographySvg />
-      </div>
 
       <div style={{ position: 'absolute', top: 0, left: 0, width: '100vw', height: '100vh' }}>
         <TopographySvg />
@@ -157,8 +156,8 @@ const TopographyBg = (props: Props) => {
             ...spotlightTransition,
             background: `radial-gradient(circle at ${smoothPosition.x}px ${smoothPosition.y}px, 
               ${pathColour}1) 0%, 
-              ${pathColour}1) 7.5%, 
-              ${pathColour}0) 8.5%
+              ${pathColour}1) 6.5%, 
+              ${pathColour}0) 7.5%
             )`,
           }}
         />

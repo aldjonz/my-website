@@ -6,15 +6,5 @@
     position: fixed;
     top: 0;
     left: 0;
-}
-
-.svg path { 
-    will-change: stroke;
-    pointer-events: stroke;
-    stroke-width: 6;
-    backface-visibility: hidden;
-}
-
-.svg path:hover {
-    stroke: #CCCCCC;
+    pointer-events: none;
 }
