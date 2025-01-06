@@ -20,7 +20,7 @@ export default function Title({
     setItemActive: (value: string) => void
 }) {
     const group = useRef<Group>(null)
-    const { scene } = useGLTF('/Expertise/expertise.glb')
+    const { scene } = useGLTF('/expertise/expertise.glb')
     const { isMobile } = useScreenDetails()
     const { viewport } = useThree()
     const { width, height } = viewport
@@ -144,4 +144,4 @@ export default function Title({
     )
 }
 
-useGLTF.preload('/Expertise/expertise.glb')
+useGLTF.preload('/expertise/expertise.glb')
