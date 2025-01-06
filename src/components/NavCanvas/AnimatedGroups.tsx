@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useRef, useState } from 'react'
 import Portfolio from '../Portfolio'
 import About from '../About'

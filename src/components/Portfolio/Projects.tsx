@@ -1,3 +1,5 @@
+"use client";
+
 import { usePortfolio } from '@/context/portfolioContext'
 import { useFrame, ThreeEvent } from '@react-three/fiber'
 import React, { useRef, useMemo, useEffect } from 'react'
