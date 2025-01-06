@@ -8,3 +8,16 @@
     left: 0;
     pointer-events: none;
 }
+
+.breath {
+    animation: breath 1s ease-in-out infinite alternate;
+}
+
+@keyframes breath {
+    from {
+        scale: 1;
+    }
+    to {
+        scale: 1.1;
+    }
+}

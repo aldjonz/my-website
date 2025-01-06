@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import TopographySvg from './TopographySvg'
+import styles from './TopographySvg.module.css'
 
 type Props = {}
 
@@ -111,6 +112,7 @@ const TopographyBg = (props: Props) => {
       <div style={{ backgroundColor: '#000', width: '100vw', height: '100vh' }} />
       
       <svg 
+        className={styles.breath}
         style={{ 
           position: 'absolute', 
           top: 0, 
