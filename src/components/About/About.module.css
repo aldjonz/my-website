@@ -11,7 +11,7 @@
 }
 .textContainer {
     height: 100vh;
-    padding: 0 15vw;
+    padding: 0 10vw;
     display: flex;
     margin: auto;
     flex-direction: column;
@@ -34,18 +34,54 @@
 }
 
 .introText {
-    transform: translateX(43%);
-    animation: xTranslation 1s forwards ease-in-out;
-    animation-delay: 3s;
-    transition-delay: 1.5s;
     text-align: center; 
-
+    font-size: 48px;
+}
+.secondHalfContainer {
+    animation: fadeIn 1s forwards;
+    animation-delay: 4s;
+    opacity: 0;
+    background-color: rgba(255,255,255,0.4);
+    padding: 0 4px;
+    border-radius: 4px;
 }
 .secondHalf {
-    opacity: 0;
-    animation: fadeIn 1s forwards ease-in-out;
-    animation-delay: 4.2s;
+    background: linear-gradient(#631814 30%, #000000) left no-repeat, #000000;
+    background-size: 0% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: colourText 2s forwards;
+    animation-delay: 5s;
 }
+.rotatingComma {
+    display: inline-block;
+    transform: rotate(90deg);
+    opacity: 0;
+    animation: rotateComma 0.4s forwards ease-out;
+    animation-delay: 3.4s;
+}
+
+@keyframes colourText {
+    from {
+        background-size: 0% 100%;
+    }
+    to {
+        background-size: 100% 100%;
+    }
+  }
+
+@keyframes rotateComma {
+    from {
+        transform: rotate(90deg);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+}
+
 
 @keyframes fadeIn {
     from {
@@ -58,7 +94,7 @@
 
 @keyframes xTranslation {
     from {
-        transform: translateX(43%);
+        transform: translateX(50%);
     }
     to {
         transform: translateX(0);
@@ -98,8 +134,8 @@
 
 @media (max-width: 768px) {
     .introText {
-        transform: translateX(0);
-        animation: none;
+        /* transform: translateX(0);
+        animation: none; */
         text-align: center; 
 
     }

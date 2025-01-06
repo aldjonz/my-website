@@ -29,11 +29,14 @@ const AboutHTML = ({ textIndex, isScrolling }: { textIndex: number, isScrolling:
             style={{ height: `${(aboutText.length + 1) * 100}vh` }}
         >
             <div className={styles.textContainer}>
-                <p 
+                <div 
                     className={styles.text + ' ' + styles.introText + ' ' + (textIndex === 0 ? styles.visible : '')}
                 >
-                    <span>I'm Aled</span><span  className={styles.secondHalf}>, web and mobile app developer and designer</span>
-                </p>
+                    <p className={styles.firstHalf}>I'm Aled<span className={styles.rotatingComma}>,</span></p>
+                    <div className={styles.secondHalfContainer} >
+                        <p className={styles.secondHalf}>creative web & mobile app developer</p>
+                    </div>
+                </div>
             </div>
             {aboutText.map((text, index) => (
                 <div key={index} className={styles.textContainer}>
