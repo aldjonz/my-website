@@ -1,6 +1,5 @@
 import React from 'react'
 import styles from './Expertise.module.css'
-import AnimatedPixelBg from '../ui/AnimatedPixelBg/AnimatedPixelBg';
 import { useScreenDetails } from '@/hooks/useScreenDetails';
 
 const expertiseText = [
