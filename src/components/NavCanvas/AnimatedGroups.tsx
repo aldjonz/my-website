@@ -36,8 +36,8 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
             group.rotation.z += (0 - group.rotation.z) * 0.1;
 
             // Animate others out of view
-            group1.position.y += (group1Y - group1.position.y) * 0.1;
-            group2.position.y += (group2Y - group2.position.y) * 0.1;
+            group1.position.y += (group1Y - group1.position.y) * 0.05;
+            group2.position.y += (group2Y - group2.position.y) * 0.05;
         }
     }
 
