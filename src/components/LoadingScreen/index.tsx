@@ -41,7 +41,7 @@ const LoadingScreen = (props: Props) => {
     }
 
     const getBlocks = (columnIndex: number) => {
-        if (window) {
+        if (typeof window !== 'undefined') {
             const { innerWidth, innerHeight } = window
             const blockSize = innerWidth * 0.05
             const amountOfBlocks = Math.ceil(innerHeight / blockSize)
