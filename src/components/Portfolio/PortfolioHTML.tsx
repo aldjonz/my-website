@@ -64,14 +64,16 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
 
   useEffect(() => {
     const handleHashChange = () => {
-        const hash = window.location.hash.slice(1);
-        const [section, projectId] = hash.split('/');
+      const hash = window.location.hash.slice(1);
+      const [section, projectId] = hash.split('/');
         
         if (section === 'portfolio' && projectId !== undefined) {
             const index = parseInt(projectId);
             if (!isNaN(index)) {
                 setSelectedProjectIndex(index);
             }
+        } else {
+          setSelectedProjectIndex(null)
         }
     };
 
@@ -82,6 +84,12 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
         window.removeEventListener('hashchange', handleHashChange);
     };
 }, [setSelectedProjectIndex]);
+
+useEffect(() => {
+  if (!isActive) {
+    setSelectedProjectIndex(null)
+  }
+}, [isActive, currentItem])
 
   return (
     <>

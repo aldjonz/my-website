@@ -39,7 +39,7 @@ const NavCanvas = () => {
 
     const goBack = () => {
         if (typeof window !== 'undefined') {
-            window.location.hash = ''
+            window.location.hash = '/'
         }
     }
 
@@ -60,7 +60,6 @@ const NavCanvas = () => {
             }
         }
         
-
         const handleHashChange = () => {
             if (typeof window !== 'undefined') {
                 const newHash = window.location.hash.slice(1);
