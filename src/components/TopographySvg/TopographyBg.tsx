@@ -3,12 +3,10 @@
 import React, { useState, useEffect, useRef } from 'react'
 import TopographySvg from './TopographySvg'
 import styles from './TopographySvg.module.css'
-import { useLoading } from '@/context/loadingContext';
 
 type Props = {}
 
 const TopographyBg = (props: Props) => {
-  const { isLoading } = useLoading()
   const mousePositionRef = useRef({ x: 0, y: 0 })
   const [smoothPosition, setSmoothPosition] = useState({ x: 0, y: 0 })
   const [isActive, setIsActive] = useState(false)
@@ -69,10 +67,6 @@ const TopographyBg = (props: Props) => {
     transition: 'transform 0.6s ease-in-out',
     transitionDelay: '1s'
   }
-
-  useEffect(() => {
-    console.log('isLoading changed:', isLoading);
-  }, [isLoading]);
   return (
     <div>
       <svg style={{ 
