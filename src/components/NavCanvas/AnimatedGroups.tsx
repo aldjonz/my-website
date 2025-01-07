@@ -91,6 +91,9 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
             } else if (itemActive === 'portfolio') {
                 animateActiveItem(middleGroupRef.current, topGroupRef.current, bottomGroupRef.current, 15, -15)
                 if (middleGroupRef.current && middleGroupRef.current.position.z > -4) {
+                    middleGroupRef.current.scale.x += (scale - middleGroupRef.current.scale.x) * 0.1;
+                    middleGroupRef.current.scale.y += (scale - middleGroupRef.current.scale.y) * 0.1;
+                    middleGroupRef.current.scale.z += (scale - middleGroupRef.current.scale.z) * 0.1;   
                     middleGroupRef.current.position.z += (scaleFactor - middleGroupRef.current.position.z) * 0.1;
                     if (topGroupRef.current) {
                         topGroupRef.current.scale.x += (0.001 - topGroupRef.current.scale.x) * 0.1;

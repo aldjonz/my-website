@@ -1,7 +1,6 @@
 "use client"
 
 import AnimatedTextWrapper from '@/components/TextAnimationWrapper/TextAnimationWrapper'
-import { useScreenDetails } from '@/hooks/useScreenDetails'
 import { useGLTF } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useMemo, useRef, useState } from 'react'
@@ -10,7 +9,6 @@ import { Group, Mesh, Vector3 } from 'three'
 export default function Title({ isExploded, setItemActive }: { isExploded: boolean, setItemActive: (value: string) => void }) {
     const group = useRef<Group>(null)
     const { scene } = useGLTF('/portfolio/portfolio.glb')
-    const { isMobile } = useScreenDetails()
     const orbitRadius = 3
 
     const allCells = useMemo(() => 
