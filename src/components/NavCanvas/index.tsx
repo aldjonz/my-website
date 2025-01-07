@@ -89,11 +89,11 @@ const NavCanvas = () => {
         <div style={{ position: 'fixed', height: '100vh', top: 0, left: 0, width: '100vw'}}>
             <Canvas onCreated={handleCanvasCreated} gl={{ antialias: true }} dpr={[1, 1.5]} >
                 <directionalLight position={[0, 0, 20]} intensity={4} />
-                {/* <AnimatedGroups 
+                <AnimatedGroups 
                     itemActive={itemActive}
                     setItemActive={setItemActive}
                     textIndex={textIndex}
-                /> */}
+                />
             </Canvas>
         </div>
         <ScrollableWrapper ref={scrollContainerRef} opacity={itemActive !== null} pointerEvents={itemActive === 'about' || itemActive === 'expertise'} onScroll={handleScroll}>

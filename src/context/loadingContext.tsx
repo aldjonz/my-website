@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 
@@ -9,7 +9,6 @@ interface LoadingContextType {
 
 const LoadingContext = createContext<LoadingContextType | undefined>(undefined);
 
-// Provider component
 export const LoadingProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   
@@ -24,7 +23,6 @@ export const LoadingProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// Hook to use the loading state
 export const useLoading = () => {
   const context = useContext(LoadingContext);
   if (!context) {
