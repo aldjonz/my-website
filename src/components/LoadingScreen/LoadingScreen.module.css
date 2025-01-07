@@ -118,3 +118,16 @@
 .bubble:nth-child(6):before {
     animation: plasma 6s linear 1.5s infinite;
 }
+
+@keyframes fade {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+.fadeBackground {
+    animation: fade 2s ease-out forwards;
+}

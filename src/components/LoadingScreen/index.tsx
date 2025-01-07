@@ -1,12 +1,15 @@
 import React from 'react'
 import styles from './LoadingScreen.module.css'
+import { useLoading } from '@/context/loadingContext'
 
 type Props = {}
 
 const LoadingScreen = (props: Props) => {
-  return (
-    <div className={styles.loadingScreen}>
-        <div style={{ position: "relative" }}>
+    const { isLoading } = useLoading()
+
+    return (
+        <div className={`${styles.loadingScreen} ${!isLoading ? styles.fadeBackground : ''}`}>
+            <div style={{ position: "relative" }}>
 
             <svg width="0" height="0">
                 <filter id="gooey-plasma">

@@ -6,7 +6,6 @@ import About from '../About'
 import Expertise from '../Expertise'
 import { ThreeEvent, useFrame, useThree } from '@react-three/fiber'
 import { Group, Vector3 } from 'three'
-import { OrbitControls } from '@react-three/drei'
 import { useScreenDetails } from '@/hooks/useScreenDetails'
 
 const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: string | null, setItemActive: (value: string | null) => void, textIndex: number  }) => {
@@ -42,7 +41,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
     }
 
     useFrame((state, delta) => {
-        if (timer < 1.4) {
+        if (timer < 3.4) {
             setTimer(prev => prev + delta)
         }
 
@@ -50,7 +49,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
             state.camera.position.lerp(new Vector3(0, 0, 5), 0.1)
             state.camera.lookAt(0, 0, 0)
 
-            if (topGroupRef.current && timer > 0.8) {
+            if (topGroupRef.current && timer > 2.8) {
                 topGroupRef.current.position.x += ((topPosition[0] - topGroupRef.current.position.x) * 0.3)
                 topGroupRef.current.position.y += ((topPosition[1] - topGroupRef.current.position.y) * 0.3)
                 topGroupRef.current.scale.x += (scale - topGroupRef.current.scale.x) * 0.1;
@@ -60,7 +59,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 topGroupRef.current.rotation.set(rotation[0], rotation[1], rotation[2])
             }
 
-            if (middleGroupRef.current && timer > 1.1) {
+            if (middleGroupRef.current && timer > 3.1) {
                 middleGroupRef.current.position.x += ((middlePosition[0] - middleGroupRef.current.position.x) * 0.3)
                 middleGroupRef.current.position.y += ((middlePosition[1] - middleGroupRef.current.position.y) * 0.3)
                 middleGroupRef.current.position.z += ((middlePosition[2] - middleGroupRef.current.position.z) * 0.3)
@@ -71,7 +70,7 @@ const AnimatedGroups = ({ itemActive, setItemActive, textIndex }: { itemActive: 
                 middleGroupRef.current.scale.z += (scale - middleGroupRef.current.scale.z) * 0.1;   
             }
 
-            if (bottomGroupRef.current && timer > 1.4) {
+            if (bottomGroupRef.current && timer > 3.4) {
                 bottomGroupRef.current.position.x += ((bottomPosition[0] - bottomGroupRef.current.position.x) * 0.3)
                 bottomGroupRef.current.position.y += ((bottomPosition[1] - bottomGroupRef.current.position.y) * 0.3)
                 bottomGroupRef.current.position.z += ((bottomPosition[2] - bottomGroupRef.current.position.z) * 0.3)

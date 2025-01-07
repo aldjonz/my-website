@@ -10,10 +10,12 @@ import HoverText from '../ui/HoverText'
 import ScrollableWrapper from '../ui/ScrollableWrapper/ScrollableWrapper'
 import styles from './NavCanvas.module.css'
 import { usePathname, useRouter } from 'next/navigation'
+import { useLoading } from '@/context/loadingContext'
 
 const NavCanvas = () => {
     const pathname = usePathname()
     const router = useRouter()
+    const { isLoading, setLoading } = useLoading()
     const [itemActive, setItemActive] = useState<string | null>(null)
     const [textIndex, setTextIndex] = useState(0)
     const [isScrolling, setIsScrolling] = useState(false);
@@ -39,6 +41,10 @@ const NavCanvas = () => {
         if (typeof window !== 'undefined') {
             window.location.hash = ''
         }
+    }
+
+    const handleCanvasCreated = () => {
+        setLoading(false)
     }
 
     useEffect(() => {
@@ -81,13 +87,13 @@ const NavCanvas = () => {
   return (
     <>
         <div style={{ position: 'fixed', height: '100vh', top: 0, left: 0, width: '100vw'}}>
-            <Canvas gl={{ antialias: true }} dpr={[1, 1.5]} >
+            <Canvas onCreated={handleCanvasCreated} gl={{ antialias: true }} dpr={[1, 1.5]} >
                 <directionalLight position={[0, 0, 20]} intensity={4} />
-                <AnimatedGroups 
+                {/* <AnimatedGroups 
                     itemActive={itemActive}
                     setItemActive={setItemActive}
                     textIndex={textIndex}
-                />
+                /> */}
             </Canvas>
         </div>
         <ScrollableWrapper ref={scrollContainerRef} opacity={itemActive !== null} pointerEvents={itemActive === 'about' || itemActive === 'expertise'} onScroll={handleScroll}>
