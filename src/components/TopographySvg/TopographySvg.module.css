@@ -2,6 +2,7 @@
     width: auto;
     height: auto;
     min-height: 100vh;
+    min-width: 110vw;
     display: block;
     position: fixed;
     top: 0;
