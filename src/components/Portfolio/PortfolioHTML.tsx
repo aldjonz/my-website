@@ -66,13 +66,16 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1);
       const [section, projectId] = hash.split('/');
+      console.log(section, projectId)
         
         if (section === 'portfolio' && projectId !== undefined) {
             const index = parseInt(projectId);
             if (!isNaN(index)) {
+                console.log('setting index', index)
                 setSelectedProjectIndex(index);
             }
         } else {
+          console.log('setting index to null')
           setSelectedProjectIndex(null)
         }
     };
@@ -83,13 +86,9 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
     return () => {
         window.removeEventListener('hashchange', handleHashChange);
     };
-}, [setSelectedProjectIndex]);
+  } , [setSelectedProjectIndex]);
 
-useEffect(() => {
-  if (!isActive) {
-    setSelectedProjectIndex(null)
-  }
-}, [isActive, currentItem])
+  console.log('currentItem', currentItem)
 
   return (
     <>
