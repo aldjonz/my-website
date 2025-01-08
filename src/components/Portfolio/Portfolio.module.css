@@ -162,6 +162,7 @@
   font-weight: 200;
   font-family: Major Mono Display;
   letter-spacing: 0.01px;
+  pointer-events: none;
 }
 .threeCanvasContainer {
   position: absolute;
