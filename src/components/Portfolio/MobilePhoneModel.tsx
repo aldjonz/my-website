@@ -32,7 +32,7 @@ const MobilePhoneModel = ({
     const screen = phoneMesh.children.filter((child) => child.name === 'Screen_+back_14')[0].children[1] as Mesh
 
     const textureLoader = new TextureLoader()
-    const texture = textureLoader.load(`/portfolio/projects/${isSlideshow ? images[currentImageIndex] : images[0]}`)
+    const texture = textureLoader.load(`/portfolio/projects/${isSlideshow ? images[currentImageIndex] || images[1] : images[0]}`)
     texture.repeat.set(1.2, 1)
     texture.offset.set(-0.11, 0)
 
