@@ -11,6 +11,7 @@ import ScrollableWrapper from '../ui/ScrollableWrapper/ScrollableWrapper'
 import styles from './NavCanvas.module.css'
 import { usePathname, useRouter } from 'next/navigation'
 import { useLoading } from '@/context/loadingContext'
+import TextScramble from '../ui/TextScramble'
 
 const NavCanvas = () => {
     const pathname = usePathname()
@@ -94,6 +95,11 @@ const NavCanvas = () => {
                     textIndex={textIndex}
                 />
             </Canvas>
+            {itemActive === 'portfolio' &&
+                <div className={styles.textScrambleContainer}>
+                    <TextScramble baseText="Click the pyramids to" wrongText="unlock ancient secrets" correctText="view my projects" />
+                </div>
+            }
         </div>
         <ScrollableWrapper ref={scrollContainerRef} opacity={itemActive !== null} pointerEvents={itemActive === 'about' || itemActive === 'expertise'} onScroll={handleScroll}>
             {itemActive === 'expertise' && (

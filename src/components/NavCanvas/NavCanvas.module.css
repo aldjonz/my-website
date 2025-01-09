@@ -4,10 +4,29 @@
     left: 25px;
     z-index: 100;
 }
+.textScrambleContainer {
+    position: fixed;
+    bottom: 16vh;
+    left: 2vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    color: white;
+    font-size: 1.2em;
+    font-weight: 200;
+    font-family: Major Mono Display;
+    letter-spacing: 0.01px;
+    pointer-events: none;
+}
 
 @media (max-width: 768px) or (max-height: 600px) {
     .backButton {
         left: 15px;
         top: 15px;
+    }
+    .textScrambleContainer {
+        font-size: 0.8em;
+        left: 3vw;
     }
 }
