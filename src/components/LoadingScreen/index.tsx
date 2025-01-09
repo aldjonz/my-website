@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './LoadingScreen.module.css'
 import { useLoading } from '@/context/loadingContext'
 import {motion} from 'framer-motion' 
+import { useScreenDetails } from '@/hooks/useScreenDetails'
 
 const anim = {
     initial: {
@@ -20,6 +21,7 @@ const anim = {
 type Props = {}
 
 const LoadingScreen = (props: Props) => {
+    const { isMobile } = useScreenDetails()
     const { isLoading } = useLoading()
     const [hideLoading, setHideLoading] = useState(false)
 
@@ -53,7 +55,7 @@ const LoadingScreen = (props: Props) => {
                     variants={anim}
                     initial="initial"
                     animate={!hideLoading ? "open" : "closed"}
-                    custom={randomDelay + columnIndex}
+                    custom={!isMobile ? randomDelay + columnIndex : (randomDelay + columnIndex) / 2}
                 ></motion.div>
             ))
         }
