@@ -46,10 +46,9 @@ export default function TextAnimationWrapper({ scene, children }: { scene: Group
     }
 
     const handleMouseMove = throttle((e: MouseEvent) => {
-        // Update pointer position or any other necessary state
         pointer.x = (e.clientX / window.innerWidth) * 2 - 1;
         pointer.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    }, throttleAmount); // Throttle limit in milliseconds
+    }, throttleAmount);
 
     useEffect(() => {
         window.addEventListener('mousemove', handleMouseMove);
