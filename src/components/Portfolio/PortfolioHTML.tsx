@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect } from 'react'
+import React, { useEffect, TouchEvent, useRef } from 'react'
 import styles from './Portfolio.module.css'
 import { Children } from 'react'
 import { motion } from 'framer-motion'
@@ -12,6 +12,7 @@ import { contentArray } from '@/constants/constants'
 import { usePortfolio } from '@/context/portfolioContext'
 import { Center } from '@react-three/drei'
 import TextScramble from '../ui/TextScramble'
+import { useScreenDetails } from '@/hooks/useScreenDetails'
 
 const container = {
   hidden: { opacity: 0, height: 0, transition: { staggerChildren: 0.05 } },
@@ -45,8 +46,41 @@ type Props = {
 }
 
 const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
+  const { isMobile } = useScreenDetails()
   const { selectedProjectIndex, setSelectedProjectIndex } = usePortfolio()
   const currentItem = selectedProjectIndex !== null ? contentArray[selectedProjectIndex] : null
+
+  const touchStart = useRef<number>(0);
+  const SWIPE_THRESHOLD = 50; // minimum distance for a swipe
+
+  const handleTouchStart = (e: TouchEvent) => {
+    if (isMobile) {
+      touchStart.current = e.touches[0].clientX;
+    }
+  };
+
+  const handleTouchEnd = (e: TouchEvent) => {
+    if (isMobile) {
+      const touchEnd = e.changedTouches[0].clientX;
+      const distance = touchStart.current - touchEnd;
+
+      if (Math.abs(distance) > SWIPE_THRESHOLD && selectedProjectIndex !== null) {
+        if (distance > 0) {
+          if (selectedProjectIndex === contentArray.length - 1) {
+            navigateToProject(0);
+          } else {
+            navigateToProject(selectedProjectIndex + 1);
+          }
+        } else if (distance < 0) {
+          if (selectedProjectIndex === 0) {
+            navigateToProject(contentArray.length - 1);
+          } else {
+            navigateToProject(selectedProjectIndex - 1);
+          }
+        }
+      }
+    }
+  };
 
   const close = () => {
     setSelectedProjectIndex(null)
@@ -66,16 +100,13 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
     const handleHashChange = () => {
       const hash = window.location.hash.slice(1);
       const [section, projectId] = hash.split('/');
-      console.log(section, projectId)
         
         if (section === 'portfolio' && projectId !== undefined) {
             const index = parseInt(projectId);
             if (!isNaN(index)) {
-                console.log('setting index', index)
                 setSelectedProjectIndex(index);
             }
         } else {
-          console.log('setting index to null')
           setSelectedProjectIndex(null)
         }
     };
@@ -88,17 +119,23 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
     };
   } , [setSelectedProjectIndex]);
 
-  console.log('currentItem', currentItem)
-
   return (
     <>
       <div style={{ position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', zIndex: 1000, pointerEvents: Boolean(currentItem) ? 'auto' : 'none' }}>
         <div className={styles.blurBg} style={{ opacity: Boolean(currentItem) ? 1 : 0, pointerEvents: Boolean(currentItem) ? 'auto' : 'none', transitionDuration: '0.4s'  }} />
+      
         {currentItem && (
             <>
-            <div className={styles.scrollContainer}>
+            <div 
+              className={styles.scrollContainer} 
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+            >
               <div className={styles.container} style={{ pointerEvents: Boolean(currentItem) ? 'auto' : 'none' }}>
                 <div className={styles.innerContainer}>
+                  <div className={styles.textScrambleContainer} style={{ position: 'absolute', top: '-10%', left: '5vw', color: 'white' }}>
+                    <TextScramble baseText="Swipe to see my other projects" />
+                  </div>
                   <div className={styles.projectDisplay}>
                     <div className={styles.info}>
                       <List open={Boolean(currentItem)}>

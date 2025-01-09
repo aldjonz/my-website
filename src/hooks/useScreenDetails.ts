@@ -12,7 +12,7 @@ export const useScreenDetails = (): ScreenDetails => {
     width: window.innerWidth,
     height: window.innerHeight,
     isPortrait: window.innerHeight > window.innerWidth,
-    isMobile: window.innerWidth < 768,
+    isMobile: window.innerWidth < 769,
   });
 
   useEffect(() => {
