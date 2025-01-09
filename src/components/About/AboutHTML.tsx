@@ -49,7 +49,7 @@ const AboutHTML = ({ textIndex, isScrolling }: { textIndex: number, isScrolling:
                                 }
                             }}
                             className={styles.text + ' ' + (index + 1 === textIndex ? styles.visible + ' ' + (line === "Let's talk." ? styles.slideIn : '') : '')}
-                            style={{ transitionDelay: `${idx * 0.7}s`, textAlign: line.includes("Have a vision") ? 'center' : 'inherit' }}
+                            style={{ transitionDelay: `${idx * 0.7}s`, alignSelf: line.includes("Have a vision") || line.includes("Let's talk.") ? 'center' : 'inherit'}}
                         >
                             {line}
                         </p>
