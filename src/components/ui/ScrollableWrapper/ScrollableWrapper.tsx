@@ -75,7 +75,6 @@ const ScrollableWrapper = forwardRef<HTMLDivElement, { children: React.ReactNode
                 opacity: showScroll ? 0.8 : 0,
               }}
             >
-              <p>Scroll</p>
              <svg 
                 className={styles.scrollArrow}
                 width="32" 
