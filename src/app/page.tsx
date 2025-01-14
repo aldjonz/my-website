@@ -1,15 +1,19 @@
 "use client"
 
-import TopographySvg from '@/components/TopographySvg/TopographySvg'
 import Contact from "@/components/Contact";
 import NavCanvas from "@/components/NavCanvas";
 import TopographyBg from '@/components/TopographySvg/TopographyBg';
 import ConsoleMessage from '@/components/ConsoleMessage';
 import LoadingScreen from '@/components/LoadingScreen';
 import { useLoading } from '@/context/loadingContext';
+import { useLayoutEffect } from "react";
 
 export default function Home() {
   const { isLoading } = useLoading()
+
+  useLayoutEffect(() => {
+    window.scrollTo(1, 0);
+  }, [])
   return (
     <>
       <div style={{ position: 'relative', height: '100vh', width: '100vw', opacity: isLoading ? 0 : 1 }}>
