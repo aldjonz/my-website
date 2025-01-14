@@ -125,7 +125,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
         <div className={styles.blurBg} style={{ opacity: Boolean(currentItem) ? 1 : 0, pointerEvents: Boolean(currentItem) ? 'auto' : 'none', transitionDuration: '0.4s'  }} />
       
         {currentItem && (
-            <>
+          <>
             <div 
               className={styles.scrollContainer} 
               onTouchStart={handleTouchStart}
@@ -179,7 +179,7 @@ const PortfolioHTML = ({ isActive }: { isActive: boolean }) => {
                           />
                           <MobilePhoneModel 
                             isSlideshow={true}
-                            images={currentItem?.media ? currentItem.media.slice(1) : []}
+                            images={currentItem?.media ? [currentItem.media[1]] : []}
                             position={[1.4, 2, -0.5]}
                             rotation={[-0.3, 0.5, 0.4]}
                           />
